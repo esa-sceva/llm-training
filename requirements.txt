@@ -1,0 +1,3 @@
+litgpt[all]
+datasets 
+wandb 
