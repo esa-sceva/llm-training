@@ -25,7 +25,7 @@ wandb:
 	wandb login "$(WANDB_TOKEN)"
 
 train:
-	litgpt finetune lora \
+	litgpt finetune_full $(MODEL_NAME) \
 		--data JSON \
 		--data.json_path $(JSON_PATH) \
 		--data.val_split_fraction $(VAL_SPLIT) \
@@ -33,7 +33,7 @@ train:
 		--config $(CONFIG_PATH) \
 	
 evaluate:
-	litgpt evaluate microsoft/phi-2/ \
+	litgpt evaluate $(OUT_DIR) \
 		--batch_size 4 \
 		--tasks "hellaswag,truthfulqa_mc2,mmlu" \
 		--out_dir evaluate_model/

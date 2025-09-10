@@ -1,3 +1,4 @@
 litgpt[all]
 datasets 
 wandb 
+lm_eval
