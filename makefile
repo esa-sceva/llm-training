@@ -25,7 +25,7 @@ wandb:
 	wandb login "$(WANDB_TOKEN)"
 
 train:
-	litgpt finetune_full $(MODEL_NAME) \
+	litgpt finetune_lora $(MODEL_NAME) \
 		--data JSON \
 		--data.json_path $(JSON_PATH) \
 		--data.val_split_fraction $(VAL_SPLIT) \

@@ -43,15 +43,17 @@ lora_mlp: false
 # Whether to apply LoRA to output head in GPT. (type: bool, default: False)
 lora_head: false
 
-# Data-related arguments. If not provided, the default is ``litgpt.data.Alpaca``.
 data:
   class_path: litgpt.data.Alpaca2k
   init_args:
+    json_path: /workspace/llm-training/litgpt_data.json
     mask_prompt: false
     prompt_style: alpaca
     ignore_index: -100
     seed: 42
     num_workers: 4
+
+
 
 # Training-related arguments. See ``litgpt.args.TrainArgs`` for details
 train:
@@ -62,13 +64,13 @@ train:
   log_interval: 1
 
   # Number of samples between optimizer steps across data-parallel ranks (type: int, default: 128)
-  global_batch_size: 8
+  global_batch_size: 128
 
   # Number of samples per data-parallel rank (type: int, default: 4)
-  micro_batch_size: 1
+  micro_batch_size: 4
 
   # Number of iterations with learning rate warmup active (type: int, default: 100)
-  lr_warmup_steps: 10
+  lr_warmup_steps: 50
 
   # Number of epochs to train on (type: Optional[int], default: 5)
   epochs: 2
@@ -109,7 +111,7 @@ eval:
   final_validation: true
 
 # The name of the logger to send metrics to. (type: Literal['wandb', 'tensorboard', 'csv'], default: csv)
-logger_name: csv
+logger_name: wandb
 
 # The random seed to use for reproducibility. (type: int, default: 1337)
 seed: 1337
@@ -120,7 +122,7 @@ optimizer:
 
   init_args:
     #   (type: float, default: 0.001)
-    lr: 0.0002
+    lr: 0.0001
 
     #   (type: float, default: 0.01)
     weight_decay: 0.0
