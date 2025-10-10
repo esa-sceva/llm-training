@@ -1,0 +1,133 @@
+base_model_dir: /teamspace/studios/this_studio/llm-training/checkpoints/meta-llama/Meta-Llama-3.1-8B-Instruct
+
+# OpenAI API configuration for GPT-based evaluation
+openai_api:
+  api_key: "OPENAI_API_KEY"  # Set your OpenAI API key here or use OPENAI_API_KEY environment variable
+  model: "gpt-4o-mini"  # or "gpt-4o", "gpt-3.5-turbo"
+  max_workers: 5  # Concurrent API requests (keep low to respect rate limits)
+
+benchmarks:
+- dataset_path: ./datasets/open_questions.json
+  evaluation_type: gpt_rating
+  name: open_satcom_questions
+  num_samples: 30
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following question with technical accuracy.
+    
+    Question: {question}
+      
+    Provide a clear, detailed answer:
+    
+  sampling_config:
+    max_tokens: 1024
+    stop_tokens:
+    - '
+
+
+      Question:'
+    temperature: 0.2
+    top_p: 0.9
+
+- dataset_path: ./datasets/teleqna_mcqa.json
+  evaluation_type: mcqa_advanced
+  name: open_satcom_questions
+  num_samples: 100
+  prompt_template: |
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following multiple choice question.
+    
+    Question: {question}
+    
+    Options:
+    option 1) {option_1}
+    option 2) {option_2}
+    option 3) {option_3}
+    option 4) {option_4}
+    option 5) {option_5}
+    
+    Answer with the correct answer (option 1, option 2, option 3, option 4 or option 5) without additional explanation:
+    
+  sampling_config:
+    max_tokens: 1024
+    stop_tokens:
+    - '
+
+
+      Question:'
+    temperature: 0.2
+    top_p: 0.9
+
+# Add more datasets here
+- dataset_path: ./datasets/sapien_qa_with_context_delivery.json
+  evaluation_type: gpt_rating
+  name: general_qa_benchmark
+  num_samples: 100
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following question with technical accuracy.
+    
+    Question: {question}
+      
+    Provide a clear, detailed answer:
+    
+  sampling_config:
+    max_tokens: 1024
+    temperature: 0.3
+    top_p: 0.9
+    stop_tokens:
+    - '
+
+
+      Question:'
+
+# Multiple Choice Questions Dataset
+- dataset_path: ./datasets/sapien_mcqa.json
+  evaluation_type: mcqa_advanced 
+  name: satellite_mcqa_advanced
+  num_samples: 500
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following multiple choice question.
+    
+    Question: {question}
+    
+    Options:
+    option 1) {option_1}
+    option 2) {option_2}
+    option 3) {option_3}
+    option 4) {option_4}
+    
+    Answer with the correct answer (option 1, option 2, option 3 or option 4) without additional explanation:
+    
+  sampling_config:
+    max_tokens: 50
+    temperature: 0.1
+    top_p: 0.9
+    stop_tokens:
+    - '
+
+
+      Question:'
+
+
+checkpoints_dir: /teamspace/studios/this_studio/out/finetune/llama-8b-old-dataset
+cleanup:
+  delete_hf_checkpoints: true
+  delete_merged_litgpt: true
+experiment_name: vllm_test_run
+logging:
+  level: INFO
+  log_file: ./benchmark/vllm_benchmark_test.log
+  save_logs: true
+output_dir: ./benchmark
+results:
+  save_detailed_scores: true
+  save_individual_results: true
+  save_summary_results: true
+vllm_config:
+  dtype: auto
+  gpu_memory_utilization: 0.8
+  max_model_len: 2048
+  tensor_parallel_size: 1
+  trust_remote_code: true
+  port: 8000
+  num_workers: 8        # Number of concurrent request threads
+  batch_size: 20        # Process requests in batches to avoid overwhelming server

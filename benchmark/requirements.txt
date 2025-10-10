@@ -1,0 +1,35 @@
+# Requirements for Automated LoRA Checkpoint Benchmarking System
+# Core ML and Deep Learning
+torch>=2.0.0
+lightning>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+
+# LitGPT (for LoRA merging and model inference)
+litgpt>=0.4.0
+
+# Data Processing and Analysis
+pandas>=2.0.0
+matplotlib>=3.7.0
+pyyaml>=6.0
+tqdm>=4.65.0
+
+# System Monitoring
+psutil>=5.9.0
+
+# OpenAI API (for GPT-based evaluation)
+openai>=1.0.0
+
+
+# Core requirements (minimum versions for stability)
+torch>=2.0.0,<3.0.0
+lightning>=2.0.0,<3.0.0
+numpy>=1.24.0,<2.0.0
+pandas>=2.0.0,<3.0.0
+matplotlib>=3.7.0,<4.0.0
+scikit-learn>=1.3.0,<2.0.0
+pyyaml>=6.0,<7.0.0
+tqdm>=4.65.0,<5.0.0
+psutil>=5.9.0,<6.0.0
+openai>=1.0.0,<2.0.0
+
