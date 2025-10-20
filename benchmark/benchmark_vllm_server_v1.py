@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-vLLM Server-based LoRA Checkpoint Benchmarking Script
+vLLM Direct Library LoRA Checkpoint Benchmarking Script
 
-This script uses vLLM's OpenAI-compatible server for more stable inference:
-1. Starts vLLM server for each checkpoint
-2. Makes HTTP requests for inference  
-3. More robust and easier to debug than direct vLLM integration
+This script uses vLLM as a direct Python library for efficient inference:
+1. Loads models directly with vLLM LLM class
+2. Uses del to properly clean up GPU memory between checkpoints
+3. Simpler and more memory-efficient than server-based approach
 
 Usage:
     python benchmark_vllm_server_v1.py --config benchmark_vllm_config.yaml
@@ -20,20 +20,27 @@ import argparse
 import logging
 import shutil
 import time
-import signal
-import subprocess
 from pathlib import Path
 from datetime import datetime
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Optional, Any, Tuple
-import tempfile
-import glob
 import gc
-import requests
-import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
+import torch
+import requests  # For GPT evaluation API calls
+
+# Import vLLM
+try:
+    from vllm import LLM, SamplingParams
+    VLLM_AVAILABLE = True
+except ImportError as e:
+    VLLM_AVAILABLE = False
+    print(f"Warning: vLLM not available: {e}")
+
+# Note: We use vLLM's built-in tokenizer via llm.get_tokenizer()
+# No need to import transformers separately
 
 # Import local LitGPT utilities
 try:
@@ -47,7 +54,7 @@ except ImportError as e:
 
 class VLLMServerBenchmarkMaster:
     def __init__(self, config_path: str):
-        """Initialize the vLLM server benchmark master with configuration."""
+        """Initialize the vLLM benchmark master with configuration."""
         self.config = self.load_config(config_path)
         self.setup_logging()
         self.setup_directories()
@@ -56,10 +63,10 @@ class VLLMServerBenchmarkMaster:
         self.all_results = []
         self.checkpoint_results = {}
         
-        # vLLM server process
-        self.vllm_server_process = None
-        self.server_port = self.config.get('vllm_config', {}).get('port', 8000)
-        self.server_url = f"http://localhost:{self.server_port}"
+        # vLLM model instance - will be recreated for each checkpoint
+        self.llm = None
+        self.current_model_path = None
+        self.tokenizer = None
         
     def load_config(self, config_path: str) -> Dict[str, Any]:
         """Load and validate configuration file."""
@@ -276,24 +283,29 @@ class VLLMServerBenchmarkMaster:
                 shutil.move(str(model_pth), str(pytorch_model_bin))
                 self.logger.info("Renamed model.pth to pytorch_model.bin for HF compatibility")
             
-            # Copy essential config files from merged directory to HF directory
-            config_files_to_copy = [
+            # Copy ALL tokenizer and config files from merged directory to HF directory
+            # This ensures we have all necessary files for the tokenizer
+            files_to_copy = [
                 'tokenizer.json',
-                'tokenizer_config.json',
+                'tokenizer_config.json', 
                 'generation_config.json',
-                'config.json'
+                'config.json',
+                'model_config.yaml',  # Include this too
+                'special_tokens_map.json'  # If it exists
             ]
             
-            for file_name in config_files_to_copy:
+            for file_name in files_to_copy:
                 src_file = merged_litgpt_dir / file_name
                 dst_file = hf_dir / file_name
                 
                 if src_file.exists() and not dst_file.exists():
                     shutil.copy2(src_file, dst_file)
                     self.logger.debug(f"Copied {file_name} to HF directory")
+                elif not src_file.exists():
+                    self.logger.debug(f"Source file {file_name} not found in {merged_litgpt_dir}")
             
             # Verify HF model files exist
-            required_hf_files = ['pytorch_model.bin']
+            required_hf_files = ['pytorch_model.bin', 'config.json']
             missing_files = []
             
             for file_name in required_hf_files:
@@ -312,185 +324,142 @@ class VLLMServerBenchmarkMaster:
                 shutil.rmtree(hf_dir, ignore_errors=True)
             raise RuntimeError(f"Failed to convert to HF format: {e}")
     
-    def start_vllm_server(self, hf_model_dir: Path) -> bool:
-        """Start vLLM server for the model."""
-        self.logger.info(f"Starting vLLM server for model: {hf_model_dir}")
+    
+    def clean_vram(self):
+        """Clean VRAM using del and CUDA cache clearing."""
+        self.logger.info("Cleaning VRAM with del...")
+        
+        # Delete vLLM model instance
+        if self.llm is not None:
+            del self.llm
+            self.llm = None
+            self.logger.info("Deleted vLLM model instance")
+        
+        # Clear PyTorch CUDA cache
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            torch.cuda.synchronize()
+            self.logger.info("Cleared CUDA cache")
+        
+        # Force garbage collection
+        gc.collect()
+        
+        # Wait for memory to clear
+        time.sleep(2)
+        self.logger.info("✅ VRAM cleaned")
+    
+    def load_vllm_model(self, hf_model_dir: Path) -> bool:
+        """Load vLLM model directly with automatic tokenizer."""
+        # Clean VRAM first
+        self.clean_vram()
+        
+        self.logger.info(f"Loading vLLM model: {hf_model_dir}")
         
         # Get vLLM configuration
         vllm_config = self.config.get('vllm_config', {})
         
-        # Build vLLM server command
-        cmd = [
-            'python', '-m', 'vllm.entrypoints.openai.api_server',
-            '--model', str(hf_model_dir),
-            '--port', str(self.server_port),
-            '--host', '0.0.0.0'
-        ]
-        
-        # Add optional parameters
-        if 'dtype' in vllm_config:
-            cmd.extend(['--dtype', vllm_config['dtype']])
-        if 'max_model_len' in vllm_config:
-            cmd.extend(['--max-model-len', str(vllm_config['max_model_len'])])
-        if 'gpu_memory_utilization' in vllm_config:
-            cmd.extend(['--gpu-memory-utilization', str(vllm_config['gpu_memory_utilization'])])
-        if 'tensor_parallel_size' in vllm_config:
-            cmd.extend(['--tensor-parallel-size', str(vllm_config['tensor_parallel_size'])])
-        if vllm_config.get('trust_remote_code', False):
-            cmd.append('--trust-remote-code')
-        
-        self.logger.info(f"vLLM server command: {' '.join(cmd)}")
-        
         try:
-            # Start server process
-            self.vllm_server_process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True
+            # Create vLLM instance - it will automatically load the tokenizer
+            self.llm = LLM(
+                model=str(hf_model_dir),
+                dtype=vllm_config.get('dtype', 'auto'),
+                max_model_len=vllm_config.get('max_model_len', 2048),
+                gpu_memory_utilization=vllm_config.get('gpu_memory_utilization', 0.8),
+                tensor_parallel_size=vllm_config.get('tensor_parallel_size', 1),
+                trust_remote_code=vllm_config.get('trust_remote_code', True)
             )
             
-            # Wait for server to start (check health endpoint)
-            max_wait_time = 300  # 5 minutes
-            start_time = time.time()
-            
-            self.logger.info("Waiting for vLLM server to start...")
-            
-            while time.time() - start_time < max_wait_time:
-                try:
-                    response = requests.get(f"{self.server_url}/health", timeout=5)
-                    if response.status_code == 200:
-                        self.logger.info("vLLM server is ready!")
-                        return True
-                except requests.exceptions.RequestException:
-                    pass
-                
-                # Check if process crashed
-                if self.vllm_server_process.poll() is not None:
-                    stdout, stderr = self.vllm_server_process.communicate()
-                    self.logger.error(f"vLLM server crashed during startup:")
-                    self.logger.error(f"STDOUT: {stdout}")
-                    self.logger.error(f"STDERR: {stderr}")
-                    return False
-                
-                time.sleep(2)
-            
-            self.logger.error("vLLM server failed to start within timeout")
-            return False
-            
-        except Exception as e:
-            self.logger.error(f"Failed to start vLLM server: {e}")
-            return False
-    
-    def stop_vllm_server(self):
-        """Stop the vLLM server."""
-        if self.vllm_server_process is not None:
-            self.logger.info("Stopping vLLM server...")
-            self.vllm_server_process.terminate()
-            
-            # Wait for graceful shutdown
+            # Get tokenizer from vLLM after model is loaded
             try:
-                self.vllm_server_process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                self.logger.warning("vLLM server didn't stop gracefully, killing...")
-                self.vllm_server_process.kill()
-                self.vllm_server_process.wait()
-            
-            self.vllm_server_process = None
-            self.logger.info("vLLM server stopped")
-            
-            # Give it a moment to free resources
-            time.sleep(2)
-    
-    def get_model_name(self) -> str:
-        """Get the actual model name from vLLM server."""
-        try:
-            response = requests.get(f"{self.server_url}/v1/models", timeout=10)
-            if response.status_code == 200:
-                models_data = response.json()
-                if 'data' in models_data and len(models_data['data']) > 0:
-                    model_name = models_data['data'][0]['id']
-                    self.logger.info(f"Using server model name: {model_name}")
-                    return model_name
-            
-            # Fallback to generic name
-            self.logger.warning("Could not get model name from server, using fallback")
-            return "model"
-        except Exception as e:
-            self.logger.error(f"Failed to get model name: {e}")
-            return "model"
-    
-    def generate_response_batch(self, vllm_model_name: str, prompts_batch: List[Tuple[int, str]], sampling_config: Dict) -> List[Tuple[int, str]]:
-        """Generate responses for a batch of prompts concurrently."""
-        results = []
-        
-        def process_single_request(item):
-            idx, prompt = item
-            try:
-                response = self.generate_response(vllm_model_name, prompt, sampling_config)
-                return (idx, response)
-            except Exception as e:
-                self.logger.error(f"Failed to generate response for item {idx}: {e}")
-                return (idx, "")
-        
-        # Get number of workers from config
-        num_workers = self.config.get('vllm_config', {}).get('num_workers', 4)
-        
-        with ThreadPoolExecutor(max_workers=num_workers) as executor:
-            # Submit all requests
-            future_to_item = {
-                executor.submit(process_single_request, item): item 
-                for item in prompts_batch
-            }
-            
-            # Collect results as they complete
-            for future in as_completed(future_to_item):
-                try:
-                    result = future.result()
-                    results.append(result)
-                except Exception as e:
-                    item = future_to_item[future]
-                    self.logger.error(f"Request failed for item {item[0]}: {e}")
-                    results.append((item[0], ""))
-        
-        # Sort results by original index
-        results.sort(key=lambda x: x[0])
-        return results
-    
-    def generate_response(self, vllm_model_name: str, prompt: str, sampling_config: Dict) -> str:
-        """Generate response using vLLM server API."""
-        try:
-            payload = {
-                "model": vllm_model_name,  # Use the actual model name from server
-                "messages": [
-                    {"role": "user", "content": prompt}
-                ],
-                "temperature": sampling_config.get('temperature', 0.7),
-                "top_p": sampling_config.get('top_p', 0.9),
-                "max_tokens": sampling_config.get('max_tokens', 512),
-                "stop": sampling_config.get('stop_tokens', [])
-            }
-            
-            response = requests.post(
-                f"{self.server_url}/v1/chat/completions",
-                json=payload,
-                timeout=60  # 1 minute timeout per request
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                if 'choices' in result and len(result['choices']) > 0:
-                    return result['choices'][0]['message']['content'].strip()
+                self.tokenizer = self.llm.get_tokenizer()
+                self.logger.info(f"✅ Tokenizer loaded automatically from vLLM")
+                
+                # Check if tokenizer has chat template
+                if hasattr(self.tokenizer, 'chat_template') and self.tokenizer.chat_template:
+                    self.logger.info("Tokenizer has chat template available")
                 else:
-                    self.logger.warning("No choices in response")
-                    return ""
-            else:
-                self.logger.error(f"API request failed: {response.status_code} - {response.text}")
-                return ""
-                
+                    self.logger.info("Tokenizer does not have chat template, will use raw prompts")
+            except Exception as tokenizer_error:
+                self.logger.warning(f"Could not access tokenizer from vLLM: {tokenizer_error}")
+                self.tokenizer = None
+            
+            self.current_model_path = hf_model_dir
+            self.logger.info(f"✅ Model loaded successfully")
+            return True
+            
         except Exception as e:
-            self.logger.error(f"Failed to generate response: {e}")
-            return ""
+            self.logger.error(f"Failed to load vLLM model: {e}")
+            return False
+    
+    def unload_vllm_model(self):
+        """Unload vLLM model and clean VRAM."""
+        self.clean_vram()
+    
+    def generate_response_batch(self, prompts: List[str], sampling_config: Dict) -> List[str]:
+        """Generate responses for a batch of prompts using vLLM."""
+        if self.llm is None:
+            raise RuntimeError("No vLLM model is loaded")
+        
+        # Get stop tokens and add common stop patterns for MCQA
+        stop_tokens = sampling_config.get('stop_tokens', [])
+        if not stop_tokens:
+            # Default stop tokens for better MCQA responses
+            stop_tokens = ['\n\n', '\n\nQuestion:', '\n\nAnswer:', '.  .', '(Note:', '(End']
+        
+        # Create sampling params
+        sampling_params = SamplingParams(
+            temperature=sampling_config.get('temperature', 0.7),
+            top_p=sampling_config.get('top_p', 0.9),
+            max_tokens=sampling_config.get('max_tokens', 512),
+            stop=stop_tokens,
+            skip_special_tokens=True,  # Skip special tokens in output
+            repetition_penalty=sampling_config.get('repetition_penalty', 1.15),  # Penalize repetitions
+            frequency_penalty=sampling_config.get('frequency_penalty', 0.0),  # Additional repetition control
+            presence_penalty=sampling_config.get('presence_penalty', 0.0)  # Additional diversity control
+        )
+        
+        # Generate responses
+        outputs = self.llm.generate(prompts, sampling_params)
+        
+        # Extract and clean text from outputs
+        responses = []
+        for output in outputs:
+            if output.outputs:
+                text = output.outputs[0].text.strip()
+                
+                # Remove thinking/reasoning blocks (for models like DeepSeek)
+                # Handle both complete tags and orphaned closing tags
+                text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'<thinking>.*?</thinking>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'<thought>.*?</thought>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'<reasoning>.*?</reasoning>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                
+                # Remove text before orphaned closing tags (when opening tag is missing)
+                text = re.sub(r'^.*?</think>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'^.*?</thinking>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'^.*?</thought>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'^.*?</reasoning>', '', text, flags=re.DOTALL | re.IGNORECASE)
+                
+                # Remove orphaned opening tags to end of text (when closing tag is missing)
+                text = re.sub(r'<think>.*$', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'<thinking>.*$', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'<thought>.*$', '', text, flags=re.DOTALL | re.IGNORECASE)
+                text = re.sub(r'<reasoning>.*$', '', text, flags=re.DOTALL | re.IGNORECASE)
+                
+                # Additional cleanup for common patterns
+                # Remove repetitive dots/periods
+                text = re.sub(r'(\.\s*){3,}.*$', '', text)
+                # Remove trailing notes/comments
+                text = re.sub(r'\s*\(Note:.*$', '', text, flags=re.IGNORECASE)
+                text = re.sub(r'\s*\(End.*$', '', text, flags=re.IGNORECASE)
+                # Remove extra whitespace
+                text = ' '.join(text.split())
+                
+                responses.append(text)
+            else:
+                responses.append("")
+        
+        return responses
     
     def load_benchmark_dataset(self, dataset_path: str, num_samples: Optional[int] = None) -> List[Dict]:
         """Load benchmark dataset from JSON/JSONL file."""
@@ -554,6 +523,7 @@ class VLLMServerBenchmarkMaster:
         
         # Get prompt template and evaluation config
         prompt_template = benchmark_config.get('prompt_template', "{question}")
+        system_prompt = benchmark_config.get('system_prompt', None)
         sampling_config = benchmark_config.get('sampling_config', {})
         evaluation_type = benchmark_config.get('evaluation_type', 'qa_similarity')
         
@@ -563,81 +533,97 @@ class VLLMServerBenchmarkMaster:
         
         self.logger.info(f"Generating responses for {len(dataset)} samples...")
         
-        # Get the actual model name from the server
-        vllm_model_name = self.get_model_name()
-        
-        # Prepare prompts batch
-        prompts_batch = []
+        # Prepare prompts
+        prompts = []
         valid_items = []
         
         for i, item in enumerate(dataset):
-            # Format prompt
             try:
                 question = item.get('question', item.get('input', ''))
-                # Create a copy of item without conflicting keys to avoid duplicate keyword arguments
                 format_args = item.copy()
-                format_args['question'] = question  # Ensure we use the extracted question
+                format_args['question'] = question
                 
-                # Handle MCQA datasets: convert "option 1" to "option_1" for template formatting
+                # Handle MCQA datasets
                 mcqa_keys = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5']
-                
-                # Debug logging for first item
-                if i == 0:
-                    self.logger.info(f"Sample item keys: {list(format_args.keys())}")
-                    self.logger.info(f"Sample item: {dict(list(format_args.items())[:5])}")  # Show first 5 items
-                
                 for key in mcqa_keys:
                     if key in format_args:
                         underscore_key = key.replace(' ', '_')
                         format_args[underscore_key] = format_args[key]
-                        if i == 0:
-                            self.logger.info(f"Converted '{key}' to '{underscore_key}'")
                 
-                # Check if this is MCQA format and we have the expected keys
-                if i == 0 and any(key.startswith('option') for key in format_args.keys()):
-                    option_keys = [k for k in format_args.keys() if k.startswith('option')]
-                    self.logger.info(f"Found option keys: {option_keys}")
+                # Add empty placeholders for missing options
+                for option_num in range(1, 6):
+                    key = f'option_{option_num}'
+                    if key not in format_args:
+                        format_args[key] = ''
                 
-                prompt = prompt_template.format(**format_args)
-                prompts_batch.append((i, prompt))
-                valid_items.append((i, item))
+                user_prompt = prompt_template.format(**format_args)
+                
+                # Use chat template if tokenizer is available
+                if (self.tokenizer and 
+                    hasattr(self.tokenizer, 'apply_chat_template') and 
+                    hasattr(self.tokenizer, 'chat_template') and 
+                    self.tokenizer.chat_template):
+                    
+                    messages = []
+                    if system_prompt:
+                        messages.append({"role": "system", "content": system_prompt})
+                    messages.append({"role": "user", "content": user_prompt})
+                    
+                    try:
+                        prompt = self.tokenizer.apply_chat_template(
+                            messages, 
+                            tokenize=False, 
+                            add_generation_prompt=True
+                        )
+                    except Exception as e:
+                        self.logger.warning(f"Failed to apply chat template: {e}. Using raw prompt.")
+                        if system_prompt:
+                            prompt = f"{system_prompt}\n\n{user_prompt}"
+                        else:
+                            prompt = user_prompt
+                else:
+                    # Fallback to simple concatenation
+                    if system_prompt:
+                        prompt = f"{system_prompt}\n\n{user_prompt}"
+                    else:
+                        prompt = user_prompt
+                
+                prompts.append(prompt)
+                valid_items.append(item)
             except KeyError as e:
                 self.logger.warning(f"Failed to format prompt for item {i}: {e}")
-                self.logger.debug(f"Available keys: {list(item.keys())}")
                 continue
         
-        # Generate responses concurrently
-        num_workers = self.config.get('vllm_config', {}).get('num_workers', 4)
-        self.logger.info(f"Using {num_workers} concurrent workers for inference")
+        # Generate responses in batches
+        batch_size = self.config.get('vllm_config', {}).get('batch_size', 50)
+        all_generated_texts = []
         
-        # Process in batches to avoid overwhelming the server
-        batch_size = self.config.get('vllm_config', {}).get('batch_size', 20)
-        all_responses = []
-        
-        for batch_start in range(0, len(prompts_batch), batch_size):
-            batch_end = min(batch_start + batch_size, len(prompts_batch))
-            current_batch = prompts_batch[batch_start:batch_end]
+        for batch_start in range(0, len(prompts), batch_size):
+            batch_end = min(batch_start + batch_size, len(prompts))
+            current_batch = prompts[batch_start:batch_end]
             
-            self.logger.info(f"Processing batch {batch_start//batch_size + 1}/{(len(prompts_batch)-1)//batch_size + 1} ({len(current_batch)} items)")
+            self.logger.info(f"Processing batch {batch_start//batch_size + 1}/{(len(prompts)-1)//batch_size + 1} ({len(current_batch)} items)")
             
-            batch_responses = self.generate_response_batch(vllm_model_name, current_batch, sampling_config)
-            all_responses.extend(batch_responses)
+            batch_responses = self.generate_response_batch(current_batch, sampling_config)
+            all_generated_texts.extend(batch_responses)
+            
+            # Periodic garbage collection
+            if (batch_start // batch_size + 1) % 10 == 0:
+                gc.collect()
         
         # Process results
-        for (original_idx, response), (item_idx, item) in zip(all_responses, valid_items):
-            if original_idx == item_idx:  # Ensure alignment
-                question = item.get('question', item.get('input', ''))
-                responses.append({
-                    'question': question,
-                    'expected_answer': item.get('answer', item.get('output', '')),
-                    'generated_answer': response,
-                    'item_index': original_idx
-                })
-                
-                if response:  # Only log non-empty responses
-                    self.logger.info(f"Generated response for Q{original_idx+1}: {response[:100]}...")
-            else:
-                self.logger.error(f"Response alignment error: expected {item_idx}, got {original_idx}")
+        for i, (item, generated_text) in enumerate(zip(valid_items, all_generated_texts)):
+            # Ensure all fields are never None
+            question = item.get('question', item.get('input', '')) or ''
+            expected_answer = item.get('expected_answer', item.get('output', '')) or ''
+            generated_answer = generated_text or ''
+            
+            responses.append({
+                'question': question,
+                'expected_answer': expected_answer,
+                'generated_answer': generated_answer,
+                'item_index': i
+            })
         
         self.logger.info(f"Completed {len(responses)} responses")
         
@@ -717,28 +703,60 @@ class VLLMServerBenchmarkMaster:
         self.logger.info(f"Using GPT evaluation with model: {model}")
         
         def evaluate_single_response(response_data):
-            question = response_data['question']
-            expected = response_data['expected_answer']
-            generated = response_data['generated_answer']
+            # Safely handle None values
+            question = response_data.get('question') or ''
+            expected = response_data.get('expected_answer') or ''
+            generated = response_data.get('generated_answer') or ''
             
-            prompt = f"""You are an expert evaluator. Please rate the quality of the generated answer compared to the expected answer.
+            prompt = f"""You are an expert evaluator in satellite communications. Please rate the quality of the generated answer. Use the expected answer as a reference, but remember it is not the only factor, evaluate the generated answer based on its own technical correctness, completeness, clarity, and relevance.
+            
+            Question: {question}
+            
+            Expected Answer: {expected}
+            
+            Generated Answer: {generated}
+            
+            Evaluation Criteria:
+            1. Technical Accuracy – Are the equations, definitions, and concepts (e.g., link budget, C/N, EIRP, antenna gain, propagation losses) correct and consistent with standard SatCom theory?
+            2. Completeness – Does the answer include all key components and reasoning steps expected in a full SatCom explanation (e.g., key parameters, assumptions, or relevant formulas)?
+            3. Clarity and Structure – Is the answer well-organized, logically presented, and easy to follow? Are steps and results clearly explained?
+            4. Relevance – Does the answer stay focused on the specific question and avoid unrelated information or unnecessary background theory?
+            
+            Instructions:
+            - Rate the answer from 1 to 10 based on overall quality, considering all four criteria equally.
+            - Use this scale:
+              - 10: Excellent – technically flawless, comprehensive, and clearly presented.
+              - 8–9: Very good – mostly accurate with only minor omissions or clarity issues.
+              - 6–7: Fair – generally correct but missing key points or minor technical mistakes.
+              - 4–5: Weak – noticeable conceptual or computational errors; incomplete explanation.
+              - 2–3: Poor – largely incorrect, confusing, or off-topic.
+              - 1: Useless – completely wrong or irrelevant to satellite communications.
+            
+            Respond with just the numeric score (1–10):"""
 
-Question: {question}
-
-Expected Answer: {expected}
-
-Generated Answer: {generated}
-
-Instructions:
-- Rate the generated answer from 1 to 10 based on accuracy, completeness, and relevance
-- 10: Perfect match or equivalent quality
-- 8-9: Very good, minor differences
-- 6-7: Good, some missing details or minor errors
-- 4-5: Adequate, significant gaps or errors
-- 2-3: Poor, major errors or irrelevant
-- 1: Completely wrong or nonsensical
-
-Respond with just the numeric score (1-10):"""
+            xxx = f"""You are an expert evaluator in satellite communications. Please rate the quality of the generated answer. Evaluate the generated answer based on its own technical correctness, completeness, clarity, and relevance.
+            
+            Question: {question}
+                        
+            Generated Answer: {generated}
+            
+            Evaluation Criteria:
+            1. Technical Accuracy – Are the equations, definitions, and concepts (e.g., link budget, C/N, EIRP, antenna gain, propagation losses) correct and consistent with standard SatCom theory?
+            2. Completeness – Does the answer include all key components and reasoning steps expected in a full SatCom explanation (e.g., key parameters, assumptions, or relevant formulas)?
+            3. Clarity and Structure – Is the answer well-organized, logically presented, and easy to follow? Are steps and results clearly explained?
+            4. Relevance – Does the answer stay focused on the specific question and avoid unrelated information or unnecessary background theory?
+            
+            Instructions:
+            - Rate the answer from 1 to 10 based on overall quality, considering all four criteria equally.
+            - Use this scale:
+              - 10: Excellent – technically flawless, comprehensive, and clearly presented.
+              - 8–9: Very good – mostly accurate with only minor omissions or clarity issues.
+              - 6–7: Fair – generally correct but missing key points or minor technical mistakes.
+              - 4–5: Weak – noticeable conceptual or computational errors; incomplete explanation.
+              - 2–3: Poor – largely incorrect, confusing, or off-topic.
+              - 1: Useless – completely wrong or irrelevant to satellite communications.
+            
+            After reasoning about the grade, only respond with just the numeric score (1–10):"""
 
             headers = {
                 'Authorization': f'Bearer {api_key}',
@@ -800,8 +818,12 @@ Respond with just the numeric score (1-10):"""
         scores = []
         
         for response in responses:
-            expected = response['expected_answer'].lower().strip()
-            generated = response['generated_answer'].lower().strip()
+            # Safely handle None values
+            expected = response.get('expected_answer') or ''
+            generated = response.get('generated_answer') or ''
+            
+            expected = expected.lower().strip()
+            generated = generated.lower().strip()
             
             if not expected or not generated:
                 scores.append(0.0)
@@ -856,8 +878,12 @@ Respond with just the numeric score (1-10):"""
         scores = []
         
         for response in responses:
-            expected = response['expected_answer'].lower().strip()
-            generated = response['generated_answer'].lower().strip()
+            # Safely handle None values
+            expected = response.get('expected_answer') or ''
+            generated = response.get('generated_answer') or ''
+            
+            expected = expected.lower().strip()
+            generated = generated.lower().strip()
             
             if not expected or not generated:
                 scores.append(0.0)
@@ -898,8 +924,12 @@ Respond with just the numeric score (1-10):"""
         scores = []
         
         for response in responses:
-            expected = response['expected_answer'].lower().strip()
-            generated = response['generated_answer'].lower().strip()
+            # Safely handle None values
+            expected = response.get('expected_answer') or ''
+            generated = response.get('generated_answer') or ''
+            
+            expected = expected.lower().strip()
+            generated = generated.lower().strip()
             
             if not expected or not generated:
                 scores.append(0.0)
@@ -931,8 +961,12 @@ Respond with just the numeric score (1-10):"""
         scores = []
         
         for response in responses:
-            expected = response['expected_answer'].lower().strip()
-            generated = response['generated_answer'].lower().strip()
+            # Safely handle None values
+            expected = response.get('expected_answer') or ''
+            generated = response.get('generated_answer') or ''
+            
+            expected = expected.lower().strip()
+            generated = generated.lower().strip()
             
             score = 1.0 if expected == generated else 0.0
             scores.append(score)
@@ -1028,9 +1062,9 @@ Respond with just the numeric score (1-10):"""
             # Step 1: Convert base model to HuggingFace format
             hf_dir = self.prepare_base_model_for_evaluation()
             
-            # Step 2: Start vLLM server
-            if not self.start_vllm_server(hf_dir):
-                raise RuntimeError("Failed to start vLLM server for base model")
+            # Step 2: Load vLLM model
+            if not self.load_vllm_model(hf_dir):
+                raise RuntimeError("Failed to load vLLM model for base model")
             
             # Step 3: Run benchmarks
             benchmark_results = []
@@ -1047,16 +1081,7 @@ Respond with just the numeric score (1-10):"""
                         'metrics': {}
                     })
             
-            # Step 4: Stop vLLM server
-            self.stop_vllm_server()
-            
-            # Step 5: Delete HuggingFace checkpoint
-            if self.config.get('cleanup', {}).get('delete_hf_checkpoints', True):
-                self.logger.info(f"Deleting base model HuggingFace checkpoint: {hf_dir}")
-                shutil.rmtree(hf_dir, ignore_errors=True)
-                hf_dir = None
-            
-            # Compile results
+            # Compile results BEFORE cleanup
             result = {
                 'checkpoint_name': 'base_model',
                 'checkpoint_path': str(self.config['base_model_dir']),
@@ -1069,11 +1094,6 @@ Respond with just the numeric score (1-10):"""
             return result
             
         except Exception as e:
-            # Cleanup on error
-            self.stop_vllm_server()
-            if hf_dir and hf_dir.exists():
-                shutil.rmtree(hf_dir, ignore_errors=True)
-            
             error_result = {
                 'checkpoint_name': 'base_model',
                 'checkpoint_path': str(self.config['base_model_dir']),
@@ -1086,22 +1106,60 @@ Respond with just the numeric score (1-10):"""
             return error_result
         
         finally:
-            # Final cleanup
-            self.stop_vllm_server()
-            if hf_dir and hf_dir.exists():
-                shutil.rmtree(hf_dir, ignore_errors=True)
+            # Cleanup happens ONCE in finally block
+            self.unload_vllm_model()
+            
+            # Add a small delay to ensure all GPU resources are released
+            time.sleep(1)
+            
+            # Delete HuggingFace checkpoint using safe method
+            if self.config.get('cleanup', {}).get('delete_hf_checkpoints', True) and hf_dir:
+                self.logger.info(f"Deleting base model HuggingFace checkpoint: {hf_dir}")
+                self.safe_rmtree(hf_dir)
+                
+            self.logger.info(f"✅ Cleanup completed for base model")
+    
+    def safe_rmtree(self, path: Path, max_retries: int = 3):
+        """Safely remove directory tree with retries for Windows file locking issues."""
+        if not path or not path.exists():
+            return
+        
+        for attempt in range(max_retries):
+            try:
+                self.logger.debug(f"Attempting to delete {path} (attempt {attempt + 1}/{max_retries})")
+                shutil.rmtree(path, ignore_errors=False)
+                self.logger.info(f"✅ Successfully deleted: {path}")
+                return
+            except PermissionError as e:
+                if attempt < max_retries - 1:
+                    self.logger.warning(f"Permission error deleting {path}, retrying in 2s... ({e})")
+                    time.sleep(2)
+                else:
+                    self.logger.warning(f"Failed to delete {path} after {max_retries} attempts, ignoring")
+                    # Try with ignore_errors as last resort
+                    try:
+                        shutil.rmtree(path, ignore_errors=True)
+                    except:
+                        pass
+            except Exception as e:
+                self.logger.warning(f"Error deleting {path}: {e}")
+                try:
+                    shutil.rmtree(path, ignore_errors=True)
+                except:
+                    pass
+                return
     
     def cleanup_temp_files(self, merged_dir: Path = None, hf_dir: Path = None):
         """Clean up temporary files."""
         cleanup_config = self.config.get('cleanup', {})
         
-        if cleanup_config.get('delete_merged_litgpt', True) and merged_dir and merged_dir.exists():
+        if cleanup_config.get('delete_merged_litgpt', True) and merged_dir:
             self.logger.info(f"Cleaning up merged LitGPT directory: {merged_dir}")
-            shutil.rmtree(merged_dir, ignore_errors=True)
+            self.safe_rmtree(merged_dir)
         
-        if cleanup_config.get('delete_hf_checkpoints', True) and hf_dir and hf_dir.exists():
+        if cleanup_config.get('delete_hf_checkpoints', True) and hf_dir:
             self.logger.info(f"Cleaning up HuggingFace directory: {hf_dir}")
-            shutil.rmtree(hf_dir, ignore_errors=True)
+            self.safe_rmtree(hf_dir)
     
     def evaluate_checkpoint(self, checkpoint_dir: Path) -> Dict[str, Any]:
         """Evaluate a single checkpoint on all benchmarks."""
@@ -1120,12 +1178,12 @@ Respond with just the numeric score (1-10):"""
             # Step 3: Delete merged LitGPT checkpoint
             if self.config.get('cleanup', {}).get('delete_merged_litgpt', True):
                 self.logger.info(f"Deleting merged LitGPT checkpoint: {merged_dir}")
-                shutil.rmtree(merged_dir, ignore_errors=True)
+                self.safe_rmtree(merged_dir)
                 merged_dir = None
             
-            # Step 4: Start vLLM server
-            if not self.start_vllm_server(hf_dir):
-                raise RuntimeError("Failed to start vLLM server")
+            # Step 4: Load vLLM model
+            if not self.load_vllm_model(hf_dir):
+                raise RuntimeError("Failed to load vLLM model")
             
             # Step 5: Run benchmarks
             benchmark_results = []
@@ -1142,16 +1200,7 @@ Respond with just the numeric score (1-10):"""
                         'metrics': {}
                     })
             
-            # Step 6: Stop vLLM server
-            self.stop_vllm_server()
-            
-            # Step 7: Delete HuggingFace checkpoint
-            if self.config.get('cleanup', {}).get('delete_hf_checkpoints', True):
-                self.logger.info(f"Deleting HuggingFace checkpoint: {hf_dir}")
-                shutil.rmtree(hf_dir, ignore_errors=True)
-                hf_dir = None
-            
-            # Compile results
+            # Compile results BEFORE cleanup
             result = {
                 'checkpoint_name': checkpoint_dir.name,
                 'checkpoint_path': str(checkpoint_dir),
@@ -1164,10 +1213,6 @@ Respond with just the numeric score (1-10):"""
             return result
             
         except Exception as e:
-            # Cleanup on error
-            self.stop_vllm_server()
-            self.cleanup_temp_files(merged_dir, hf_dir)
-            
             error_result = {
                 'checkpoint_name': checkpoint_dir.name,
                 'checkpoint_path': str(checkpoint_dir),
@@ -1180,9 +1225,24 @@ Respond with just the numeric score (1-10):"""
             return error_result
         
         finally:
-            # Final cleanup
-            self.stop_vllm_server()
+            # Cleanup happens ONCE in finally block (runs on both success and error)
+            self.unload_vllm_model()
+            
+            # Add a small delay to ensure all GPU resources are released
+            time.sleep(1)
+            
+            # Use safe cleanup method (handles both merged_dir and hf_dir)
             self.cleanup_temp_files(merged_dir, hf_dir)
+            
+            self.logger.info(f"✅ Cleanup completed for checkpoint: {checkpoint_dir.name}")
+
+    
+    def final_cleanup(self):
+        """Final cleanup to be called at the end of benchmarking."""
+        self.logger.info("Performing final cleanup...")
+        self.clean_vram()
+        self.logger.info("✅ Final cleanup complete")
+
     
     def save_results(self):
         """Save evaluation results to files."""
@@ -1318,13 +1378,16 @@ Respond with just the numeric score (1-10):"""
         print("\n" + "="*80)
     
     def run_benchmark(self, dry_run: bool = False):
-        """Run the complete vLLM server benchmark process."""
-        self.logger.info(f"Starting vLLM server benchmark: {self.config['experiment_name']}")
+        """Run the complete vLLM benchmark process."""
+        self.logger.info(f"Starting vLLM benchmark: {self.config['experiment_name']}")
         
         if dry_run:
             self.logger.info("DRY RUN MODE - No actual evaluation will be performed")
         
         # Check dependencies
+        if not VLLM_AVAILABLE:
+            raise RuntimeError("vLLM is not available. Install with: pip install vllm")
+        
         if not LITGPT_AVAILABLE:
             raise RuntimeError("Local LitGPT utilities are not available. Ensure merge_lora.py and convert_lit_checkpoint.py are in the same directory.")
         
@@ -1345,7 +1408,17 @@ Respond with just the numeric score (1-10):"""
             return
         
         # Evaluate base model first (for comparison baseline)
-        if self.config.get('evaluate_base_model', True):
+        # Check if base_model is in the specific_list (if selection is 'specific')
+        should_evaluate_base = self.config.get('evaluate_base_model', True)
+        
+        checkpoints_config = self.config.get('checkpoints', {})
+        if checkpoints_config.get('selection') == 'specific':
+            specific_list = checkpoints_config.get('specific_list', [])
+            # Only evaluate base model if it's explicitly in the list OR if evaluate_base_model is True and list is empty
+            if specific_list:
+                should_evaluate_base = 'base_model' in specific_list
+            
+        if should_evaluate_base:
             self.logger.info("Evaluating base model for baseline comparison")
             try:
                 base_result = self.evaluate_base_model()
@@ -1362,6 +1435,8 @@ Respond with just the numeric score (1-10):"""
                     'benchmark_results': []
                 }
                 self.all_results.append(error_result)
+        else:
+            self.logger.info("Skipping base model evaluation (not in checkpoint selection)")
         
         # Evaluate each LoRA checkpoint
         for i, checkpoint_dir in enumerate(checkpoint_dirs, 1):
@@ -1387,7 +1462,7 @@ Respond with just the numeric score (1-10):"""
         # Save results and print summary
         self.save_results()
         self.print_summary()
-        
+        self.final_cleanup()
         self.logger.info("vLLM server benchmark completed successfully!")
 
 

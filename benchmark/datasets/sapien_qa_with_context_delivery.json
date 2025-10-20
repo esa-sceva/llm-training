@@ -1853,5 +1853,232 @@
         "question": "What factors influence the EIRP of a satellite or ground terminal?",
         "expected_answer": "EIRP depends on the transmit power of the amplifier, the antenna gain, and system losses such as feeder and waveguide attenuation. For example, high-gain parabolic antennas can achieve high EIRP even with moderate transmit power. However, regulatory limits restrict maximum EIRP to prevent interference with other systems. Engineers optimize EIRP by balancing amplifier output, antenna size, and efficiency to meet link requirements without exceeding spectral regulations.",
         "Topic": "Wireless communication systems"
+    },
+    {
+        "question": "What is the purpose of Conditional Access in satellite broadcasting?",
+        "expected_answer": "Conditional access (CA) is a service that allows broadcasters to restrict certain programming\nproducts to certain viewers, by encrypting the broadcast programmes.",
+        "Topic": "Satellite broadcasting",
+        "Source1": "https://www.mdpi.com/2073-8994/15/2/299",
+        "Source2": "https://www.mdpi.com/1424-8220/23/3/1063",
+        "Source3": "https://www.mdpi.com/1424-8220/24/2/438"
+    },
+    {
+        "question": "What is a link budget?",
+        "expected_answer": "A link budget is an analysis that assesses whether there is sufficient signal power at the receiver to accurately recover the transmitted information with acceptable fidelity. It involves calculating the sum of gains and losses throughout the communication system. A link budget ensures that the output signal-to-noise ratio (S/N) or bit error rate (BER) meets satisfactory performance levels. ",
+        "Topic": "Link budget",
+        "Source1": "https://www.sciencedirect.com/topics/computer-science/link-budget-analysis",
+        "Source2": "https://www.iosrjournals.org/iosr-jece/papers/Vol.%209%20Issue%204/Version-2/J09426472.pdf",
+        "Source3": "https://tapr.org/wp-content/uploads/DCC2010-TerrestrialLinkBudgets-KF4DII.pdf"
+    },
+    {
+        "question": "How are link budget calculations done for uplink?",
+        "expected_answer": "Link budget calculations for uplink are done by considering that the power transmitted by the mobile station antenna is less than that of the base station antenna. This makes the uplink power budget more critical than the downlink. A key factor in these calculations is the sensitivity of the base station, which is crucial for effectively receiving the power transmitted by the mobile station antenna.",
+        "Topic": "Link budget",
+        "Source1": "https://www.mdpi.com/2076-3417/15/7/3473",
+        "Source2": "https://www.mdpi.com/2673-8732/4/4/22/xml",
+        "Source3": "https://www.mdpi.com/1424-8220/22/18/7097"
+    },
+    {
+        "question": "What is the purpose of the Shannon and Hartley capacity theorem?",
+        "expected_answer": "The Shannon and Hartley capacity theorem is used to determine the maximum bit rate C\nover a band-limited channel giving a specific signal-to-noise ratio (S/N).",
+        "Topic": "SNR",
+        "Source1": "https://www.mdpi.com/1099-4300/16/9/4892",
+        "Source2": "https://www.mdpi.com/1424-8220/21/24/8296",
+        "Source3": "https://www.mdpi.com/1424-8220/19/8/1813"
+    },
+    {
+        "question": "How is MS sensitivity used in Link budget?",
+        "expected_answer": "MS sensitivity is used in link budget calculations as it represents the minimum level of energy per bit to noise power spectral density (Eb/No) required for effective receiver performance. It is calculated based on GSM specifications (ETSI GSM recommendation 05.05) and varies according to the class of mobile being used, with recommended values of -102 dBm for GSM 900 and -100 dBm for GSM 1800. In power budget calculations, it is advised to use manufacturer-provided or measured values for accuracy.",
+        "Topic": "Link budget",
+        "Source1": "https://www.mdpi.com/2076-3417/15/7/3473",
+        "Source2": "https://www.mdpi.com/2079-9292/13/14/2855",
+        "Source3": "https://www.mdpi.com/2079-9292/11/5/820"
+    },
+    {
+        "question": "What measures can be taken to address the difference in power budget calculations between uplink and downlink?",
+        "expected_answer": "The uplink and downlink power budget calculations show a significant difference, with downlink path loss exceeding uplink power loss. This indicates that the coverage area of the base station antenna is greater than that of the mobile station antenna, providing more coverage in the downlink direction. While reducing downlink power can decrease this difference, it also leads to a loss of coverage; alternatively, introducing diversity or low-noise amplifiers (LNA) at the base transceiver station (BTS) can enhance the receiver power level.",
+        "Topic": "Link budget",
+        "Source1": "https://jwcn-eurasipjournals.springeropen.com/articles/10.1186/s13638-022-02133-3",
+        "Source2": "https://www.sciencedirect.com/science/article/abs/pii/S1389128622001906",
+        "Source3": "https://link.springer.com/article/10.1007/s11235-020-00661-1"
+    },
+    {
+        "question": "How do link budget calculations influence cell range and coverage threshold in a network?",
+        "expected_answer": "Cell range can be extended by reducing path loss, allowing the signal from the base transceiver station (BTS) antenna to cover a greater distance, thereby increasing the area served by a single BTS. Consequently link budget calculations are essential for determining the coverage area and the number of base stations needed in a network. The coverage threshold refers to the downlink signal strength at the cell border for a specific location probability and while slow fade margin and mobile station isotropic power can be utilized to calculate this, link budget calculations are primarily employed for this purpose.",
+        "Topic": "Link budget"
+    },
+    {
+        "question": "How do low-noise amplifiers (LNAs) improve link budget results?",
+        "expected_answer": "When received power is constrained due to the use of long cables, low-noise amplifiers (LNAs) can enhance the link budget results. As their name implies, LNAs have low noise figures and are capable of amplifying signals. They are installed at the receiving end and when space diversity is implemented, LNAs should be utilized on both the main and diversity antennas to improve reception quality.",
+        "Topic": "Link budget",
+        "Source1": "https://www.sciencedirect.com/science/article/pii/S2772671125000932",
+        "Source2": "https://www.iosrjournals.org/iosr-jece/papers/Vol.%2012%20Issue%203/Version-3/H1203035357.pdf",
+        "Source3": "https://www.mdpi.com/1424-8220/21/24/8340"
+    },
+    {
+        "question": "What roles do power amplifiers and power boosters play in increasing downlink power?",
+        "expected_answer": "The downlink power can be enhanced through the use of power amplifiers and power boosters. When losses are minimized prior to transmission by employing amplifiers, which subsequently increases the power, this setup is referred to as a power amplifier. When the transmission power is elevated, it is achieved using a booster. Power amplifiers are positioned close to the transmission antennas, while boosters are situated near the base station.",
+        "Topic": "Link budget",
+        "Source1": "https://www.mdpi.com/2079-9292/13/23/4635",
+        "Source2": "https://www.sciencedirect.com/science/article/abs/pii/S0026269215003286",
+        "Source3": "https://www.sciencedirect.com/science/article/abs/pii/S1434841108000435"
+    },
+    {
+        "question": "How does capacity planning influence the number of base stations and transceivers in a network rollout?",
+        "expected_answer": "Capacity planning is a crucial aspect of network rollout, as it determines the number of base stations needed and their respective capacities. The required number of base stations in a given area is established through coverage planning, while the number of transceivers needed is determined by capacity planning, which is directly linked to the frequency reuse factor. The frequency reuse factor refers to the number of base stations that can be deployed before the same frequency can be reused.",
+        "Topic": "Link budget",
+        "Source1": "https://link.springer.com/chapter/10.1007/0-306-47319-4_6",
+        "Source2": "https://www.mdpi.com/1424-8220/23/21/8925",
+        "Source3": "https://onlinelibrary.wiley.com/doi/epdf/10.1155/2017/4380676"
+    },
+    {
+        "question": "What does the interactive satellite architecture comprise of?",
+        "expected_answer": "The interactive satellite architecture consists of a ground station (hub), one or more satellites\nin the forward direction, a satellite interactive terminal (return channel satellite terminal,\nRCST) at the user\u2019s location and a satellite in the return direction.",
+        "Topic": "Satellite broadcasting",
+        "Source1": "https://www.researchgate.net/publication/237397659_Provision_of_Broadband_Services_in_Non-competitive_Areas_in_Western_European_countries",
+        "Source2": "https://www.researchgate.net/publication/236256295_Performance_assessment_of_Fade_Mitigation_Techniques_for_the_GEOCAST_IST_project_with_transparent_and_OBP_architectures",
+        "Source3": "https://www.researchgate.net/publication/237397659_Provision_of_Broadband_Services_in_Non-competitive_Areas_in_Western_European_countries"
+    },
+    {
+        "question": "Where can orthogonal frequency division multiplexing (OFDM) be used?",
+        "expected_answer": "OFDM is implemented where satellites are used for broadcasting of audio programmes to mobile receivers (digital\naudio broadcasting, or DAB).",
+        "Topic": "Satellite Bandwidth",
+        "Source1": "https://www.mdpi.com/1424-8220/22/10/3800",
+        "Source2": "https://www.mdpi.com/2304-6732/11/4/294",
+        "Source3": "https://www.mdpi.com/2079-9292/14/8/1620"
+    },
+    {
+        "question": "How can BER be reduced in satellite communication?",
+        "expected_answer": "The Bit-error-ratio can be reduced  by using FEC within the modem, a feature that takes advantage of custom VLSI and DSP chips.",
+        "Topic": "BER",
+        "Source1": "https://www.mdpi.com/2076-3417/9/19/3983",
+        "Source2": "https://www.mdpi.com/1424-8220/21/13/4290",
+        "Source3": "https://www.mdpi.com/2079-9292/12/5"
+    },
+    {
+        "question": "what are the additional losses that occur in link budget calculation?",
+        "expected_answer": "In link budget calculations, it is necessary to account for additional losses caused by various factors. These include the attenuation of waves as they propagate through the atmosphere, losses that occur in the transmitting and receiving equipment, depointing losses, and polarization mismatch losses. Each of these factors can significantly impact the overall performance of the communication link.",
+        "Topic": "Link budget",
+        "Source1": "https://www.iosrjournals.org/iosr-jece/papers/Vol.%209%20Issue%204/Version-2/J09426472.pdf",
+        "Source2": "https://www.scitechpub.org/wp-content/uploads/2021/03/SCITECHP420156.pdf",
+        "Source3": null
+    },
+    {
+        "question": "What are the sources of noise in a communication system, and how does it affect the receiver's performance?",
+        "expected_answer": "Noise comprises all unwanted contributions that increase the overall power alongside the desired carrier power. It diminishes the receiver's ability to accurately reproduce the information contained in the desired carrier. The sources of noise include the radiation emitted by natural sources within the antenna's reception area and the noise generated by components within the receiving equipment. Signals from transmitters that are not intended for reception are also categorized as noise, referred to as interference.",
+        "Topic": "Link budget",
+        "Source1": "https://link.springer.com/chapter/10.1007/978-3-031-76455-4_3",
+        "Source2": "https://www.sciencedirect.com/science/article/pii/S2949736125000491",
+        "Source3": "https://link.springer.com/article/10.1007/s00359-021-01516-z"
+    },
+    {
+        "question": "How does thermal noise and equivalent noise temperature impact link budget calculations in communication systems?\n\n\n\n\n\n\n\n\n",
+        "expected_answer": "The primary source of noise at radio frequencies is thermal noise, which results from the thermal motion of electrons in the receiver's components, including both active and passive devices. The noise contributed by each device in the system is measured using an equivalent noise temperature. This equivalent (or excess) noise temperature is defined as the temperature of a passive resistor that generates a noise power per unit bandwidth equal to that produced by the device.",
+        "Topic": "Link budget",
+        "Source1": "https://link.springer.com/chapter/10.1007/978-3-031-76455-4_3",
+        "Source2": "https://www.sciencedirect.com/topics/engineering/thermal-noise",
+        "Source3": "https://www.sciencedirect.com/topics/physics-and-astronomy/noise-temperature"
+    },
+    {
+        "question": "How does Mobile Satellite Service (MSS) relate to link budget considerations in satellite communication systems?",
+        "expected_answer": "Mobile Satellite Service (MSS) facilitates communication between mobile Earth stations and one or more space stations, which may include multiple satellites connected via intersatellite links. This service can also encompass the feeder links required for its operation.",
+        "Topic": "Link budget",
+        "Source1": "https://www.scribd.com/doc/57169385/Handbook-on-Satellite-Communications",
+        "Source2": "https://studylib.net/doc/8725510/regulation-of-global-broadband-satellite-communications",
+        "Source3": "https://onlinelibrary.wiley.com/doi/full/10.1155/2023/5977121"
+    },
+    {
+        "question": "How does Broadcasting Satellite Service (BSS) relate to link budget considerations in satellite communication systems?",
+        "expected_answer": "Broadcasting Satellite Service (BSS) involves signals transmitted or retransmitted by space stations that are intended for direct reception by the general public. In the context of BSS, \"direct reception\" includes both individual and community reception.",
+        "Topic": "Link budget",
+        "Source1": "https://www.scribd.com/doc/57169385/Handbook-on-Satellite-Communications",
+        "Source2": "https://studylib.net/doc/8725510/regulation-of-global-broadband-satellite-communications",
+        "Source3": "https://onlinelibrary.wiley.com/doi/full/10.1155/2023/5977121"
+    },
+    {
+        "question": "How does the allocation of bandwidth for Mobile Satellite Service (MSS) in the L- and S-bands impact link budget calculations in satellite communication systems?",
+        "expected_answer": "The Mobile Satellite Service (MSS) is designated for the L- and S-bands, where signal propagation is more accommodating. However, the bandwidth available between 1 and 2.5 GHz, which is authorized for MSS applications, must be shared among various services, including both GEO and non-GEO applications, as well as mobile radio, fixed wireless, broadcast, and point-to-point services.",
+        "Topic": "Link budget",
+        "Source1": "https://radio-spectrum-policy-group.ec.europa.eu/document/download/b1f597f2-d6b5-44e5-878d-ea09bdd8a1d7_en?filename=RSPG24-007final-RSPG-Opinion-MSS-public_version.pdf&prefLang=et",
+        "Source2": "https://payloadspace.com/tracking-us-mobile-satellite-service-spectrum",
+        "Source3": null
+    },
+    {
+        "question": "How does the availability of bandwidth and the use of directional antennas at frequencies above 3 GHz influence link budget considerations for wideband services?",
+        "expected_answer": "Wideband services, such as Direct-to-Home (DTH) and broadband data services, can operate at frequencies above 3 GHz, where more than ten times the available bandwidth exists. Additionally, the use of directional ground antennas enhances the effective utilization of otherwise unusable orbital positions. As a result, some wideband services have started transitioning from the established C-band to the Ku- and Ka-bands.",
+        "Topic": "Link budget",
+        "Source1": "https://link.springer.com/chapter/10.1007/978-3-642-04260-7_7",
+        "Source2": "https://link.springer.com/chapter/10.1007/978-981-97-6937-7_41",
+        "Source3": "https://onlinelibrary.wiley.com/doi/abs/10.1002/sat.1158"
+    },
+    {
+        "question": "What challenges does the crowded UHF spectrum present for UHF satellites?",
+        "expected_answer": "UHF satellites utilize circular polarization (CP) to mitigate the Faraday effect, which causes the ionosphere to rotate linear-polarized waves. The UHF spectrum, ranging from 300 MHz to 1 GHz, is highly congested due to a multitude of commercial, government, and other civil applications both on the ground and in the air.",
+        "Topic": "Link budget",
+        "Source1": "https://www.mdpi.com/1424-8220/23/12/5361",
+        "Source2": "https://www.mdpi.com/1424-8220/22/20/7838",
+        "Source3": "https://www.researchgate.net/publication/291693679_On_Radio-Frequency_Spectrum_Management"
+    },
+    {
+        "question": "What role does the OrbComm satellite constellation play in the commercial VHF market, and what services does it provide?",
+        "expected_answer": "From a commercial standpoint, the only notable VHF project is OrbComm, a low data rate LEO satellite constellation developed by Orbital Sciences Corporation. OrbComm offers a near-real-time messaging service to affordable handheld devices that are roughly the size of a small transistor radio.",
+        "Topic": "Link budget",
+        "Source1": "https://www.researchgate.net/publication/255631955_An_Overview_of_Major_Satellite_Systems",
+        "Source2": "https://www.microwavejournal.com/articles/39512-architecture-of-orbcomm-little-leo-global-satellite-system-for-mobile-and-personal-communications",
+        "Source3": "https://ntrs.nasa.gov/citations/19960022519"
+    },
+    {
+        "question": "How do the design choices of the OrbComm satellites impact their service offerings?",
+        "expected_answer": "The OrbComm satellites do not support voice service due to their limited power, which was intentionally designed to reduce complexity and investment costs. Similar to other LEO systems, OrbComm faced bankruptcy; however, the satellites are anticipated to remain operational for some time, potentially allowing the service to continue in a different capacity.",
+        "Topic": "Link budget",
+        "Source1": "https://ntrs.nasa.gov/citations/19940018309",
+        "Source2": "https://quarterlytics.com/company/orbcomm-inc_orbc/annual-report-2018/",
+        "Source3": "https://www.satellitetoday.com/technology/2015/08/07/orbcomms-record-growth-not-stopped-by-og2-satellite-loss/"
+    },
+    {
+        "question": "How does the allocation of L-band frequencies impact link budget considerations for the Mobile Satellite Service (MSS)?",
+        "expected_answer": "Frequencies ranging from 1 to 2 GHz are commonly known as L-band, a segment that was not utilized for commercial satellite communication until the late 1970s. Within this 1 GHz of total spectrum, the International Telecommunication Union (ITU) initially allocated only about 30 MHz for both uplink and downlink for the Mobile Satellite Service (MSS).",
+        "Topic": "Link budget",
+        "Source1": "https://www.researchgate.net/publication/335872905_Survey_on_Land_Mobile_Satellite_System_Challenges_and_Future_Research_Trends",
+        "Source2": "https://www.microwavejournal.com/articles/9840-history-of-mobile-satellite-communications",
+        "Source3": "https://www.sciencedirect.com/topics/engineering/satellite-communication-system"
+    },
+    {
+        "question": "What are the characteristics of L-band ground antennas used with Inmarsat, and how do they differ from simpler cellular antennas?",
+        "expected_answer": "The most practical L-band ground antennas are compact and ideally do not need to be aimed directly at the satellite. Many of us are familiar with the basic cellular whip antennas found on cars and handheld mobile phones. However, typical L-band antennas used with Inmarsat are slightly more complex, as they must provide some gain in the direction of the satellite, necessitating a rough pointing adjustment.",
+        "Topic": "Link budget",
+        "Source1": "https://onlinelibrary.wiley.com/doi/pdf/10.1155/2012/829371",
+        "Source2": "https://www.mdpi.com/2227-7080/11/4/110",
+        "Source3": "https://www.inmarsat.com/content/dam/inmarsat/corporate/documents/maritime/solutions-services/MBU_Maritime_Design_and_Installation_Guidelines_%28DIGS%29_2020.pdf.coredownload.inline.pdf"
+    },
+    {
+        "question": "How does ionospheric scintillation affect link performance at L-band frequencies?",
+        "expected_answer": "Although rain attenuation is negligible at L-band frequencies, the ionosphere can cause significant degradation of the link. This degradation manifests as rapid fading known as ionospheric scintillation, which occurs when the RF signal is divided into two components: the direct path and a refracted (or bent) path.",
+        "Topic": "Link budget"
+    },
+    {
+        "question": " How does the impact of ionospheric scintillation vary with frequency, and what implications does this have for UHF transmissions compared to L-band?",
+        "expected_answer": "Ionospheric scintillation is most significant in equatorial regions and during the equinoxes in March and September. Both ionospheric scintillation and Faraday rotation diminish as frequency increases, becoming nearly negligible at Ku-band and higher frequencies. In contrast, UHF transmissions may experience more severe impairments, necessitating an additional fade margin beyond what is required at L-band.",
+        "Topic": "Link budget"
+    },
+    {
+        "question": "How is digital beam formed in modern wireless communication systems?",
+        "expected_answer": "The phase and amplitude variation is applied to the digital signal before Digital to analog conversion at the transmitter's end to create a directional beam.",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "How will you define link availability?",
+        "expected_answer": "Availability of a semi-permanent connection portion is defined as the fraction of time during which the portion is able to support a transaction.",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "What advantages does S-band offer for space communications?",
+        "expected_answer": "S-band was one of the first frequency bands utilized for space communications by NASA and various governmental space research organizations globally. It features a naturally low background noise level and is less affected by ionospheric disturbances compared to L-band. In previous years, S-band was used for Direct-to-Home (DTH) systems in experiments conducted by NASA and as operational services by the Indian Space Research Organization and in Indonesia.",
+        "Topic": "Link budget"
+    },
+    {
+        "question": "What are the benefits and drawbacks of using C-band for satellite communications?",
+        "expected_answer": "C-band strikes a favorable balance between radio propagation characteristics and available bandwidth. It offers excellent service quality due to minimal fading from rain and ionospheric scintillation. However, a notable drawback is the relatively large size of the Earth station antennas required for this frequency band.",
+        "Topic": "Link budget"
     }
 ]

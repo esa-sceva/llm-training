@@ -33,8 +33,9 @@ def create_benchmark_plots(csv_file):
     df['step_number'] = df['checkpoint_name'].apply(parse_checkpoint_name)
     df = df.sort_values('step_number')
     
-    # Get unique benchmarks
+    # Get unique benchmarks and exclude empty strings
     benchmarks = df['benchmark_name'].unique()
+    benchmarks = [b for b in benchmarks if b and str(b).strip() != '']
     
     # Set up the plotting style
     plt.style.use('seaborn-v0_8')
@@ -56,8 +57,13 @@ def create_benchmark_plots(csv_file):
     }
     
     for i, benchmark in enumerate(benchmarks):
-        # Filter data for this benchmark
+        # Filter data for this benchmark and exclude empty strings
         benchmark_data = df[df['benchmark_name'] == benchmark].copy()
+        benchmark_data = benchmark_data[benchmark_data['benchmark_name'] != '']
+        benchmark_data = benchmark_data[benchmark_data['checkpoint_name'] != '']
+        
+        if len(benchmark_data) == 0:
+            continue  # Skip if no valid data
         
         # === BAR PLOT (Left column) ===
         ax_bar = axes[i, 0]
@@ -90,7 +96,14 @@ def create_benchmark_plots(csv_file):
                         fontsize=14, fontweight='bold', pad=20)
         ax_bar.set_xlabel('Checkpoint', fontsize=12)
         ax_bar.set_ylabel('Average Score', fontsize=12)
-        ax_bar.set_ylim(0, 1.05)
+        
+        # Set y-axis limits with tight zoom (add minimal padding around min/max)
+        if scores:
+            data_range_bar = max(scores) - min(scores)
+            padding_bar = max(data_range_bar * 0.05, 0.02)  # 5% of range or 0.02 minimum
+            y_min_bar = max(0, min(scores) - padding_bar)  # Don't go below 0
+            y_max_bar = min(1.0, max(scores) + padding_bar)  # Don't exceed 1.0
+            ax_bar.set_ylim(y_min_bar, y_max_bar)
         
         # Set x-axis labels
         ax_bar.set_xticks(range(len(checkpoints)))
@@ -115,8 +128,15 @@ def create_benchmark_plots(csv_file):
             (benchmark_data['checkpoint_name'] != 'final')
         ].copy()
         
-        base_score = benchmark_data[benchmark_data['checkpoint_name'] == 'base_model']['metric_average_score'].iloc[0]
-        final_score = benchmark_data[benchmark_data['checkpoint_name'] == 'final']['metric_average_score'].iloc[0]
+        # Get base and final scores if available
+        base_data = benchmark_data[benchmark_data['checkpoint_name'] == 'base_model']
+        final_data = benchmark_data[benchmark_data['checkpoint_name'] == 'final']
+        
+        has_base = len(base_data) > 0
+        has_final = len(final_data) > 0
+        
+        base_score = base_data['metric_average_score'].iloc[0] if has_base else None
+        final_score = final_data['metric_average_score'].iloc[0] if has_final else None
         
         if len(training_data) > 0:
             # Extract step numbers and scores for training steps
@@ -132,18 +152,34 @@ def create_benchmark_plots(csv_file):
             ax_scatter.scatter(step_numbers, step_scores, color=colors['step'], s=100, alpha=0.8, 
                              edgecolor='black', linewidth=1, label='Training Steps', zorder=3)
             
+            # Connect points with lines to show progression
+            ax_scatter.plot(step_numbers, step_scores, color=colors['step'], alpha=0.6, 
+                          linewidth=2, marker='o', markersize=8, markerfacecolor=colors['step'], 
+                          markeredgecolor='black', markeredgewidth=1, zorder=2)
+            
+            # Add score labels next to each point
+            for step_num, score in zip(step_numbers, step_scores):
+                ax_scatter.annotate(f'{score:.3f}', 
+                                  xy=(step_num, score), 
+                                  xytext=(8, 8), textcoords='offset points',
+                                  fontsize=9, fontweight='bold',
+                                  bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.8, edgecolor='gray'),
+                                  ha='left', va='bottom')
+            
             # Add trend line if we have multiple points (without slope in label)
             if len(step_numbers) > 1:
                 z = np.polyfit(step_numbers, step_scores, 1)
                 p = np.poly1d(z)
-                ax_scatter.plot(step_numbers, p(step_numbers), '--', color=colors['step'], 
-                              alpha=0.7, linewidth=2, label='Trend Line')
+                ax_scatter.plot(step_numbers, p(step_numbers), '--', color='gray', 
+                              alpha=0.5, linewidth=1, label='Trend Line', zorder=1)
             
-            # Add base model and final model as reference points
-            ax_scatter.axhline(y=base_score, color=colors['base_model'], linestyle='-', alpha=0.8, 
-                             linewidth=2, label=f'Base Model ({base_score:.3f})')
-            ax_scatter.axhline(y=final_score, color=colors['final'], linestyle='-', alpha=0.8, 
-                             linewidth=2, label=f'Final Model ({final_score:.3f})')
+            # Add base model and final model as reference points (if available)
+            if has_base and base_score is not None and not pd.isna(base_score) and not np.isinf(base_score):
+                ax_scatter.axhline(y=base_score, color=colors['base_model'], linestyle='-', alpha=0.8, 
+                                 linewidth=2, label=f'Base Model ({base_score:.3f})')
+            if has_final and final_score is not None and not pd.isna(final_score) and not np.isinf(final_score):
+                ax_scatter.axhline(y=final_score, color=colors['final'], linestyle='-', alpha=0.8, 
+                                 linewidth=2, label=f'Final Model ({final_score:.3f})')
             
             # Customize scatter plot
             ax_scatter.set_title(f'{benchmark.replace("_", " ").title()} - Training Progression', 
@@ -154,9 +190,20 @@ def create_benchmark_plots(csv_file):
             ax_scatter.set_axisbelow(True)
             
             # Set y-axis limits with some padding
-            y_min = min(min(step_scores), base_score, final_score) - 0.05
-            y_max = max(max(step_scores), base_score, final_score) + 0.05
-            ax_scatter.set_ylim(y_min, y_max)
+            all_scores = step_scores.copy() if step_scores else []
+            if has_base and base_score is not None and not pd.isna(base_score):
+                all_scores.append(base_score)
+            if has_final and final_score is not None and not pd.isna(final_score):
+                all_scores.append(final_score)
+            
+            # Only set limits if we have valid scores
+            if all_scores and all(not pd.isna(s) and not np.isinf(s) for s in all_scores):
+                data_range = max(all_scores) - min(all_scores)
+                # Use 5% padding or minimum 0.02, whichever is larger (tighter zoom)
+                padding = max(data_range * 0.05, 0.02)
+                y_min = max(0, min(all_scores) - padding)  # Don't go below 0
+                y_max = min(1.0, max(all_scores) + padding)  # Don't exceed 1.0
+                ax_scatter.set_ylim(y_min, y_max)
             
             # Add legend
             ax_scatter.legend(loc='best')
@@ -167,10 +214,14 @@ def create_benchmark_plots(csv_file):
                 final_step_score = step_scores[-1]
                 step_improvement = ((final_step_score - initial_step_score) / initial_step_score) * 100
                 
+                # Build improvement text
+                improvement_text = f'Step {step_numbers[0]}→{step_numbers[-1]}: {step_improvement:+.1f}%'
+                
+                if has_base and has_final and base_score is not None and final_score is not None:
+                    improvement_text += f'\nBase→Final: {((final_score - base_score) / base_score) * 100:+.1f}%'
+                
                 # Add improvement text
-                ax_scatter.text(0.02, 0.98, 
-                              f'Step {step_numbers[0]}→{step_numbers[-1]}: {step_improvement:+.1f}%\n'
-                              f'Base→Final: {((final_score - base_score) / base_score) * 100:+.1f}%', 
+                ax_scatter.text(0.02, 0.98, improvement_text, 
                               transform=ax_scatter.transAxes, ha='left', va='top',
                               bbox=dict(boxstyle='round,pad=0.5', facecolor='lightblue', alpha=0.8),
                               fontsize=10, fontweight='bold')
@@ -181,9 +232,10 @@ def create_benchmark_plots(csv_file):
             ax_scatter.set_title(f'{benchmark.replace("_", " ").title()} - No Training Data', 
                                fontsize=14, fontweight='bold', pad=20)
         
-        # Add base model reference line to bar plot
-        ax_bar.axhline(y=base_score, color=colors['base_model'], linestyle='--', alpha=0.7, 
-                      label=f'Base Model ({base_score:.3f})')
+        # Add base model reference line to bar plot (if available)
+        if has_base and base_score is not None:
+            ax_bar.axhline(y=base_score, color=colors['base_model'], linestyle='--', alpha=0.7, 
+                          label=f'Base Model ({base_score:.3f})')
         
         # Add legend to bar plot
         legend_elements = [
@@ -193,15 +245,15 @@ def create_benchmark_plots(csv_file):
         ]
         ax_bar.legend(handles=legend_elements, loc='upper left', bbox_to_anchor=(0.02, 0.98))
         
-        # Calculate and display improvement on bar plot
-        final_score = benchmark_data[benchmark_data['checkpoint_name'] == 'final']['metric_average_score'].iloc[0]
-        improvement = ((final_score - base_score) / base_score) * 100
-        
-        # Add improvement text to bar plot
-        ax_bar.text(0.98, 0.02, f'Final vs Base: {improvement:+.1f}%', 
-                   transform=ax_bar.transAxes, ha='right', va='bottom',
-                   bbox=dict(boxstyle='round,pad=0.3', facecolor='lightgray', alpha=0.7),
-                   fontsize=10, fontweight='bold')
+        # Calculate and display improvement on bar plot (if both base and final exist)
+        if has_base and has_final and base_score is not None and final_score is not None:
+            improvement = ((final_score - base_score) / base_score) * 100
+            
+            # Add improvement text to bar plot
+            ax_bar.text(0.98, 0.02, f'Final vs Base: {improvement:+.1f}%', 
+                       transform=ax_bar.transAxes, ha='right', va='bottom',
+                       bbox=dict(boxstyle='round,pad=0.3', facecolor='lightgray', alpha=0.7),
+                       fontsize=10, fontweight='bold')
     
     # Adjust layout
     plt.tight_layout()
@@ -232,14 +284,27 @@ def create_summary_table(df, csv_file):
         print(f"\n🎯 {benchmark.replace('_', ' ').title()}:")
         print("-" * 50)
         
-        base_score = benchmark_data[benchmark_data['checkpoint_name'] == 'base_model']['metric_average_score'].iloc[0]
-        final_score = benchmark_data[benchmark_data['checkpoint_name'] == 'final']['metric_average_score'].iloc[0]
-        best_step = benchmark_data.loc[benchmark_data['metric_average_score'].idxmax()]
+        base_data = benchmark_data[benchmark_data['checkpoint_name'] == 'base_model']
+        final_data = benchmark_data[benchmark_data['checkpoint_name'] == 'final']
         
-        print(f"Base Model Score:    {base_score:.4f}")
-        print(f"Final Model Score:   {final_score:.4f}")
+        has_base = len(base_data) > 0
+        has_final = len(final_data) > 0
+        
+        if has_base:
+            base_score = base_data['metric_average_score'].iloc[0]
+            print(f"Base Model Score:    {base_score:.4f}")
+        
+        if has_final:
+            final_score = final_data['metric_average_score'].iloc[0]
+            print(f"Final Model Score:   {final_score:.4f}")
+        
+        best_step = benchmark_data.loc[benchmark_data['metric_average_score'].idxmax()]
         print(f"Best Score:          {best_step['metric_average_score']:.4f} ({best_step['checkpoint_name']})")
-        print(f"Improvement:         {((final_score - base_score) / base_score) * 100:+.2f}%")
+        
+        if has_base and has_final:
+            improvement = ((final_score - base_score) / base_score) * 100
+            print(f"Improvement:         {improvement:+.2f}%")
+        
         print(f"Samples Evaluated:   {benchmark_data['metric_num_samples'].iloc[0]}")
 
 def main():

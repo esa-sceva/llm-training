@@ -3,37 +3,35 @@ base_model_dir: /teamspace/studios/this_studio/llm-training/checkpoints/meta-lla
 # OpenAI API configuration for GPT-based evaluation
 openai_api:
   api_key: "OPENAI_API_KEY"  # Set your OpenAI API key here or use OPENAI_API_KEY environment variable
-  model: "gpt-4o-mini"  # or "gpt-4o", "gpt-3.5-turbo"
-  max_workers: 5  # Concurrent API requests (keep low to respect rate limits)
+  model: "gpt-4o"  # or "gpt-4o", "gpt-3.5-turbo"
+  max_workers: 10  # Concurrent API requests (keep low to respect rate limits)
+
+checkpoints:
+  selection: specific
+  specific_list:
+    - base_model
+    - step-000075
+    - step-000150
+    - step-000200
+    - step-000250
+    - step-000325
+    - final
 
 benchmarks:
-- dataset_path: ./datasets/open_questions.json
-  evaluation_type: gpt_rating
-  name: open_satcom_questions
-  num_samples: 30
-  prompt_template: |
-    You are a satellite communication expert. Please answer the following question with technical accuracy.
-    
-    Question: {question}
-      
-    Provide a clear, detailed answer:
-    
-  sampling_config:
-    max_tokens: 1024
-    stop_tokens:
-    - '
+# Multiple Choice Questions Dataset
+- dataset_path: ./datasets/sapien_mcqa_new.json
+  evaluation_type: mcqa_advanced 
+  name: sapien_mcqa_new
+  num_samples: 2000
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
 
-
-      Question:'
-    temperature: 0.2
-    top_p: 0.9
-
-- dataset_path: ./datasets/teleqna_mcqa.json
-  evaluation_type: mcqa_advanced
-  name: open_satcom_questions
-  num_samples: 100
-  prompt_template: |
-  prompt_template: |
+  prompt_template: |   
     You are a satellite communication expert. Please answer the following multiple choice question.
     
     Question: {question}
@@ -43,35 +41,12 @@ benchmarks:
     option 2) {option_2}
     option 3) {option_3}
     option 4) {option_4}
-    option 5) {option_5}
     
-    Answer with the correct answer (option 1, option 2, option 3, option 4 or option 5) without additional explanation:
-    
-  sampling_config:
-    max_tokens: 1024
-    stop_tokens:
-    - '
-
-
-      Question:'
-    temperature: 0.2
-    top_p: 0.9
-
-# Add more datasets here
-- dataset_path: ./datasets/sapien_qa_with_context_delivery.json
-  evaluation_type: gpt_rating
-  name: general_qa_benchmark
-  num_samples: 100
-  prompt_template: |
-    You are a satellite communication expert. Please answer the following question with technical accuracy.
-    
-    Question: {question}
-      
-    Provide a clear, detailed answer:
+    Answer with the correct answer (option 1, option 2, option 3 or option 4) without additional explanation:
     
   sampling_config:
-    max_tokens: 1024
-    temperature: 0.3
+    max_tokens: 50
+    temperature: 0.1
     top_p: 0.9
     stop_tokens:
     - '
@@ -79,11 +54,17 @@ benchmarks:
 
       Question:'
 
-# Multiple Choice Questions Dataset
 - dataset_path: ./datasets/sapien_mcqa.json
   evaluation_type: mcqa_advanced 
-  name: satellite_mcqa_advanced
-  num_samples: 500
+  name: sapien_mcqa_transformed
+  num_samples: 2000
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
   prompt_template: |
     You are a satellite communication expert. Please answer the following multiple choice question.
     
@@ -107,17 +88,146 @@ benchmarks:
 
       Question:'
 
+- dataset_path: ./datasets/eve_mcqa_transformed.json
+  evaluation_type: mcqa_advanced
+  name: eve_mcqa
+  num_samples: 2000
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following multiple choice question.
+    
+    Question: {question}
+    
+    Options:
+    option 1) {option_1}
+    option 2) {option_2}
+    option 3) {option_3}
+    option 4) {option_4}
+    
+    Answer with the correct answer (option 1, option 2, option 3 or option 4) without any additional explanation:
+    
+  sampling_config:
+    max_tokens: 50
+    temperature: 0.1
+    top_p: 0.9
+    stop_tokens:
+    - '
 
-checkpoints_dir: /teamspace/studios/this_studio/out/finetune/llama-8b-old-dataset
+
+      Question:'
+
+
+- dataset_path: ./datasets/teleqna_mcqa.json
+  evaluation_type: mcqa_advanced
+  name: mcqa_teleqna
+  num_samples: 5000
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
+  prompt_template: |
+    You are a satellite communication expert. Let's test your abilities in a similar domain.
+    Please answer the following multiple choice question.
+    
+    Question: {question}
+    
+    Options:
+    option 1) {option_1}
+    option 2) {option_2}
+    option 3) {option_3}
+    option 4) {option_4}
+    option 5) {option_5}
+    
+    Answer with the correct answer (option 1, option 2, option 3, option 4 or option 5) without any additional explanation:
+    
+  sampling_config:
+    max_tokens: 50
+    stop_tokens:
+    - '
+
+
+      Question:'
+    temperature: 0.2
+    top_p: 0.9
+
+# Add more datasets here
+- dataset_path: ./datasets/sapien_qa_with_context_delivery.json
+  evaluation_type: gpt_rating
+  name: sapien_open_qas
+  num_samples: 500
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following question with technical accuracy.
+    
+    Question: {question}
+      
+    Provide a clear, detailed answer:
+    
+  sampling_config:
+    max_tokens: 2048
+    stop_tokens:
+    - '
+
+
+      Question:'
+    temperature: 0.2
+    top_p: 0.9
+
+
+- dataset_path: ./datasets/satcom_problems.json
+  evaluation_type: gpt_rating
+  name: satcom_problems
+  num_samples: 400
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
+  prompt_template: |
+    You are a satellite communication expert. Solve the following problem:
+    
+    Question: {question}
+    
+  sampling_config:
+    max_tokens: 2048
+    stop_tokens:
+    - '
+
+
+      Question:'
+    temperature: 0.2
+    top_p: 0.9
+
+
+
+
+checkpoints_dir: /teamspace/studios/this_studio/out/finetune-2/llama-8b-dataset12-cot
 cleanup:
   delete_hf_checkpoints: true
   delete_merged_litgpt: true
 experiment_name: vllm_test_run
 logging:
   level: INFO
-  log_file: ./benchmark/vllm_benchmark_test.log
+  log_file: ./benchmark-2/vllm_benchmark_llama-8b-dataset12-cot.log
   save_logs: true
-output_dir: ./benchmark
+output_dir: ./benchmark-2
 results:
   save_detailed_scores: true
   save_individual_results: true
@@ -129,5 +239,7 @@ vllm_config:
   tensor_parallel_size: 1
   trust_remote_code: true
   port: 8000
-  num_workers: 8        # Number of concurrent request threads
-  batch_size: 20        # Process requests in batches to avoid overwhelming server
+  num_workers: 2        # Number of concurrent request threads (increase if server is stable)
+  batch_size: 10        # Process requests in batches to avoid overwhelming server
+  batch_delay: 3        # Seconds to wait between batches (reduce if server is stable)
+  request_timeout: 20   # Timeout in seconds for each API request (default: 30)
