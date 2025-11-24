@@ -262,7 +262,7 @@ For a detailed step-by-step guide, see [`model_finetuning_guide.ipynb`](model_fi
 - Monitoring training progress
 - Best practices and tips
 
-## 🛠️ Advanced Usage
+## Advanced Usage
 
 ### Custom Configuration
 
