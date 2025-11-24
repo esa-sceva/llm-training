@@ -2,6 +2,8 @@
 
 A streamlined repository for fine-tuning large language models using **[LitGPT](https://github.com/Lightning-AI/litgpt)** - a high-performance library by Lightning AI for training and deploying 20+ LLMs.
 
+> **Part of the [ESA-SCEVA](https://huggingface.co/esa-sceva) project** - Developed under the **European Space Agency (ESA) ARTES programme** for advancing open, domain-specialized AI in Satellite Communications.
+
 ## Features
 
 - **Easy Setup**: Simple configuration using `.env` files and Makefile commands
@@ -219,6 +221,8 @@ quantize: null          # Optional: nf4, fp4, int8-training
 
 ## Evaluation
 
+### Standard Benchmarks
+
 After training, evaluate your model on standard benchmarks:
 
 ```bash
@@ -231,6 +235,29 @@ This runs evaluation on:
 - MMLU (multitask language understanding)
 
 Results are saved to `evaluate_model/`.
+
+### SatCom-Specific Benchmarks
+
+For comprehensive evaluation on **Satellite Communications domain-specific tasks**, use the benchmark suite in the [`benchmark/`](benchmark/) directory:
+
+```bash
+cd benchmark
+python benchmark_vllm_server_v1.py --config test_vllm_config.yaml
+```
+
+**Features:**
+- Evaluate multiple checkpoints automatically
+- Domain-specific SatCom datasets (Link Budget, Propagation, etc.)
+- GPT-based answer quality assessment
+- Progression tracking with visualizations
+- Multiple-choice and open-ended question support
+
+**Available Datasets:**
+- `sapien_mcqa` - Multiple-choice questions (3.8K samples)
+- `sapien_open_qas` - Open-ended questions (2.5K samples)
+- [ESA-SCEVA datasets on HuggingFace](https://huggingface.co/esa-sceva) - Official SatCom datasets
+
+See the [**Benchmark README**](benchmark/README.md) for detailed instructions and configuration options.
 
 ## Using the Fine-tuned Model
 

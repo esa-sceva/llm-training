@@ -1,0 +1,1502 @@
+[
+    {
+        "question": "A satellite beam covers 800 km². If 15% of the area has active users, what is the active area?",
+        "expected_answer": "Active area = 800 × 0.15 = 120 km². Identifies the region where users are present.",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "A satellite covers an area of 800 km × 600 km. If there are 25 users per 100 km², how many users are served?",
+        "expected_answer": "Area = 800 × 600 = 480,000 km². Users = 480,000 × 25 / 100 = 120,000 users.",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "Two satellites have overlapping beams of 100 km² each. The overlap is 20 km². What is the net coverage?",
+        "expected_answer": "Net coverage = 100 + 100 – 20 = 180 km².",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "A gateway covers a circular area with radius 250 km. What is the area it covers?",
+        "expected_answer": "The coverage area of a circle is π × radius². Here, area = 3.1416 × 250² ≈ 196,350 km². Therefore, the gateway covers 196,350 km².",
+        "Topic": "Satellite gateway"
+    },
+    {
+        "question": "A satellite gateway can handle 400 Mbps. If there are 2 gateways working together, what is the total capacity?",
+        "expected_answer": "Each gateway has 400 Mbps, so with 2 gateways the total capacity is 400 × 2 = 800 Mbps. Therefore, the total capacity is 800 Mbps.",
+        "Topic": "Satellite gateway"
+    },
+    {
+        "question": "A 5G NTN link requires 15 Mbps per user. For 1000 users, what total capacity is needed?",
+        "expected_answer": "Total capacity = 15 × 1000 = 15,000 Mbps = 15 Gbps.",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "A 5G NTN satellite transmits at 30 dBm and the received power is 0 dBm. What is the path loss?",
+        "expected_answer": "Path loss = 30 - 0 = 30 dB.",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "How is the doppler shift formula represented?",
+        "expected_answer": "Doppler shift is given by  \\Delta f=\\frac{v_{r}}{c}f_{0} Where:\nΔf = frequency shift, Vr= relative radial velocity between transmitter and receiver, c = speed of light, fo = nominal carrier frequency",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "How is the size of a Gateway Station antenna determined?",
+        "expected_answer": "Antenna size depends on the frequency band, desired gain, and distance to the satellite. Higher frequency bands require higher gain, which is achieved by larger antenna diameters. Larger antennas improve signal strength and reliability.",
+        "Topic": "Gateway station"
+    },
+    {
+        "question": "A satellite covers 1000 km with a user density of 50 users per 100 km². How many users are served?",
+        "expected_answer": "Area covered = 1000 × 100 km² = 100,000 km². Users = 100,000 × 50 / 100 = 50,000 users.",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "A satellite link needs 10 Mbps per user. For 500 users, what total capacity is required?",
+        "expected_answer": "Total capacity = 10 × 500 = 5000 Mbps = 5 Gbps.",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "Bandwidth = 10 MHz, SNR = 10 (linear). Calculate theoretical uplink data rate.",
+        "expected_answer": "Using Shannon capacity: C = B × log₂(1 + SNR) = 10 × log₂(11) ≈ 10 × 3.46 = 34.6 Mbps. This value shows the maximum rate possible for an uplink under ideal conditions, guiding network engineers in modulation and coding design.",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Compute throughput of NTN PDSCH given bandwidth 20 MHz and spectral efficiency 3 bps/Hz.",
+        "expected_answer": "Throughput R = B × η = 20 x 10^6 x 3 = 60 Mbps",
+        "Topic": "NTN"
+    },
+    {
+        "question": "Determine number of required repetitions if link margin needed is 10 dB, repetition gain per increment is 3 dB.",
+        "expected_answer": "Number of repetitions n =10/3 = 4",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "How do you calculate slant‐distance ground to satellite?",
+        "expected_answer": "slant‐distance ground to satellite is given by d_{g}(E)=R\\cdot sin^{-1}\\left( \\frac{d(E)cos(E)}{R+H} \\right) where R = Earth’s radius, H = satellite altitude, E = elevation angle, d(E) = slant‐distance (ground to satellite). This gives the ground‐range (arc length on Earth’s surface) corresponding to the satellite’s coverage.",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "An Ethernet frame has a 40-byte header. After compression, the header is 10 bytes. Find the % reduction.",
+        "expected_answer": "% Reduction = (40 − 10) ÷ 40 × 100 = 75%. Compression reduces overhead, allowing more user data to be transmitted efficiently.",
+        "Topic": "Telecommunication Payload"
+    },
+    {
+        "question": "Can a single gateway communicate with multiple satellites?",
+        "expected_answer": "Yes, a single satellite gateway can communicate with multiple satellites. This is achieved by using directional antennas, scheduling communication times, and managing frequency channels. Gateways may track different satellites in various orbits, receiving data from each and sending commands as needed. Advanced gateways use software to manage traffic, prevent interference, and ensure data is delivered correctly. This capability allows efficient use of the gateway infrastructure, reduces the need for multiple ground stations, and ensures that users receive continuous data from satellites for applications such as communication, navigation, and remote sensing.",
+        "Topic": "Satellite gateway"
+    },
+    {
+        "question": "Find the noise figure of the user terminal with noise temperature 500 K and Boltzmann constantk=1.38*10^-23",
+        "expected_answer": "Noise Figure NF = 10 * log((Ts + T0)/T0),\n T0 = 290K, NF = 10 * log((500 + 290)/290) = 10 * log(2.72) =\n4.35 dB",
+        "Topic": "Satellite User terminal"
+    },
+    {
+        "question": "A ranging signal round-trip time is 0.004 s. Find the satellite distance (speed of light = 3×10⁸ m/s).",
+        "expected_answer": "One-way time = 0.002 s. Distance = 3×10⁸ × 0.002 = 6×10⁵ m = 600 km. TT&C uses such calculations to track satellite orbit accurately.",
+        "Topic": "TT&C"
+    },
+    {
+        "question": "Satellite sends 2000 kbits at 100 kbps. How long will it take?",
+        "expected_answer": "Time = 2000 ÷ 100 = 20 seconds. This shows how link time affects data download.",
+        "Topic": "TT&C"
+    },
+    {
+        "question": "Satellite telemetry data = 5000 kbits, transmission rate = 200 kbps. How long will it take to send all data?",
+        "expected_answer": "Time = Data ÷ Rate = 5000 ÷ 200 = 25 seconds. Operators schedule ground station passes considering this transmission time.",
+        "Topic": "TT&C"
+    },
+    {
+        "question": "Satellite visible for 900 seconds, telemetry rate = 300 kbps. Maximum data transmitted?",
+        "expected_answer": "Data = 300×10³ × 900 = 270×10⁶ bits ≈ 33.75 MB. TT&C must match telemetry size to ground station visibility.",
+        "Topic": "TT&C"
+    },
+    {
+        "question": "Are all satellite buses the same?",
+        "expected_answer": "No, satellite buses vary depending on the mission type, size, and payload requirements.\nA key parameter in bus design is the mass-to-power ratio, which helps determine whether the structure can efficiently support the payload and its subsystems. This can be expressed as:\nη=PpayloadMbus\n\nwhere \nPpayload is the power available to the payload (in watts), and \nMbus is the satellite bus mass (in kilograms).\nA higher η value indicates a more efficient design. Large geostationary satellites typically have lower \nη values because of heavier structures and more complex subsystems, while small satellites often achieve higher ratios due to lightweight designs.\nDespite differences, all buses serve the same core purpose: supporting the satellite payload effectively.",
+        "Topic": "Satellite bus"
+    },
+    {
+        "question": "How does the satellite bus provide power?",
+        "expected_answer": "The satellite bus provides power through solar panels and batteries. The power from the solar panels \\( P_{\\text{solar}} \\) is given by:\n\n\\[\nP_{\\text{solar}} = A \\cdot G \\cdot \\eta\n\\]\n\nwhere:\n\\begin{itemize}\n    \\item \\( A \\) is the area of the solar panels,\n    \\item \\( G \\) is the solar irradiance (typically around 1361 W/m² in space),\n    \\item \\( \\eta \\) is the efficiency of the solar panels in converting sunlight into electrical power.\n\\end{itemize}\n\nWhen the satellite is in the shadow of the Earth, the batteries provide the necessary power. The battery power \\( P_{\\text{battery}} \\) is stored and distributed as needed, regulated by the satellite’s power management systems.\n\nThe bus ensures that power is distributed to all components, including communication instruments, sensors, and control systems. Power management systems regulate voltage and prevent overloads, ensuring that the satellite can operate continuously without interruptions.\n\nProper power supply is critical for maintaining payload operations, controlling orientation, and running onboard computers. The bus ensures energy is available at the right time and in the correct amount, which is essential for the satellite’s long-term reliability.\n",
+        "Topic": "Satellite bus"
+    },
+    {
+        "question": "How is the coding rate determined in DVB-S2X?",
+        "expected_answer": "\\[R = \\frac{K}{N}\\]\n\nwhere:\n\\begin{itemize}\n  \\item $R$ is the coding rate,\n  \\item $K$ is the number of information (useful) bits,\n  \\item $N$ is the total number of transmitted bits (information + error correction bits).\n\\end{itemize}\n\nA higher coding rate $R$ means that a greater proportion of the transmitted bits are information bits, resulting in higher data throughput but lower error protection.\n",
+        "Topic": "DVB-S2X"
+    },
+    {
+        "question": "How is the spectral efficiency of DVB-S2X calculated?",
+        "expected_answer": "\\[\\eta = \\frac{R \\cdot \\log_2(M)}{1 + \\alpha}\\]\n\nwhere:\n\\begin{itemize}\n  \\item $\\eta$ is the spectral efficiency (bits/s/Hz),\n  \\item $R$ is the coding rate,\n  \\item $M$ is the modulation order (e.g., $M = 64$ for 64APSK, $M = 256$ for 256APSK),\n  \\item $\\alpha$ is the roll-off factor.\n\\end{itemize}\n\nIn DVB-S2X, higher-order modulation schemes and coding rates increase $\\eta$, while a smaller roll-off factor $\\alpha$ improves spectral utilization by reducing the required transmission bandwidth.\n",
+        "Topic": "DVB-S2X"
+    },
+    {
+        "question": "What is the modulation order in DVB-S2X?",
+        "expected_answer": "The modulation order in DVB-S2X refers to the number of distinct symbols \\( M \\) used in the modulation scheme. The modulation order determines the number of bits per symbol \\( b \\), which is given by the formula:\n\n\\[b = \\log_2(M)\\]\n\nHigher modulation orders, such as 64, 128, and 256 APSK, allow more bits to be transmitted per symbol, thus increasing the data rate and spectral efficiency. For example, in 256-APSK, the modulation order \\( M \\) is 256, and the number of bits per symbol is:\n\n\\[\nb = \\log_2(256) = 8 \\text{ bits per symbol}\n\\]\n",
+        "Topic": "DVB-S2X"
+    },
+    {
+        "question": "How is link margin estimated in DVB-S2 systems?",
+        "expected_answer": "Link margin in DVB-S2 systems is the difference between the received signal power and the minimum required power for acceptable quality. It is a measure of the system's ability to tolerate fading, noise, and interference. The link margin \\( \\text{LM} \\) is given by:\n\n\\[\n\\text{LM} = \\text{SNR}_{\\text{received}} - \\text{SNR}_{\\text{required}}\n\\]\n\nwhere:\n\\begin{itemize}\n    \\item \\( \\text{SNR}_{\\text{received}} \\) is the actual signal-to-noise ratio at the receiver, and\n    \\item \\( \\text{SNR}_{\\text{required}} \\) is the minimum SNR required for acceptable quality, based on the modulation and coding scheme used (in the case of DVB-S2, this is determined by the constellation size, error correction, and other factors).\n\\end{itemize}\n\nCalculating the link margin is essential for system design, especially for satellite links, which experience varying channel conditions due to atmospheric effects, rain, and interference. The link margin ensures that the system can maintain reliable communication under varying conditions.\n",
+        "Topic": "DVB-S2"
+    },
+    {
+        "question": "How is spectral efficiency calculated in DVB-S2?",
+        "expected_answer": "\\[\\eta = \\frac{R \\cdot \\log_2(M)}{1 + \\alpha}\\]\n\nwhere:\n\\begin{itemize}\n  \\item $\\eta$ is the spectral efficiency (bits/s/Hz),\n  \\item $R$ is the coding rate,\n  \\item $M$ is the modulation order (e.g., $M = 8$ for 8PSK, $M = 16$ for 16APSK),\n  \\item $\\alpha$ is the roll-off factor.\n\\end{itemize}\n\nHigher values of $M$ and $R$ increase the number of bits transmitted per symbol, improving spectral efficiency, while a larger roll-off factor $\\alpha$ reduces it by requiring more bandwidth.\n",
+        "Topic": "DVB-S2"
+    },
+    {
+        "question": "How is the link budget calculated in DVB-S2?",
+        "expected_answer": "\\[P_r = P_t + G_t + G_r - L_p - L_s\\]\n\nwhere:\n\\begin{itemize}\n  \\item $P_r$ is the received power (dB),\n  \\item $P_t$ is the transmitted power (dB),\n  \\item $G_t$ is the transmitter antenna gain (dB),\n  \\item $G_r$ is the receiver antenna gain (dB),\n  \\item $L_p$ is the free-space path loss (dB),\n  \\item $L_s$ represents additional system losses (dB), such as atmospheric attenuation, polarization mismatch, or rain fade.\n\\end{itemize}\n\nThe link budget ensures that the received power $P_r$ remains above the receiver sensitivity threshold required for reliable DVB-S2 communication.\n",
+        "Topic": "DVB-S2"
+    },
+    {
+        "question": "What is the significance of coding rate in DVB-S2?",
+        "expected_answer": "The coding rate in DVB-S2 represents the ratio of information bits to total transmitted bits, including error correction bits. A higher coding rate indicates more information bits and less redundancy, leading to higher data rates but potentially less error resilience. The coding rate \\( R \\) is expressed as:\n\n\\[R = \\frac{K}{N}\\]\n\nwhere:\n- \\( K \\) is the number of information bits (data bits),\n- \\( N \\) is the total number of transmitted bits (including error correction bits).\n\nFor example, a coding rate of \\( R = \\frac{3}{5} \\) means that for every 5 transmitted bits, 3 are information bits and 2 are error correction bits. Higher coding rates, such as \\( \\frac{9}{10} \\), allow for more efficient data transmission but with lower error protection.\n",
+        "Topic": "DVB-S2"
+    },
+    {
+        "question": "Link bandwidth = 100 Mbps, RTT = 600 ms. What is the Bandwidth–Delay Product (BDP) in bits and bytes?",
+        "expected_answer": "BDP = bandwidth × RTT = 100,000,000 × 0.6 = 60,000,000 bits. In bytes = 60,000,000 ÷ 8 = 7,500,000 bytes (≈ 7.5 MB). TCP endpoints must have at least this send/receive buffer to fill the pipe.",
+        "Topic": "TCP over satellite"
+    },
+    {
+        "question": "A satellite transmits at 10 W with a 15 dBi antenna. Distance to receiver is 500 km, frequency 2 GHz, receive antenna gain 20 dBi.if noise power N=−125 dBW, compute C/N.",
+        "expected_answer": "C/N =Pr−N=−105.44−(−125) =19.56 dB. This means the carrier is ~19.6 dB stronger than noise. Adequate C/N ensures reliable reception. Engineers may adjust power or antenna gains to maintain C/N above required thresholds for specific modulation schemes.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate link margin if Pr=−105 dBW and Pmin=−120PdBW.",
+        "expected_answer": "Link margin LM=Pr−Pmin=−105−(−120) = 15 dB. Positive margin indicates signal is stronger than needed, providing a buffer against fading or unexpected losses. Maintaining sufficient link margin is crucial for reliable communication, especially for satellite or wireless systems exposed to environmental fluctuations.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate link margin if received power is -95 dBW and minimum receiver sensitivity is -105 dBW.",
+        "expected_answer": "Link margin LM=Pr−Pmin=−95−(−105) = 10 dB. Positive margin indicates the signal is stronger than required by 10 dB, providing a buffer against fading, interference, or additional losses. This ensures reliable communication under varying conditions.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert transmit power Pt=5W into dBW (simple power conversion).",
+        "expected_answer": "Use P(dBW)=10log10 (P(W)). So 10log10(5) =6.99 dBW (approx). This conversion is helpful because link budget arithmetic is done in dB units (additive) rather than multiplying linear values. After converting Pt to dBW, you can directly add antenna gains (dBi) and subtract losses (dB) to compute EIRP and Pr. Remember to convert back to watts only if you need linear units.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How can engineers maintain link quality during bad weather?",
+        "expected_answer": "Engineers maintain link quality during bad weather by adding a fade margin in the link budget to compensate for rain or atmospheric attenuation.\nThe received power can be expressed as:\n\nPr=Pt+Gt+Gr−Lp−Lr−Mf\n\n        ​\nwhere\n\nPr is the received power (dB),\n\nPt is the transmit power (dB),\n\nGt and Gr are the transmit and receive antenna gains (dB),\n\nLp is the free-space path loss (dB),\n\nLr represents additional rain or atmospheric losses (dB), and\n\nMf is the fade margin (dB).\n\nBy increasing Mf or adjusting other parameters, engineers ensure the received signal remains above the receiver sensitivity threshold, maintaining reliable communication even in adverse weather conditions.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How do cable losses affect the received power in a link budget?",
+        "expected_answer": "Cable or feeder losses reduce the effective power delivered to the antenna. In a link budget, these losses are subtracted from the transmitted power or included as part of the total path loss.\nThe effective transmit power after cable loss is given by:\n\nPant=Pt−Lc\nP\nant\n        ​\n\n=P\nt\n        ​\n\n−L\nc\n        ​\n\n\nwhere\n\nPant\nP\nant\n        ​\n\n is the power at the antenna input (dB),\n\nPt\nP\nt\n        ​\n\n is the transmitter output power (dB), and\n\nLc\nL\nc\n        ​\n\n is the cable loss (dB).\n\nFor example, if \nPt=20 dBW\nP\nt\n        ​\n\n=20dBW and \nLc=2 dB\nL\nc\n        ​\n\n=2dB, then \nPant=18 dBW\nP\nant\n        ​\n\n=18dBW.\nAccounting for \nLc\nL\nc\n        ​\n\n ensures realistic link performance estimates and prevents overestimating the received power or link margin.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How do rain losses impact high-frequency satellite communication?",
+        "expected_answer": "Rain introduces additional attenuation that increases with frequency, particularly above 10 GHz.\nIn the link budget, the total path loss is expressed as:\n\nLtotal=Lfs+Lrain\n\nwhere\n\nLtotal is the total path loss (dB),\n\nLfs is the free-space path loss (dB), and\n\nLrain is the rain attenuation (dB).\n\nFor example, if Lfs=200 dB and Lrain=5dB, then \nLtotal=205 dB     ​\nSuch rain losses reduce the received power and link margin.\nEngineers include a fade margin to compensate for \nLrain, ensuring reliable communication even during heavy rainfall.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How does antenna misalignment reduce link performance?",
+        "expected_answer": "Misalignment introduces pointing loss, reducing the antenna’s effective gain. The received power \\( P_{\\text{received}} \\) can be expressed as a function of the transmitted power \\( P_{\\text{transmitted}} \\) and the pointing loss \\( L_{\\text{pointing}} \\):\n\n\\[\nP_{\\text{received}} = P_{\\text{transmitted}} - L_{\\text{pointing}}\n\\]\n\nFor example, a 2 dB pointing loss reduces the received power by 2 dB. This can be written as:\n\n\\[\nP_{\\text{received}} = P_{\\text{transmitted}} - 2 \\, \\text{dB}\n\\]\n\nThis reduction in received power is particularly important in satellite links with high-gain narrow-beam antennas. Including pointing losses in the link budget ensures more realistic estimates of received power and link margin.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How does doubling antenna gain affect received power?",
+        "expected_answer": "Received power Pr=Pt+Gt+Gr−Lp. Doubling linear gain is +3 dB. For example, if Gr increases by 3 dB, Pr also rises by 3 dB, improving C/N and link margin. Higher antenna gain focuses the energy, improving long-distance communication. This is important in satellite links or long-range radio where transmit power is limited.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How does doubling antenna gain affect received power?",
+        "expected_answer": "Received power: Pr=Pt+Gt+Gr−Lp. Doubling linear gain increases dB gain by 3 dB. Therefore, received power rises by 3 dB, improving C/N and link margin. This is important in satellite links or long-distance radio communications where transmit power is limited.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How does increasing transmit power affect C/N?",
+        "expected_answer": "Increasing Pt increases EIRP, which increases received power Pr. Since noise N remains the same, C/N=Pr−N increases. For example, doubling Pt adds 3 dB to received power, improving link margin and reducing error probability. This is a direct method to enhance link quality without changing antennas.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to compute C/N with received power -90 dBW and noise power -110 dBW?",
+        "expected_answer": "Carrier-to-noise ratio C/N=Pr−N=−90−(−110) =20 dB. A 20 dB C/N indicates the carrier is 100 times stronger than noise power in linear terms. This is sufficient for many communication systems to maintain low error rates. Link budget analysis uses this value to check if the system meets performance requirements.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "If FSL is 160 dB, transmitter power is 15 dBW, transmit antenna gain 20 dBi, and receive antenna gain 25 dBi, what is received power?",
+        "expected_answer": "Received power: Pr=Pt+Gt+Gr−Lp=15+20+25−160= −100 dBW. This simple calculation shows how transmitted power, antenna gains, and path loss determine the signal level at the receiver. Engineers use this to check if the received power exceeds the minimum required for reliable communication",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "If transmit power is 10 W and antenna gain is 20 dBi, find EIRP in dBW.",
+        "expected_answer": "Convert Pt  to dBW: 10log (10) =10 dBW. Then EIRP=Pt+Gt=10+20=30 dBW. This is the equivalent power radiated in the main direction of the antenna. EIRP helps compare different transmitter-antenna systems and is a key input for link budget calculations.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Noise temperature = 350 K, bandwidth = 20 MHz. Calculate noise power.",
+        "expected_answer": "Pn = k × T × B = 1.38×10⁻²³ × 350 × 20×10⁶ ≈ 9.66 × 10⁻¹⁴ W. Noise power is used in C/N calculations to evaluate uplink performance.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What happens if receiver noise temperature increases?",
+        "expected_answer": "An increase in system noise temperature T raises noise power N=kTB, lowering C/N. This reduces the effective link margin and may cause data errors or dropped connections. Engineers can counteract this by increasing EIRP, using higher-gain antennas, or reducing bandwidth. In satellites, thermal management and low-noise amplifiers help control noise temperature, ensuring consistent communication quality.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is the effect of doubling bandwidth on noise power?",
+        "expected_answer": "Noise power N= kTB is directly proportional to bandwidth. Doubling BBB doubles N, which increases the noise floor and reduces C/N by 3 dB. Engineers must balance higher data rates (wider bandwidth) against increased noise. Careful bandwidth selection is crucial in link design to maintain acceptable signal quality.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is the effect of rain attenuation on link budget?",
+        "expected_answer": "Rain can absorb and scatter radio signals, adding extra loss, especially at high frequencies (>10 GHz). This loss, in dB, is added to total path loss in the link budget. For example, if free-space path loss is 150 dB and rain causes 5 dB extra loss, total loss is 155 dB. Accounting for rain attenuation ensures sufficient link margin and system reliability during storms. Engineers often include a fade margin in design to counter this effect.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is the purpose of converting transmitter power from watts to dBW in link budget analysis?",
+        "expected_answer": "Converting Pt from watts to dBW simplifies calculations, because in dB all gains and losses can be added or subtracted directly. For example, 10W → 10log10(10)=10 dBW. Using dB units avoids multiplying large numbers in linear form. Once all gains/losses are summed, the final received power can be expressed in dBW or converted back to watts if needed. This makes link budget calculations easier and more intuitive.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "A 500-byte packet is sent over a 2 Mbps link. Find transmission delay in milliseconds.",
+        "expected_answer": "Transmission delay = 500 × 8 ÷ 2 × 10⁶ = 0.002 s or 2 ms. This small delay adds to the overall communication latency, especially for small packets.",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "A system has 3 ms queueing delay, 2 ms processing delay, 5 ms transmission delay. Find total latency.",
+        "expected_answer": "Total communication latency = 3 + 2 + 5 = 10 ms. Total latency is the sum of propagation, transmission, queueing, and processing delays.",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "If communication latency for a video call must be <300 ms, can a single GEO satellite link meet this requirement?",
+        "expected_answer": "One-way GEO latency = 120 ms; round-trip = 240 ms. Adding processing and transmission delays may slightly exceed 300 ms. It is feasible but close to the limit for real-time communication.",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "If propagation speed in a fiber segment is 2 × 10⁸ m/s and length is 500 km, find latency.",
+        "expected_answer": "Communication latency = 500,000 ÷ 2 × 10⁸ = 0.0025 s or 2.5 ms. Fiber links have much lower propagation latency than satellite links due to shorter distances.",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "A wireless system uses frequency 5 GHz. Find the wavelength.",
+        "expected_answer": "Wavelength λ = c / f = 3×10⁸ ÷ 5×10⁹ = 0.06 m. Wavelength helps in designing antennas and understanding propagation characteristics of the wireless signal.",
+        "Topic": "Wireless communication systems"
+    },
+    {
+        "question": "If the transmission power of a wireless communication system is increased by 10 dB, how does the received signal strength change?",
+        "expected_answer": "\\[P_{r2} = P_{r1} \\times 10^{\\frac{\\Delta P_t}{10}}\\]\n\nwhere:\n\\begin{itemize}\n  \\item $P_{r2}$ is the new received power,\n  \\item $P_{r1}$ is the original received power,\n  \\item $\\Delta P_t$ is the change in transmit power (dB).\n\\end{itemize}\n\nFor an increase of $\\Delta P_t = 10\\,\\text{dB}$:\n\\[P_{r2} = 10 \\times P_{r1}\\]\n\nThus, increasing the transmission power by 10 dB results in a tenfold increase in the received signal strength.\n",
+        "Topic": "Wireless communication systems"
+    },
+    {
+        "question": "What is the conversion rate of a high speed ADC?",
+        "expected_answer": "The Conversion rate of high speed ADC is given by {50*{10}^{6}/sec}.",
+        "Topic": "Satellite bus"
+    },
+    {
+        "question": "Calculate the beamforming gain for an antenna array of 16 elements assuming ideal constructive interference.",
+        "expected_answer": "Beamforming gain Gbf = 10 log(N), where N = 16\nGbf = 10 log(16)= 12.04 dB",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "What is the beamforming SINR improvement if initial SINR is 10 dB and beamforming gain is 9 dB?",
+        "expected_answer": "Improved SINR=10+9=19dB.",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "What is the number of beams needed to cover a 120⁰ sector if each beam covers 15⁰?",
+        "expected_answer": "Number of beams N = Sector angle/Beamwidth = 120/15 = 8 beams",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "Calculate BER for 16-QAM at SNR = 18 dB.",
+        "expected_answer": "BER ≈3/8 Q(√(4/5× SNR)). Linear SNR: 63.1, argument √(4/5 × 63.1) = 7.98. Q(7.98)= 10^-15, so BER≈ 3.75 × 10^-15",
+        "Topic": "BER"
+    },
+    {
+        "question": "Calculate BER for BPSK in AWGN channel at SNR = 10 dB.",
+        "expected_answer": "BER = Q(2*SNR)^0.5, where Q(x) = 1/2 erfc(x/1.414)\n(2*10)^0.5=4.7. usibg Q function table BER = 3.87*10^-6",
+        "Topic": "BER"
+    },
+    {
+        "question": "Calculate BER of BFSK in coherent detection at SNR = 8 dB.",
+        "expected_answer": "BER =1/2 e^(-Eb/2N0)\n Convert 8 dB to linear: 6.31, so BER = 0.5e-6.31/2 0.5 x e-3.155 0.5 × 0.042 = 0.021.",
+        "Topic": "Bit error rate"
+    },
+    {
+        "question": "Calculate the bit error rate (BER) for BPSK modulation at SNR = 10 dB.",
+        "expected_answer": "BER = Q(√(2 × SNR)), Linear SNR = 10, BER =Q(4.47) ≈ 3.87 x 10^-6",
+        "Topic": "SNR"
+    },
+    {
+        "question": "Find BER for QPSK at SNR = 12 dB in AWGN channel.",
+        "expected_answer": "BER = Q(2*SNR)^0.5\n12 dB to linear is 15.85\n(2*15.85)^0.5=3.98, BER = Q(3.98) = 3.4*10^-5",
+        "Topic": "BER"
+    },
+    {
+        "question": "Find BER of BPSK if bit energy to noise spectral density ratio Eb/N0 is 7 dB.",
+        "expected_answer": "BER = Q(√(2x10^(7/10))) = Q(√(2 × 5.01)) = Q(3.16) ≈ 0.00078.",
+        "Topic": "BER"
+    },
+    {
+        "question": "Calculate axial ratio in linear scale from dB value of 1.5 dB.",
+        "expected_answer": "Axial ratio linear = 10^1.5/20 = 10^0.075 = 1.19",
+        "Topic": "Circular Polarization"
+    },
+    {
+        "question": "Calculate received power decrease due to mismatch in circular polarization if mismatch loss is 2 dB.",
+        "expected_answer": "Received power reduced by 2 dB; new power P' = P - 2 dB.",
+        "Topic": "Circular Polarization"
+    },
+    {
+        "question": "Find the effective antenna gain loss due to axial ratio of 3 dB in circular polarization.",
+        "expected_answer": "Loss due to axial ratio = 10 * log((1 + 10 ^ (AR / 10))/2) with AR = 3 dB: Loss = 10 * log((1 + 2)/2) = 10 * log(1.5) = 1.76 dB",
+        "Topic": "Circular Polarization"
+    },
+    {
+        "question": "Calculate carrier to noise ratio (CNR) if carrier power is -50 dBm and noise power is -90 dBm.",
+        "expected_answer": "CNRP=Pc - Pn = - 50 - (- 90) = 40dB",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "Calculate carrier to noise ratio in dB when carrier power is 1 W and noise power is 0.001 W.",
+        "expected_answer": "CNR =10 log (Pc/Pn)=10log(1/0.001)=10*30=30 dB",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "Find CNR if carrier power is 10 mW and noise power spectral densityN0=10^-20 W/Hz over bandwidth 1 MHz.",
+        "expected_answer": "Noise power Pn =No × B = 10^-20 × 10^6 = 10^-14 W or -140 dBm. Carrier power 10 mW = 10 * dBm. CNR10-(- 140) = 150dB",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "Calculate C/N improvement if roll-off factor is reduced from 0.35 to 0.20 in DVB-S2X.",
+        "expected_answer": "Bandwidth saving =(0.35-0.20) /(1+0.35) ≈ 11.1% corresponds to improved spectral efficiency, about 0.5 dB C/N gain",
+        "Topic": "DVB-S2X"
+    },
+    {
+        "question": "Calculate data rate for DVB broadcasting with QPSK modulation, 3/4 coding rate, and symbol rate 27 Msps.",
+        "expected_answer": "R = R X Bits/symbol x Coding Rate= 27 x 2 x 0.75 = 40.5 Mbps",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Calculate DVB-S2 required C/N for QPSK with code rate 1/2 achieving BER 10^-7. (GivenC/Nreq=1.7)",
+        "expected_answer": "Required C/N=1.7dB (from tables/standards for quasi-error free)",
+        "Topic": "DVB-S2"
+    },
+    {
+        "question": "Calculate DVB-S2 symbol rate if bandwidth is 36 MHz and roll-off factor 0.25.",
+        "expected_answer": "Rs = B /1+α = 36 MHz/ (1+0.25) = 28.8 M symbol /s",
+        "Topic": "DVB-S2"
+    },
+    {
+        "question": "Calculate DVB-S2X throughput if symbol rate 50 Msps with 16APSK (4 bits/symbol) coding rate 9/10.",
+        "expected_answer": "Throughput = 50 x 4 x 0.9 = 180 Mbps.",
+        "Topic": "DVB-S2X"
+    },
+    {
+        "question": "Calculate forward error correction gain for DVB-S2X vs DVB-S2 with same modulation by 1.5 dB improvement.",
+        "expected_answer": "FEC Gain = 1.5 dB (directly given by standard improvements)",
+        "Topic": "DVB-S2X"
+    },
+    {
+        "question": "Calculate minimum C/N ratio for DVB-S2 to maintain BER of10-7 with 8PSK modulation.",
+        "expected_answer": "Typically,C/N = 9.7dB from DVB-S2 tables",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Calculate symbol rate given bandwidth 36 MHz and roll-off factor 0.35.",
+        "expected_answer": "Rs= B /(1+α ) = 36 /1.35 = 26.67 Msps",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Estimate satellite broadcast power flux density at Earth given transmitter power 100 W, antenna gain 30 dBi, and distance 40,000 km",
+        "expected_answer": "The power flux density (PFD) at Earth from a satellite is calculated by the formula: PFD = (Pt*Gt )/4πR^2 where P is transmitter power in watts, Gt = 10^(GdBi/10) is antenna gain in linear scale, and R is the distance in meters.\n Pt = 100 W, GdBi  = 30, and R = 40,000 km = 4 x 10^7 m, convert gain: Gt = 10^3= 1000.\nSurface area: 4πR² = 2.01 × 10^16 m².\n PFD = (100 x 1000)/( 2.01 x 10^16)= 4.98 x 10-12 W/m² Conversion to dBW/m² is about 113 dBW/m²",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Find DVB-S2 throughput for symbol rate 28.8 Msps and modulation QPSK (2 bits/symbol) with coding rate 3/4.",
+        "expected_answer": "Throughput = R X Bits/Symbol x Codingrate = 28.8 x 2 x 0.75 =  43.2 Mbps",
+        "Topic": "DVB-S2"
+    },
+    {
+        "question": "Calculate uplink fade margin for link margin 10 dB and rain fade 7 dB.",
+        "expected_answer": "Fade margin = Link margin - Rain fade = 10-7=3 dB",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Calculate handover execution time given radio link failure timer 200 ms, preparation time 50 ms, actual handover 250 ms.",
+        "expected_answer": "Total time = 200 + 50+250 = 500 ms",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Calculate handover success probability Ps = 1-e^- λt if rate λ = 0.2 sec^{-1} and time t = 3 sec.",
+        "expected_answer": "Ps=1-e^-0.6= 1-0.5488 = 0.4512 or 45.12%",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Calculate required SINR for handover decision if threshold is 15 dB and current SINR is 12 dB.",
+        "expected_answer": "Required increase = 15 - 12 = 3 dB",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Calculate total handover delay given preparation 10 ms, execution 15 ms, and completion 5 ms delays.",
+        "expected_answer": "Total delay=10+15+5=30 ms",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Compute handover signaling load if average messages per handover are 10 and handover rate is 5/min.",
+        "expected_answer": "Load = 10 × 5 = 50 messages/min",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Find average handover delay if signaling delay is 5 ms, processing delay is 20 ms, and response delay is 10 ms.",
+        "expected_answer": "Total handover delay =  5+20+10 = 35 ms",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Calculate effect of data rate on latency if packet size is 1,500 bytes and data rate is 10 Mbps.",
+        "expected_answer": "Transmission delay = Packet size (bits) /Data rate (bps)= (1500*8)/(10*10^6)=1.2 x 10-3 s or 1.2 ms",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "Calculate propagation delay for distance 3000 km assuming speed of light 3*10^8 m/s.",
+        "expected_answer": "Propagation delay = Distance/Speed =  (3x10^6) / (3×10^8)= 0.01 s or 10 ms",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "Calculate total latency if transmission delay is 5 ms, propagation delay is 20 ms, and processing delay is 10 ms.",
+        "expected_answer": "Total latency =5+20+10=35 ms",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "Find round trip time (RTT) if one-way latency is 30 ms.",
+        "expected_answer": "RTT = 2× one-way latency = 2 x 30 = 60 ms",
+        "Topic": "Communication Latency"
+    },
+    {
+        "question": "Calculate link availability if mean downtime per year is 5 minutes.",
+        "expected_answer": "Availability =(365×24×60-5)/ (365×24×60)= 0.9999965 = 99.99965%",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "Calculate MTBF (Mean Time Between Failures) if failure rate is 0.0001 failures/hour.",
+        "expected_answer": "MTBF = 1/0.0001 =10,000 hours",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "Calculate probability link is unavailable for 5 minutes if failure rate is 0.0001/hr and repair rate is 1/hr.",
+        "expected_answer": "P unavailable =λ/( λ+μ)= 0.0001/1.0001 ≈ 0.0001",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "Find link availability with MTBF 10,000 hours and MTTR 1 hour.",
+        "expected_answer": "Availability = MTBF/( MTBF+MTTR) =10000/(10000+1) = 99.99%",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "Calculate received power in downlink if transmit power is 35 dBm, path loss 140 dB, antenna gains total 25 dB.",
+        "expected_answer": "Prx = Ptx + Gtotal - Lpath = 35+25-140 = -80 dBm",
+        "Topic": "Downlink"
+    },
+    {
+        "question": "Calculate Signal to Interference plus Noise Ratio (SINR) if signal power is -60 dBm, interference power is -80 dBm, and noise power is -90 dBm as per 3GPP methods.",
+        "expected_answer": "Convert powers to linear scale:\nP signal = 10^-6, P interference = 10^-8, P noise = 10^-9 watts\nSINR = P signal/(P interference+P noise)=10^-6/(10^-8+10^-9) = 90.9 (linear).\nIn dB 10log(90.9)=19.58 dB",
+        "Topic": "3gpp"
+    },
+    {
+        "question": "Calculate total cable and connector loss if each is 1 dB and total 3 cables.",
+        "expected_answer": "Total loss =3* 1 =3dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate total losses if cable attenuation is 1.5 dB per meter for 4 meter cable.",
+        "expected_answer": "L=1.5*4=6 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate total system losses if cable loss is 2 dB on transmitter and 3 dB on receiver.",
+        "expected_answer": "Total losses =2+3=5dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate uplink bit rate if bandwidth is 20 MHz and spectral efficiency is 4 bps/Hz.",
+        "expected_answer": "Uplink bit rate R= Band width * spectral efficiency = 20 * 10^6 * 4 = 80 *10^6 bps = 80 Mbps",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Calculate uplink CNR if transmit power is 40 dBW, path loss is 210 dB, noise spectral density is -174 dBm/Hz, bandwidth 1 MHz and antenna gain 45 dB.",
+        "expected_answer": "CNR = P tx + G ant - L path - N power, noise power N = N0 + 10 log B = -174 + 60= -114 dBm; CNR = 40 + 45 -210 (-114)= -11 dB",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Calculate uplink power needed for received power -85 dBm if path loss is 190 dB and antenna gain is 45 dB.",
+        "expected_answer": "P tx= P rx + L path - G ant = -85-190-45 = 60 dBm = 1 kW",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "How to calculate path loss according to the 3GPP model for a given distance of 1 km and frequency 2 GHz?",
+        "expected_answer": "Using the 3GPP path loss model formula: PL=128.1 + 37.6 log(d)dB, where d is distance in km. For d=1, PL = 128.1+37.6*log (1)=128.1+0=128.1 dB",
+        "Topic": "3gpp"
+    },
+    {
+        "question": "How to calculate total system loss if cable loss is 2 dB and connector loss is 1 dB?",
+        "expected_answer": "Total loss Ltotal = 2 + 1 = 3dB. Losses add up linearly in dB scale.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is the maximum throughput given bandwidth 10 MHz and spectral efficiency 5 bps/Hz in 3GPP standards?",
+        "expected_answer": "Throughput T= Bandwidth*spectral efficiency\nT= 10*10^6*5 = 50*10^6 bps",
+        "Topic": "3gpp"
+    },
+    {
+        "question": "Calculate power consumption if telecommunication payload transmits at 100 W with efficiency 60%.",
+        "expected_answer": "Power input = Transmission/efficiency = 100/0.6 = 166.67 W",
+        "Topic": "Telecommunication Payload"
+    },
+    {
+        "question": "Calculate required bandwidth for telecommunication payload data rate 2 Gbps and spectral efficiency 4 bps/Hz.",
+        "expected_answer": "B = R/η = (2*10^9) / 4 = 500 * 10^6 Hz = 500 MHz",
+        "Topic": "Telecommunication Payload"
+    },
+    {
+        "question": "Compute maximum data rate on telecommunication payload with 500 MHz bandwidth using 16QAM (4 bits/symbol) and 0.8 coding rate.",
+        "expected_answer": "Throughput = 500 * 10 ^ 6 * 4 *0.8 = 1.6 * 10 ^ 9 bps = 1.6 Gbps",
+        "Topic": "Telecommunication Payload"
+    },
+    {
+        "question": "Find noise temperature of payload if noise figure is 3 dB.",
+        "expected_answer": "Te = (10^(NF/10)-1) x T0 = (10^0.3- 1) x 290 = (1.995-1) × 290 = 289 K approx.",
+        "Topic": "Telecommunication Payload"
+    },
+    {
+        "question": "Calculate bandwidth efficiency if bit rate is 25 Mbps and bandwidth is 20 MHz.",
+        "expected_answer": "ɳ=Rb/B= (25×10^6) /(20×10^6) = 1.25 bps/Hz",
+        "Topic": "Satellite Bandwidth"
+    },
+    {
+        "question": "Calculate required bandwidth for a satellite link with data rate 40 Mbps and spectral efficiency 2 bps/Hz.",
+        "expected_answer": "B = R/ η = (40×10^6 )/2= 20 MHz",
+        "Topic": "Satellite Bandwidth"
+    },
+    {
+        "question": "Calculate the max bit rate if bandwidth is 36 MHz with roll-off factor 0.25 and 8PSK modulation (3 bits/symbol).",
+        "expected_answer": "Symbol rate Rs = B/(1 + alpha) = 36/1.25 = 28.8 Msps. Bit rate Rb =R s * bits/symbol = 28.8 * 3 = 86.4 Mbps",
+        "Topic": "Satellite Bandwidth"
+    },
+    {
+        "question": "Calculate power budget for satellite bus if total power consumption is 2000 W and solar array efficiency is 25%.",
+        "expected_answer": "Required solar array power = Total power consumption/solar array efficiency=2000/0.25 = 8000 W",
+        "Topic": "Satellite bus"
+    },
+    {
+        "question": "Calculate total mass of satellite bus if payload mass is 300 kg and bus-to-payload mass ratio is 2.5.",
+        "expected_answer": "Bus mass = Payload mass X Ratio = 300 × 2.5 = 750 kg",
+        "Topic": "Satellite bus"
+    },
+    {
+        "question": "Calculate inter-satellite distancedddif two satellites orbit at 36,000 km and angular difference is 2°.",
+        "expected_answer": "d = 2 × πX 36000 × 2 /360 = 1256.6 km",
+        "Topic": "Inter satellite Link"
+    },
+    {
+        "question": "Calculate propagation delay between satellites separated by 5000 km.",
+        "expected_answer": "Delay=Distance/speed of light = (5000×10^3)/(3x10^8)= 16.67 ms",
+        "Topic": "Inter satellite Link"
+    },
+    {
+        "question": "Calculate gateway throughput if transponder bandwidth is 500 MHz and spectral efficiency is 3 bps/Hz.",
+        "expected_answer": "Throughput=Bandwidth*efficiency = 500*10^6*3=1.5Gbps",
+        "Topic": "Satellite gateway"
+    },
+    {
+        "question": "Calculate link capacity if gateway has 32 carriers of 36 MHz each with 8PSK modulation (3 bits/symbol) and coding rate 3/4.",
+        "expected_answer": "Symbol rate per carrier Rs = 36/1.25 = 28.8 Msps; Per carrier capacity = 28.8 × 3 × 0.75 = 64.8 Mbps; Total capacity = 64.8 × 32 = 2074 Mbps or 2.07 Gbps",
+        "Topic": "Satellite gateway"
+    },
+    {
+        "question": "Find number of carriers needed if each carrier supports 100 MHz bandwidth and desired total bandwidth is 1 GHz.",
+        "expected_answer": "Number of carriers = Total bandwith/ bandwidth of each carriers = 1000/100=10 carriers",
+        "Topic": "Satellite gateway"
+    },
+    {
+        "question": "Calculate IP packet delay over satellite if transmission time is 2 ms and propagation delay is 250 ms.",
+        "expected_answer": "Total delay = Transmission time + propagation delay = 2 + 250= 252 ms",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "Calculate throughput reduction over satellite link with 250 ms latency and window size 64 packets of 1500 bytes.",
+        "expected_answer": "Max throughput = (64×1500×8 )/0.25 = 3.07 Mbps",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "Calculate downlink SINR if signal power is -70 dBm and interference plus noise is -90 dBm.",
+        "expected_answer": "SINR = P signal - P interference + noise = -70-(-90) = 20 dB",
+        "Topic": "Downlink"
+    },
+    {
+        "question": "Calculate data throughput over satellite if SNR=15 dB and spectral efficiency is 4 bps/Hz with BW 36 MHz.",
+        "expected_answer": "Throughput = BW × η = 36 × 106 × 4 = 144 Mbps",
+        "Topic": "SNR"
+    },
+    {
+        "question": "Calculate noise power Pn in watts for bandwidth 10 MHz and noise spectral density N0 = 10^-20W/Hz",
+        "expected_answer": "Pn=N0* B = 10^-20 * 10^7 = 10^-13 W",
+        "Topic": "Signal-to-noise ratio"
+    },
+    {
+        "question": "Calculate required Eb/N0(dB) given data rate R=1Mbps and bandwidth B=1.5MHz with SNR=10dB.",
+        "expected_answer": "Eb/N0= SNR*B/R, Linear SNR = 10, Eb/N0 =  10 * 1.5/1 = 15 linear or 10 * log (15) = 11.76 dB",
+        "Topic": "Signal-to-noise ratio"
+    },
+    {
+        "question": "Calculate SNR if signal power is -80 dBm and noise power is -100 dBm.",
+        "expected_answer": "SNR = P signal - P noise = -80- (- 100) = 20dB",
+        "Topic": "Signal-to-noise ratio"
+    },
+    {
+        "question": "Calculate SNR margin if measured SNR is 18 dB and minimum required is 14 dB.",
+        "expected_answer": "Margin= measured SNR -minimum requirement = 18 -14 = 4dB",
+        "Topic": "SNR"
+    },
+    {
+        "question": "Calculate uplink SNR if received power is -70 dBm and noise power is -110 dBm.",
+        "expected_answer": "SNR= Received power- noise power= -70-(-110)=40 dB",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Convert SNR of 12 dB to a linear scale.",
+        "expected_answer": "SNR (linear) = 10^(12/10) = 15.85",
+        "Topic": "Signal-to-noise ratio"
+    },
+    {
+        "question": "Calculate TCP throughput for satellite with window size 64 KB and RTT 0.5 s.",
+        "expected_answer": "Throughput = Window Size /RTT= (64 * 8 * 10 ^ 3)/0.5 = 1.024 * 10 ^ 6  bps = 1.024 Mbps",
+        "Topic": "TCP over satellite"
+    },
+    {
+        "question": "Calculate TCP throughput if window size is 1 MB and RTT is 600 ms.",
+        "expected_answer": "Throughput = Window Size*8 /RTT = (1 * 10 ^ 6 * 8)/0.6  = 13.33 * 10 ^ 6 bps = 13.33 Mbps",
+        "Topic": "TCP over satellite"
+    },
+    {
+        "question": "Calculate TCP throughput if window size is 100 KB and RTT 450 ms.",
+        "expected_answer": "Throughput = (100 * 8 * 10 ^ 3)/0.45 = 1.778 * 10 ^ 6 * bps = 1.778 Mbps",
+        "Topic": "TCP over satellite"
+    },
+    {
+        "question": "Calculate TCP window size needed for 5 Mbps throughput with RTT 0.4 s.",
+        "expected_answer": "Window size = Throughput × RTT = 5 * 10 ^ 6 * 0.4 = 2 * 10 ^ 6 bits= 250 KB",
+        "Topic": "TCP over satellite"
+    },
+    {
+        "question": "Estimate TCP throughput if packet loss rate is 0.01 and RTT 0.6 s.",
+        "expected_answer": "Throughput = MSS/ (RTT*√p). Assuming MSS=1500 bytes:(1500*8)/ (0.6*√0.01)= 12000/(0.6 * 0.1) = 200000 bps = 200 Kbps",
+        "Topic": "TCP over satellite"
+    },
+    {
+        "question": "For given bandwidth 20 MHz and spectral efficiency 4 bps/Hz, find downlink peak data rate.",
+        "expected_answer": "R = B × η = 20 × 10^6 x 4 = 80 × 10^6 bps  = 80 Mbps",
+        "Topic": "Downlink"
+    },
+    {
+        "question": "Calculate round trip time for TT&C if distance to GEO satellite is 36,000 km.",
+        "expected_answer": "RTT = 2 * distance/ speed of light= (2*36,000*10^3)/3*10^8 = 0.24 s = 240 ms",
+        "Topic": "TT&C"
+    },
+    {
+        "question": "A link has SNR = 20 dB. If noise power = -100 dBm, what is the received signal power?",
+        "expected_answer": "Signal power = -100 + 20 = -80 dBm.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "A satellite has 20 dBW EIRP, free-space path loss 155 dB, receive antenna gain 25 dBi, receiver loss 2 dB. receiver sensitivity is -120 dBW, compute link margin.",
+        "expected_answer": "LM=Pr−Pmin=−112−(−120) =8 dB. Positive margin ensures buffer against fading or additional losses.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "A satellite link requires 20 dB C/N. Received power is -105 dBW. What is the maximum allowable noise power?",
+        "expected_answer": "C/N = Pr - N → N = Pr - C/N = -105 -20 = -125 dBW. Noise power must not exceed -125 dBW to maintain reliable link.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "A transmitter sends 10 W, antenna gain is 5 dB, and path loss is 10 dB. What is the received power in dB?",
+        "expected_answer": "Convert 10 W to dBW: 10log (10) =10) dBW. Received power (Pr = 10 + 5 - 10 = 5) dBW. So the receiver gets 5 dBW. Simple addition/subtraction of gain and loss gives the received power.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert transmit power Pt=5W into dBW (simple power conversion).",
+        "expected_answer": "Use P(dBW)=10log10(P(W). So 10log10(5) =6.99 dBW (approx.) This conversion is helpful because link budget arithmetic is done in dB units (additive) rather than multiplying linear values. After converting Pt to dBW, you can directly add antenna gains (dBi) and subtract losses (dB) to compute EIRP and Pr. Remember to convert back to watts only if you need linear units.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How do fade margins help in maintaining a reliable satellite link?",
+        "expected_answer": "Fade margin represents the additional power included in the link budget to compensate for unpredictable losses such as rain, atmospheric absorption, or antenna misalignment.\nIt is calculated as the difference between the actual received power and the minimum required power for reliable communication:\n\nMf=Pr−Pmin\n        \nwhere\nMf is the fade margin (dB),\nPr is the received power (dB), and\nPmin is the minimum power required by the receiver for proper demodulation (dB).\n\nFor example, if Pr=−100 dBW\nPmin=−105 dBW=−105dBW, the fade margin is \nMf=5 dB Including this margin ensures the link remains operational during temporary degradations, thereby enhancing link reliability.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How do pointing losses affect a high-gain satellite antenna?",
+        "expected_answer": "If a high-gain antenna is misaligned, its effective gain decreases due to pointing loss.\nIn the link budget, this is represented as a reduction in antenna gain:\n\nGeff=Gt−Lp\n\nwhere\n\nGeff is the effective antenna gain (dB),\n\nGt is the nominal transmit antenna gain (dB), and\n\nLp is the pointing loss (dB).\n\nFor example, if Gt=45 dB =45dB and Lp=2 dB, then Geff=43 dB =43dB.\nHigh-gain, narrow-beam antennas are particularly sensitive to such misalignment, so engineers include \nLp in the link budget and design precise control systems to minimize pointing errors.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How do you calculate Effective Isotropic Radiated Power (EIRP)?",
+        "expected_answer": "The Effective Isotropic Radiated Power (EIRP) is a measure of how much power a transmitting antenna radiates in its most focused direction. It combines the effects of the transmitter’s power and antenna gain, while subtracting losses. It is given by EIRP=Pt+Gt−Lt where Pt is transmit power, Gt is antenna gain, and Lt represents system losses. EIRP allows engineers to compare different transmission systems and ensure the transmitted signal is strong enough to be received at a given distance with minimal distortion or loss.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How does halving the distance between satellite and ground affect free-space path loss?",
+        "expected_answer": "Halving the distance between the satellite and the ground reduces the free-space path loss (FSL). The FSL is given by the formula:\n\n\\[\n\\text{FSL} = 20 \\log_{10} (d)\n\\]\n\nwhere \\( d \\) is the distance between the satellite and the receiver. When the distance is halved, \\( d' = \\frac{d}{2} \\), the change in FSL is:\n\n\\[\n\\Delta \\text{FSL} = 20 \\log_{10} \\left( \\frac{d}{2} \\right) = 20 \\log_{10} (d) - 20 \\log_{10} (2)\n\\]\n\nThus, the reduction in FSL is approximately:\n\n\\[\n\\Delta \\text{FSL} = - 20 \\log_{10} (2) \\approx -6 \\, \\text{dB}\n\\]\n\nThis means the received power increases by 6 dB when the distance is halved. Engineers can take advantage of shorter distances or lower orbits to improve signal strength.\n",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How is received power estimated in link budget analysis?",
+        "expected_answer": "Received power (Pr) is the total signal power at the receiving antenna after accounting for all gains and losses in the system. It is calculated using the equation Pr=Pt+Gt+Gr−Lp, where Pt is the transmitted power, Gt and Gr are the transmitter and receiver antenna gains, and Lp is the path loss in dB. This simple relationship helps determine whether the signal level at the receiver is strong enough for correct detection. In practical terms, higher antenna gains or transmit power improve received signal levels.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "If a 15 W transmitter communicates through a lossy cable of 1.5 dB, how is EIRP affected?",
+        "expected_answer": "Cable loss reduces the effective power reaching the antenna. P effective=Pt−L cable=15 W≈11.76W → 10.7 dBW. If antenna gain is 20 dBi, EIRP = 10.7 + 20 = 30.7 dBW. Including cable losses ensures the link budget accurately reflects real transmitted power, preventing overestimation of received power and link margin.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "If rain attenuation is 3 dB, how should the link budget be adjusted?",
+        "expected_answer": "Rain attenuation adds extra loss to the link. In the budget, this 3 dB is added to total path loss, reducing received power. Engineers may compensate by increasing EIRP, using higher-gain antennas, or adding fade margin. For example, if FSL is 150 dB, EIRP 30 dBW, and receive antenna gain 20 dBi, the new Pr=30+20−(150+3) =−103 dBW. Proper adjustment ensures signal stays above minimum required power.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "If rain increases path loss by 3 dB, by how much should antenna gain be increased to maintain the same received power?",
+        "expected_answer": "To compensate for 3 dB additional loss, the antenna gain should be increased by 3 dB. For example, if original Gr = 20 dBi, new Gr = 23 dBi. This keeps received power unchanged, maintaining link reliability without increasing transmitter power.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Received power = -100 dBW, minimum required = -110 dBW. Find link margin.",
+        "expected_answer": "Link Margin LM=Pr−Pmin=−100−(−110) =10 dB. Positive margin shows signal is strong enough.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Transmit power = 5 W, transmitter gain = 3 dB, receiver gain = 2 dB, path loss = 8 dB. Find received power.",
+        "expected_answer": "Convert 5 W: 10log10(5) = 6.99 ≈ 7dBW. Then (Pr = 7 + 3 + 2 - 8 = 4dBW. Received power is 4 dBW. Simple arithmetic gives an easy link budget result.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Transmitter power = 20 W, antenna gain = 4 dB, path loss = 14 dB. Find received power.",
+        "expected_answer": "Convert 20 W: 10log10(20) = 13 dBW. Then Pr = 13 + 4 - 14 = 3 dBW. Receiver gets 3 dBW. Very simple addition/subtraction problem.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Using Pr=−108.45 dBW (Q13) and N=−126.05 dBW (Q14), compute C/N in dB.",
+        "expected_answer": "C/N=Pr−N=−108.45−(−126.05) =17.60 dB (rounded). This means the carrier is ~17.6 dB above the noise floor — a healthy margin for many modulations. Link designers use C/N to predict bit error rates and choose modulation/coding. If C/N is too low, increase EIRP, antenna gain, or reduce bandwidth/noise to improve the link.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What does free-space path loss represent in link budget analysis?",
+        "expected_answer": "Free-space path loss (FSL) represents the weakening of a radio signal as it travels through space without obstacles. It increases with both distance and frequency. The FSL can be calculated using FSL=20log10(d)+20log10(f)+92.44 where d is distance in kilometres and f is frequency in gigahertz. This loss occurs naturally due to the spreading of the wavefront over distance. Understanding FSL helps engineers predict how much power is lost before the signal reaches the receiver, which is essential for maintaining reliable satellite and wireless communications.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is link margin in link budget analysis?",
+        "expected_answer": "Link margin indicates the safety buffer or extra signal strength available above the minimum required level for proper reception. It is calculated using LM=Pr",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is the importance of noise power in link budget analysis?",
+        "expected_answer": "Noise power defines the amount of unwanted signal present in the receiver that can interfere with communication. It is an essential factor for determining the quality of the received signal. Noise power is given by N=kTB where k is Boltzmann’s constant, T is system temperature, and B is bandwidth. In link budget analysis, noise power helps calculate the signal-to-noise ratio (SNR), which directly affects system performance. Lower noise levels or narrower bandwidths help improve signal clarity and ensure better data accuracy in communication links.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "A downlink has bandwidth 5 MHz and SNR = 15 (linear). What is the theoretical maximum data rate?",
+        "expected_answer": "Using Shannon: C = B log₂(1 + SNR) = 5×10⁶ × log₂(1 + 15) ≈ 5×10⁶ × 4 = 20 Mbps. This shows the maximum data the link can carry under these conditions.",
+        "Topic": "Downlink"
+    },
+    {
+        "question": "A satellite downlink uses 10 W transmitted power. The path loss is 120 dB. What is the received power in watts?",
+        "expected_answer": "Received power Pr = Pt ÷ 10^(PL/10) = 10 ÷ 10^(120/10) = 10 ÷ 10¹² = 1 × 10⁻¹² W. Shows how distance drastically reduces signal strength.",
+        "Topic": "Downlink"
+    },
+    {
+        "question": "A satellite receives 100 Mbps of raw data and compresses it onboard by 40%. Find the data rate sent to Earth.",
+        "expected_answer": "Compressed data rate = 100 × (1 − 0.4) = 60 Mbps. Onboard processing reduces the data volume before transmission, saving bandwidth and reducing communication costs. This ensures faster delivery and better use of satellite resources for communication or observation.",
+        "Topic": "Onboard processing"
+    },
+    {
+        "question": "A satellite receives signals at 100 W and processes them with 90% efficiency. Find effective power after processing.",
+        "expected_answer": "Effective power = 100 × 0.9 = 90 W. Onboard processing improves signal quality but may have slight losses; knowing efficiency helps design power budgets and ensure reliable transmission.",
+        "Topic": "Onboard processing"
+    },
+    {
+        "question": "A satellite transmits 50 Mbps through a channel with SNR = 10 (linear). Calculate the Shannon capacity.",
+        "expected_answer": "C = B × log₂(1 + SNR). Assume B = 50 MHz → C = 50 × log₂(11) ≈ 50 × 3.46 ≈ 173 Mbps. This shows the maximum theoretical data rate, and onboard processing helps approach this capacity by optimizing signal quality.",
+        "Topic": "Onboard processing"
+    },
+    {
+        "question": "A satellite uses 200 W power for onboard processing. If the satellite’s total power is 800 W, find the percentage of power used for processing.",
+        "expected_answer": "Power % = (200 ÷ 800) × 100 = 25%. Understanding power allocation is crucial since onboard processing consumes energy, and satellites must balance processing with other subsystems like communication and sensors.",
+        "Topic": "Onboard processing"
+    },
+    {
+        "question": "An imaging satellite collects 500 GB/day. If onboard processing removes 30% redundant data, how much data is transmitted to Earth daily?",
+        "expected_answer": "Data sent = 500 × (1 − 0.3) = 350 GB/day. Onboard filtering and processing help minimize unnecessary transmissions, making efficient use of limited satellite bandwidth and reducing the load on ground stations.",
+        "Topic": "Onboard processing"
+    },
+    {
+        "question": "A satellite IP link has bandwidth of 20 MHz and SNR = 10 (linear). Calculate maximum data rate using Shannon capacity",
+        "expected_answer": "Capacity C = B × log₂(1 + SNR) = 20 × log₂(1 + 10) ≈ 20 × 3.459 ≈ 69.2 Mbps. This is the theoretical maximum rate under ideal conditions, helping engineers plan for sufficient bandwidth and modulation schemes for IP over Satellite networks.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite IP link has bandwidth of 20 MHz and SNR = 10 (linear). Calculate maximum data rate using Shannon capacity.",
+        "expected_answer": "Capacity C = B × log₂(1 + SNR) = 20 × log₂(1 + 10) ≈ 20 × 3.459 ≈ 69.2 Mbps. This is the theoretical maximum rate under ideal conditions, helping engineers plan for sufficient bandwidth and modulation schemes for IP over Satellite networks.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite link has a C/N ratio of 15. Noise power is 2 W. What is the required signal power?",
+        "expected_answer": "Signal Power = C/N × Noise Power = 15 × 2 = 30 W. This means the transmitted signal must be 30 W to maintain a C/N ratio of 15, ensuring clear communication. Maintaining the right C/N ratio is crucial in satellite IP systems to avoid errors and ensure reliable data delivery.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite link transmits 10 Mbps. Bandwidth available is 2 MHz. Find the required spectral efficiency.",
+        "expected_answer": "Spectral Efficiency = Data Rate / Bandwidth = 10 Mbps / 2 MHz = 5 bits/Hz. This tells us how efficiently the satellite system uses its bandwidth to transmit IP data. Optimizing spectral efficiency is critical in satellite networks due to limited spectrum availability.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite link transmits 50 Mbps over 10 MHz bandwidth. Calculate the spectral efficiency.",
+        "expected_answer": "Spectral Efficiency = Data Rate / Bandwidth = 50 Mbps / 10 MHz = 5 bits/Hz. This indicates that each Hz of bandwidth carries 5 bits of information. Higher spectral efficiency allows more data to be transmitted using limited spectrum, which is vital in satellite IP networks where bandwidth is constrained.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite link transmits data at 10 Mbps with a modulation scheme achieving 2 bits/Hz spectral efficiency. What is the required bandwidth?",
+        "expected_answer": "Bandwidth = Data Rate / Spectral Efficiency = 10 Mbps / 2 bits/Hz = 5 MHz. This means 5 MHz of spectrum is needed to transmit 10 Mbps. Proper bandwidth allocation ensures reliable transmission without interference.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite system transmits 100 Mbps using a 25 MHz channel. Find spectral efficiency.",
+        "expected_answer": "Spectral Efficiency = Data Rate / Bandwidth = 100 ÷ 25 = 4 bits/Hz. This indicates each Hz of bandwidth carries 4 bits of information. Efficient use of spectral resources is crucial in satellite IP systems to maximize throughput and support multiple users with limited spectrum.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite transmits 25 Mbps over 5 MHz. Calculate spectral efficiency.",
+        "expected_answer": "Spectral Efficiency = Data Rate / Bandwidth = 25 ÷ 5 = 5 bits/Hz. Efficient spectral use is vital for satellite IP networks with limited spectrum resources. Higher efficiency allows more users or higher data rates without increasing bandwidth.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "A satellite transmits at 5 Mbps using a 1 MHz bandwidth. Find the spectral efficiency.",
+        "expected_answer": "Spectral Efficiency = Data Rate / Bandwidth = 5 Mbps / 1 MHz = 5 bits/Hz. High spectral efficiency allows more data transmission over limited bandwidth.",
+        "Topic": "IP over satellite"
+    },
+    {
+        "question": "Calculate CNR for a NTN link with EIRP 45 dBW, antenna gain to noise temperatureG/T=12G/T = 12G/T=12dB/K, path loss 210 dB, bandwidthB = 10^6Hz.",
+        "expected_answer": "CNR =EIRP + G / T -L path -10 * log(k*B),\nwhere k= 1.38 * 10 ^ - 23 W/K/Hz ( dB = -228.6 dBW/K/Hz). 10 * log(B) = 60 dB; \nCNR = 45+12- 210- (-228.6) -60 = 15.6dB",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "Calculate Doppler shift at 1.6 GHz for satellite velocity 7 km/s.",
+        "expected_answer": "fD = v/c * fC =7000/(3 * 10 ^ 8) * 1.6 *10 ^ 9 = 37333 Hz",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "Calculate the array factor for a uniform linear array (ULA) with 4 elements and half wavelength spacing at broadside.",
+        "expected_answer": "Array factor at broadside:AF = N = 4, in dB 10 log(4) = 6.02 dB",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "Calculate the beamwidth for a uniform linear array with length 2 m operating at 3 GHz.",
+        "expected_answer": "Beamwidth θ = λ/L \nWavelength λ = 0.1 m. \n Θ = 0.1/2 = 0.05 radians = 2.86⁰",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "Calculate the gain of a satellite user terminal antenna with 1 m diameter and frequency 12 GHz.",
+        "expected_answer": "Gain G =10 * log(ɳ * ((π*D)/λ) ^ 2) . λ = c/f = (3 * 10 ^ 8)/(12 * 10 ^ 9) =0.025 m, ɳ= 0.55, G = 10 log (0.55* (π * 1 / 0.025) ^ 2 )= 10 * log(8672) = 39.4 dBi",
+        "Topic": "Satellite User terminal"
+    },
+    {
+        "question": "Calculate user terminal effective isotropic radiated power (EIRP) if transmit power is 10 W and antenna gain is 30 dBi.",
+        "expected_answer": "EIRP = Ptr(dBW) + G, Convert 10 W to dBW: 10 * log(10) = 10 dBW, EIRP = 10 + 30 = 40  dBW",
+        "Topic": "Satellite User terminal"
+    },
+    {
+        "question": "Calculate overall SNR if two independent noise sources with noise powers N 1=10^-8W and N2=10^-9W  are present along with signal power 1 mW.",
+        "expected_answer": "Total noise power N =N 1+ N 2} = 1.1 * 10 ^ - 8 * W ; \nSNR = Ps/N = 1 x (10 ^ - 3) / 1.1 * 10 ^ - 8 = 90909, \nSNR dB = 10 * log(90909) = 49.6 dB",
+        "Topic": "SNR"
+    },
+    {
+        "question": "Calculate SNR in linear scale if signal power is 0.001 W and noise power is1*10^-6W.",
+        "expected_answer": "SNR = P signal / P noise =  0.001 /(1*10^-6) = 1000; In dB: 10 log(1000) = 30 dB",
+        "Topic": "SNR"
+    },
+    {
+        "question": "Ground antenna gain = 45 dBi, satellite gain = 20 dBi, path loss = 160 dB. Link gain?",
+        "expected_answer": "Link gain = 45 + 20 − 160 = −95 dB. High-gain antennas are needed to overcome negative link margin.",
+        "Topic": "TT&C"
+    },
+    {
+        "question": "Calculate BER for QPSK at SNR = 10 dB in AWGN channel.",
+        "expected_answer": "BER = Q(√SNR), linear SNR = 10, √10 = 3.16, Q(3.16) = 7.7*10^-4",
+        "Topic": "Bit error rate"
+    },
+    {
+        "question": "Calculate link margin if signal power is -85 dBm and receiver sensitivity is -95 dBm.",
+        "expected_answer": "Link margin = P signal - P sensitivity= -85-(-95) = 10 dB",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "Calculate processing delay if signal passes onboard processor with 250 clock cycles at 2 GHz clock rate.",
+        "expected_answer": "Delay = cycles/frequency=250 /(2×10^9) = 125 ×10^-9 = 125 ns",
+        "Topic": "Onboard processing"
+    },
+    {
+        "question": "Find propagation delay for LEO satellite at 600 km altitude.",
+        "expected_answer": "Delay = distance /speed of light =600000/3*10^8 = 2 ms",
+        "Topic": "NTN"
+    },
+    {
+        "question": "How to calculate the CNR in a 5G NTN link given Effective Isotropic Radiated Power (EIRP) 40 dBW, antenna gain to noise temperature 10 dB/K, and path loss 200 dB?",
+        "expected_answer": "Formula: CNR=EIRP+G/T- L path-10log(k*B) \nwhere, k = 1.38*10^-23 W/K/Hz, assume bandwidth B=1 MHz. \nCNR=40+10-200-(-228.6)-60=18.6 dB",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "A link has MTBF = 5000 hours and MTTR = 10 hours. Find the availability.",
+        "expected_answer": "Availability = 5000 ÷ (5000 + 10) ≈ 0.998 or 99.8%. Higher MTBF or lower MTTR increases availability, showing that frequent failures or long repairs reduce link reliability.",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "A network link is up for 8750 hours in a year and down for 10 hours. Find the link availability.",
+        "expected_answer": "Availability = 8750 ÷ (8750 + 10) × 100 ≈ 99.89%. This means the link is reliable almost all the time. High availability ensures minimal service interruption and better user experience.",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "Two redundant links have individual availability of 98% each. Find total system availability.",
+        "expected_answer": "Total Availability = 1 − (1 − 0.98) × (1 − 0.98) = 0.9996 or 99.96%. Using redundancy increases reliability because if one link fails, the other can maintain service.",
+        "Topic": "Link availability"
+    },
+    {
+        "question": "Uplink frequency = 14 GHz, distance = 36,000 km. Find free-space path loss (FSPL).",
+        "expected_answer": "FSPL = 20 log₁₀(36,000) + 20 log₁₀(14) + 92.45 = 91.1 + 22.9 + 92.45 = 206.45 dB. High frequencies and long distances cause large losses, so accurate FSPL estimation helps in power and gain planning for uplink design.",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Find Carrier to Noise Ratio (C/N) if carrier power = -40 dBm and noise power = -70 dBm.",
+        "expected_answer": "C/N = Pc-Pn = -40-(-70)=30 dB",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "A satellite is 1,000 km above the Earth. If signals travel at 3×108 m/s, what is the one-way delay?",
+        "expected_answer": "Distance = 1,000 km = 1,000,000 m. Delay = 1,000,000 / 3×108 = 0.00333 s ≈ 3.33 ms.",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "A satellite is positioned at an altitude of 1,200 km above Earth. Calculate the approximate coverage area on the ground, assuming a circular footprint with radius 500 km.",
+        "expected_answer": "Area = π × 500² ≈ 785,398 km². This shows how much ground the satellite covers.",
+        "Topic": "Non-Terrestrial Networks"
+    },
+    {
+        "question": "If signal power = 50 mW and noise power = 5 mW, what is the SNR?",
+        "expected_answer": "SNR = 50 ÷ 5 = 10. The signal has ten times more power than the noise.",
+        "Topic": "Signal-to-noise ratio"
+    },
+    {
+        "question": "If the signal power is 100 mW and the noise power is 10 mW, what is the SNR?",
+        "expected_answer": "SNR = 100 ÷ 10 = 10. This means the signal is 10 times stronger than the noise.",
+        "Topic": "Signal-to-noise ratio"
+    },
+    {
+        "question": "A satellite user terminal transmits at 20 W with uplink path loss of 175 dB. Find the received power at the satellite.",
+        "expected_answer": "Pr = 20 ÷ 10^(175/10) ≈ 2 × 10⁻¹⁶ W. Satellite user terminals often have low transmit power, so engineers must consider antenna gain and coding to ensure reliable signal reception by the satellite for services like broadband and IoT.",
+        "Topic": "Satellite User terminal"
+    },
+    {
+        "question": "Required data rate = 30 Mbps, bandwidth = 8 MHz. Find spectral efficiency of satellite user terminal.",
+        "expected_answer": "Spectral Efficiency = 30 ÷ 8 ≈ 3.75 bits/Hz. High spectral efficiency ensures user terminals utilize the uplink channel effectively, supporting multiple simultaneous connections.",
+        "Topic": "Satellite User terminal"
+    },
+    {
+        "question": "Bandwidth = 5 MHz, SNR = 12 (linear). Find the theoretical uplink data rate.",
+        "expected_answer": "C = B × log₂(1 + SNR) = 5 × log₂(13) ≈ 5 × 3.7 = 18.5 Mbps. This shows how signal quality and available bandwidth together determine achievable data rates in uplink IP satellite links.",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Transmit power = 100 W, uplink path loss = 170 dB. Find received power.",
+        "expected_answer": "Pr = 100 ÷ 10^(170/10) = 1 × 10⁻¹⁵ W. The received signal is extremely weak due to high loss during uplink transmission. Engineers must use high-gain antennas or amplifiers to overcome such loss in long-distance satellite links.",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "A communication link requires C/N ≥ 12 for error-free transmission. Noise = 3 W. What minimum signal power is needed?",
+        "expected_answer": "Signal Power = 12 × 3 = 36 W. Any signal lower than 36 W would cause errors.",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "A ground station receives 60 W from multiple satellites. Noise = 15 W. If one satellite contributes 20 W, what is its partial C/N?",
+        "expected_answer": "Partial C/N = 20 ÷ 15 = 1.33. This shows the contribution of one satellite relative to noise.",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "A satellite transmits a signal of 12 W and the noise is 3 W. Find the C/N ratio.",
+        "expected_answer": "C/N = 12 ÷ 3 = 4. This means the signal is 4 times stronger than the noise, so the communication link is relatively clear.",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "A signal of 20 W with noise 4 W is boosted by 50% in power. Find new C/N.",
+        "expected_answer": "Boosted signal = 20 × 1.5 = 30 W. New C/N = 30 ÷ 4 = 7.5. Increasing signal improves quality.",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "Noise power is 2 W and C/N = 6. What is the signal power?",
+        "expected_answer": "Signal Power = 6 × 2 = 12 W. To maintain a C/N of 6, the signal must be 6 times the noise power.",
+        "Topic": "Carrier-to-noise ratio"
+    },
+    {
+        "question": "A 5G NTN satellite moves 1,500 km relative to a user in 10 minutes. Calculate speed in km/h.",
+        "expected_answer": "Speed = 1,500 / (10/60) = 9,000 km/h.",
+        "Topic": "5G NTN"
+    },
+    {
+        "question": "Array with 4 antennas, each transmitting 10 W. Find total array power if all are combined coherently.",
+        "expected_answer": "Total power = 4 × 10 = 40 W. When antennas combine signals in phase, the signal adds linearly, increasing strength in the desired direction. Beamforming uses this principle to focus energy toward the target.",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "If the number of antennas are increased, what happens to the beam?",
+        "expected_answer": "\\[\\theta_{\\text{beam}} \\approx \\frac{\\lambda}{D}\\]\n\nwhere:\n\\begin{itemize}\n  \\item $\\theta_{\\text{beam}}$ is the beamwidth (radians),\n  \\item $\\lambda$ is the wavelength of the signal (m),\n  \\item $D$ is the effective aperture or array diameter (m), which increases with the number of antennas.\n\\end{itemize}\n\nAs the number of antennas increases, the effective aperture $D$ becomes larger, leading to a smaller beamwidth $\\theta_{\\text{beam}}$. This results in a narrower and more focused beam, improving directionality and reducing interference, though it requires more complex hardware and power.\n",
+        "Topic": "Beamforming"
+    },
+    {
+        "question": "A LEO satellite moves, causing handover every 90 s. Handover takes 1 s. Find downtime %.",
+        "expected_answer": "Downtime % = 1 ÷ 90 × 100 ≈ 1.11%. Minimizing downtime ensures continuous connectivity.",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "A network handles 1000 handovers per hour, 5 fail. Find failure rate.",
+        "expected_answer": "Failure rate = 5 ÷ 1000 × 100 = 0.5%. Low failure rate reflects efficient mobility management.",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "A user moves across satellite coverage areas every 300 s. If the handover takes 2 s, find handover efficiency.",
+        "expected_answer": "Efficiency = (300 − 2) ÷ 300 × 100 ≈ 99.33%. Efficient handover minimizes service interruption.",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Handover delay = 1.5 s, total call duration = 10 min. Find % call time affected by handover.",
+        "expected_answer": "% Time affected = 1.5 ÷ (10×60) × 100 ≈ 0.25%. Minimizing delay ensures smooth user experience.",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "Handover success rate = 980/1000 attempts. Find % success.",
+        "expected_answer": "% Success = 980 ÷ 1000 × 100 = 98%. High success rate indicates reliable handover.",
+        "Topic": "Handover procedure"
+    },
+    {
+        "question": "NTN channel bandwidth = 100 MHz, SNR = 20 dB. Find the maximum theoretical data rate.",
+        "expected_answer": "SNR_linear = 10^(20/10) = 100. Using Shannon-Hartley: C = 100 × log₂(101) ≈ 666 Mbps. Bandwidth and SNR determine achievable link capacity.",
+        "Topic": "NTN"
+    },
+    {
+        "question": "Signal received = 15 W, noise = 3 W. Find C/N in dB.",
+        "expected_answer": "Linear C/N = 15 ÷ 3 = 5. C/N_dB = 10 × log₁₀(5) ≈ 6.99 dB. A higher dB indicates better link quality.",
+        "Topic": "NTN"
+    },
+    {
+        "question": "500,000 bits are transmitted through a fiber optic link, with 50 errors detected. Calculate BER.",
+        "expected_answer": "BER = 50 ÷ 500,000 = 0.0001. This shows that only 0.01% of bits are in error, indicating excellent system performance. Low BER is essential for high-speed fiber networks, as even a small error rate can cause data corruption or loss over long transmissions. Engineers aim to minimize BER using error correction, high-quality components, and optimal signal power to ensure reliable communication in fiber optic systems.",
+        "Topic": "Bit error rate"
+    },
+    {
+        "question": "A binary system has BER = 10⁻³. If 500,000 bits are transmitted, estimate the number of errors expected.",
+        "expected_answer": "Bit Errors = 500,000 × 10⁻³ = 500 bits. Understanding expected errors helps design error correction and coding schemes, ensuring reliable data transmission and improved system performance in noisy channels.",
+        "Topic": "BER"
+    },
+    {
+        "question": "A communication system transmits 500,000 bits, and 50 bits are received in error. Calculate the BER.",
+        "expected_answer": "BER = 50 ÷ 500,000 = 0.0001. This means 0.01% of the transmitted bits were received incorrectly. A low BER indicates that the communication system is performing well, with minimal errors affecting the data transmission. Maintaining a low BER is crucial for ensuring reliable communication, especially in systems where data integrity is paramount.",
+        "Topic": "BER"
+    },
+    {
+        "question": "A digital communication system transmits 1,000,000 bits, and 500 bits are received in error. Find the BER.",
+        "expected_answer": "BER = 500 ÷ 1,000,000 = 0.0005. This means 0.05% of transmitted bits were incorrect. A low BER indicates the link is reliable, and only a small fraction of data is affected by noise or interference. Maintaining a low BER is crucial for applications like video streaming and real-time data transmission, as it ensures that information reaches the receiver accurately without needing excessive retransmissions.",
+        "Topic": "Bit error rate"
+    },
+    {
+        "question": "A system has a BER of 0.002, and 200,000 bits are sent. How many bit errors occur?",
+        "expected_answer": "Bit Errors = 200,000 × 0.002 = 400 bits. This indicates that out of 200,000 bits, 400 are incorrectly received due to channel noise or interference. Understanding the number of errors helps engineers design error correction techniques and plan link budgets to maintain system reliability. It also guides decisions on modulation schemes and signal power to reduce the probability of bit errors.",
+        "Topic": "Bit error rate"
+    },
+    {
+        "question": "A wireless link has BER = 0.005 and 100,000 bits transmitted. How many errors occur?",
+        "expected_answer": "Bit Errors = 100,000 × 0.005 = 500 bits. This relatively higher BER suggests that noise, interference, or fading may affect the link. Engineers can use BER to decide on improving signal quality, adjusting modulation, or implementing error correction to ensure reliable data transmission for critical applications.",
+        "Topic": "BER"
+    },
+    {
+        "question": "If the BER of a system is 10⁻⁶, how many errors would occur in the transmission of 1,000,000 bits?",
+        "expected_answer": "Bit Errors = 1,000,000 × 10⁻⁶ = 1 bit. This indicates that, on average, one bit out of one million transmitted bits is received incorrectly. Such a low error rate suggests a highly reliable communication system, suitable for applications requiring high data integrity.",
+        "Topic": "BER"
+    },
+    {
+        "question": "If an uplink has C/N = 20 dB and noise power = 2 W, find the carrier power.",
+        "expected_answer": "Convert 20 dB to linear: 10^(20/10) = 100. C = 100 × 2 = 200 W. The carrier signal must be 200 W to achieve a 20 dB C/N ratio. This ensures clear transmission with minimal bit errors in uplink data transfer.",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "Transmit gain = 35 dB, receive gain = 25 dB, and path loss = 180 dB. Transmit power = 20 W. Find total link gain.",
+        "expected_answer": "Link Budget = 10 log₁₀(20) + 35 + 25 − 180 = 13 + 60 − 180 = −107 dB. The negative result means the uplink signal is very weak at the receiver, showing the importance of high antenna gains in uplink design.",
+        "Topic": "Uplink"
+    },
+    {
+        "question": "The major axis of a signal = 3 V and minor axis = 3 V. What type of polarization is this?",
+        "expected_answer": "Axial ratio = 3 ÷ 3 = 1 → perfect circular polarization.",
+        "Topic": "Circular Polarization"
+    },
+    {
+        "question": "What is the axial ratio?",
+        "expected_answer": "Axial ratio shows how close the polarization is to circular. If major and minor axes are equal, the ratio = 1 (perfect circular). Larger ratios mean more elliptical.",
+        "Topic": "Circular Polarization"
+    },
+    {
+        "question": "A D2D system allocates 20 MHz bandwidth and achieves 5 bits/Hz spectral efficiency. Find the achievable data rate.",
+        "expected_answer": "The achievable data rate R = B × η = 20 × 10⁶ × 5 = 100 Mbps. This value aligns with 3GPP’s ProSe targets for high-throughput D2D links in 5G NR. Such efficiency is reached using adaptive modulation and coding.",
+        "Topic": "3gpp"
+    },
+    {
+        "question": "If bandwidth = 20 MHz and spectral efficiency = 5 bits/Hz, find the data rate.",
+        "expected_answer": "3GPP defines D2D throughput as R = B × η. Here R = 20 × 10⁶ × 5 = 100 Mbps. Direct links can reach such data rates due to reduced signaling and channel re-use efficiency.",
+        "Topic": "3gpp"
+    },
+    {
+        "question": "How is the link margin determined for an ISL?",
+        "expected_answer": "Link margin is the difference between received power and the minimum required power for a reliable link. \\[M = P_r - P_{\\text{min}}\\]\n\nwhere:\n\\begin{itemize}\n  \\item $M$ is the link margin (dB),\n  \\item $P_r$ is the received power (dB),\n  \\item $P_{\\text{min}}$ is the minimum required received power (receiver sensitivity) for reliable communication (dB).\n\\end{itemize}\n\nA higher link margin $M$ indicates greater resilience of the inter-satellite link (ISL) against fading, interference, and other signal impairments.\n",
+        "Topic": "Inter satellite Link"
+    },
+    {
+        "question": "How is the maximum range between two satellites with ISLs calculated?",
+        "expected_answer": "The maximum range depends on the orbital altitudes and the geometry of the satellite orbits. \\[d_{\\text{max}} = 2 \\sqrt{(R_E + h)^2 - R_E^2}\\]\n\nwhere:\n\\begin{itemize}\n  \\item $d_{\\text{max}}$ is the maximum line-of-sight distance between two satellites (km),\n  \\item $R_E$ is the Earth's radius (approximately 6371 km),\n  \\item $h$ is the orbital altitude of the satellites (km).\n\\end{itemize}\n\nThis formula assumes that both satellites are in the same orbital plane and accounts for the curvature of the Earth to determine the maximum possible inter-satellite distance for line-of-sight communication.\n",
+        "Topic": "Inter satellite Link"
+    },
+    {
+        "question": "How to calculate data rate for an ISL?",
+        "expected_answer": "\\[R_b = B \\cdot \\eta\\]\n\nwhere:\n\\begin{itemize}\n  \\item $R_b$ is the data rate (bits/s),\n  \\item $B$ is the channel bandwidth (Hz),\n  \\item $\\eta$ is the spectral efficiency (bits/s/Hz).\n\\end{itemize}\n\nA higher spectral efficiency $\\eta$ or wider bandwidth $B$ increases the achievable data rate for the inter-satellite link (ISL), provided the signal-to-noise ratio (SNR) is sufficient to support the chosen modulation and coding scheme.\n",
+        "Topic": "Inter satellite Link"
+    },
+    {
+        "question": "What factors influence the signal strength in an ISL?",
+        "expected_answer": "\\[P_r = P_t + G_t + G_r - L_p - L_a\\]\n\nwhere:\n\\begin{itemize}\n  \\item $P_r$ is the received power (dB),\n  \\item $P_t$ is the transmitted power (dB),\n  \\item $G_t$ is the transmitter antenna gain (dB),\n  \\item $G_r$ is the receiver antenna gain (dB),\n  \\item $L_p$ is the free-space path loss (dB),\n  \\item $L_a$ represents additional atmospheric losses (dB), such as absorption and scattering.\n\\end{itemize}\n\nThe free-space path loss can be expressed as:\n\\[L_p = 20 \\log_{10}\\left( \\frac{4 \\pi d}{\\lambda} \\right)\\]\n\nwhere $d$ is the distance between satellites (m) and $\\lambda$ is the signal wavelength (m).  \nThus, signal strength in an inter-satellite link (ISL) depends on transmit power, antenna characteristics, path loss, and atmospheric effects.\n",
+        "Topic": "Inter satellite Link"
+    },
+    {
+        "question": "A channel has SNR = 12 dB. Convert this to linear ratio.",
+        "expected_answer": "Linear SNR = 10^(12/10) ≈ 15.85. The signal power is about 15.85 times the noise power.",
+        "Topic": "SNR"
+    },
+    {
+        "question": "How do you calculate SNR if the received signal power is 50 mW and noise power is 5 mW?",
+        "expected_answer": "SNR is the ratio of signal power to noise power. Here, SNR = 50/5 = 10. Converting to decibels: SNR (dB) = 10 log10(10) = 10 dB.",
+        "Topic": "SNR"
+    },
+    {
+        "question": "If a receiver has noise power 1 mW and SNR target is 20 dB, what should be the signal power?",
+        "expected_answer": "Linear SNR = 10^(20/10) = 100. Signal power = SNR × noise power = 100 × 1 mW = 100 mW.",
+        "Topic": "SNR"
+    },
+    {
+        "question": "In satellite broadcasting, transmit power = 50 W and uplink path loss = 180 dB. Find received power.",
+        "expected_answer": "Pr = 50 ÷ 10^(180/10) = 5 × 10⁻¹⁶ W. In satellite broadcasting, the received signal is very weak due to high uplink path loss. Engineers must design high-gain antennas or amplifiers to maintain reliable broadcast signal reception.",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Noise temperature = 500 K, bandwidth = 50 MHz. Find noise power for satellite broadcasting uplink.",
+        "expected_answer": "Pn = k × T × B = 1.38×10⁻²³ × 500 × 50×10⁶ ≈ 3.45 × 10⁻¹³ W. In satellite broadcasting, noise power affects the required carrier power to maintain clear reception of broadcast signals.",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Required data rate = 40 Mbps, bandwidth = 10 MHz in satellite broadcasting. Find spectral efficiency.",
+        "expected_answer": "Spectral Efficiency = 40 ÷ 10 = 4 bits/Hz. Efficient use of bandwidth is crucial in satellite broadcasting to serve multiple users with high-quality video and audio streams.",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Satellite broadcasting link: bandwidth = 20 MHz, SNR = 10 (linear). Find maximum uplink capacity.",
+        "expected_answer": "C = 20 × log₂(1 + 10) = 20 × 3.46 ≈ 69.2 Mbps. This is the theoretical maximum capacity of the satellite broadcasting uplink, guiding the choice of modulation and coding schemes for reliable broadcast services.",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Transmit power = 70 W, path loss = 195 dB, antenna gains = 40 dB each in satellite broadcasting. Find received power.",
+        "expected_answer": "Pr = 10 log₁₀(70) + 40 + 40 − 195 ≈ −94.45 dB. Proper design of uplink power and antennas in satellite broadcasting ensures that TV or radio signals reach all users reliably.",
+        "Topic": "Satellite broadcasting"
+    },
+    {
+        "question": "Calculate SNR in dB if signal voltage amplitude is 0.2 V and noise RMS voltage is 0.01 V.",
+        "expected_answer": "SNR = 20 log(V signal/V noise) = 20 log(0.2/0.01) = 20 log(20) = 26 dB",
+        "Topic": "SNR"
+    },
+    {
+        "question": "Calculate antenna gain in dBi from directivity.",
+        "expected_answer": "Antenna gain G=D * efficiency,  often simplified to gain in dBi given in datasheets; no formula needed if gain is provided directly.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate antenna gain sum if transmitter antenna gain is 12 dBi and receiver is 14 dBi.",
+        "expected_answer": "Total gain =12+14=26 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate free space path loss at 3 GHz and 1 km distance.",
+        "expected_answer": "FSPL (dB) =20 log(d)+20 log(f)+32.44. FSPL (dB) =20 log(5)+20 log(2000)+32.44 FSPL=20log(1)+20log(3000)+32.44=0+69.54+32.44=101.98dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate free space path loss using wavelength for 1 km.",
+        "expected_answer": "Lfs = 20 log(4πd/λ) in dB = 20 log(4π*1000/0.125) = 100.47 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate free space path loss using wavelength λ and distance d.",
+        "expected_answer": "Lfs = 20 log(4πd/λ) in dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate FSPL at 2 GHz over 2 km distance.",
+        "expected_answer": "FSPL (dB) =20 log(d)+20 log(f)+32.44. FSPL (dB) =20 log(5)+20 log(2000)+32.44 FSPL=20log(2)+20log(2000)+32.44=6.02+66.02+32.44=104.48dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate FSPL for 1 GHz frequency over 5 km distance.",
+        "expected_answer": "FSPL (dB) =20 log(d)+20 log(f)+32.44. FSPL (dB) =20 log(5)+20 log(2000)+32.44 \nFSPL (dB) =20 log(5)+20 log(1000)+32.44 = 14+60+32.44=106.44 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate FSPL for 6 GHz at 0.5 km.",
+        "expected_answer": "FSPL (dB) =20 log(d)+20 log(f)+32.44. FSPL (dB) =20 log(5)+20 log(2000)+32.44 FSPL=20log(0.5)+20log(6000)+32.44= -6.02 + 75.56 + 32.44 = 101.98 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate FSPL given wavelength 0.125 m and distance 3 km.",
+        "expected_answer": "Lfs = 20 log(4πd/λ) in dB\nLfs = 20 log(4π*3000/0.125) = 20 log(301592)=110.58",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate link budget with given:Ptx=10dBm, Gtx=9dB, L=90dB, Grx=12dB, Lothers=1dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx, where Prx = received power, Ptx = transmit power, Gtx and Grx are antenna gains, and Ltx, Lfs, Lp, Lrx are losses.\nPrx=10+9-90+12-1=-60",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate link margin if receiver sensitivity is -90 dBm andPrx=-75dBm.",
+        "expected_answer": "Margin =Prx - sensitivity (both in dBm)\nMargin = -75-(-90)=15 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate link margin ifPrx= -85dBm and receiver sensitivity is -95 dBm.",
+        "expected_answer": "Margin =Prx - sensitivity (both in dBm) = -80-(-95)=15dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate link margin ifPrx=-50 dBm and receiver sensitivity is -60 dBm.",
+        "expected_answer": "Margin =Prx - sensitivity (both in dBm)\nMargin = -50-(-60)=10 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate received power forPtx=35dBm, total gain 25 dB, total loss 140 dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx\nPrx = 35 + 25 - 140= - 80 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate received power if transmit power is 15 dBm, antenna gains total 20 dB and total losses are 120 dB.",
+        "expected_answer": "The basic link budget is: Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx, where Prx = received power, Ptx = transmit power, Gtx and Grx are antenna gains, and Ltx, Lfs, Lp, Lrx are losses.  \nPrx=15+20-120=-85 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate received power ifPtx=15dBm,Gtx=99dB,L=115dB,Grx=14dB,Lother=2dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx \nPrx = 15+9-115+14-2=-79 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate receiver sensitivity margin if sensitivity is -95 dBm andPrx= -80 dBm.",
+        "expected_answer": "Margin =Prx - sensitivity (both in dBm) = -80-(-95)=15dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate required transmitter power for receiver sensitivity -85 dBm, total gains 40 dB, total losses 130 dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx \nPtx=-85-40+130=5 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate the transmitter power needed forPrx= -60 dBm, total losses 120 dB, total gains 25 dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx \nPtx = -60-25-120=35 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate the wavelength for 5 GHz frequency.",
+        "expected_answer": "λ=  c/f, where c=speed of light 3*10^8 m/s\nλ=c/5*10^9=0.06 m",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate transmitter power required for receiver at -70 dBm, total gains 30 dB, total losses 110 dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx \nPtx=-70-30+110=10 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate wavelength for 900 MHz frequency.",
+        "expected_answer": "λ=  c/f, where c=speed of light 3*10^8 m/s\nλ=  c/(900*10^6) = 0.33m",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Calculate wavelength λ for frequency 2.4 GHz.",
+        "expected_answer": "λ=  c/f, where c=speed of light 3*10^8 m/s\n=c/2.4*10^9 = 0.125 m",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "CalculatePrx if Ptx=15 dBm,Gtx=10dB, L=100dB,Grx=15 dB, no other losses.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx =\nPrx = 15+10-100+15=-60 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Compute Prx if transmitter power 30 dBm, gains total 20 dB, total losses 140 dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx \n Prx = 30+20-140=-90 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert 40 dBm power to watts.",
+        "expected_answer": "Pwatts = 10^(PdBm/10)/1000 \nPwatts = 10^(40/10)/1000 = 10 watts",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert power 100 mW to dBm.",
+        "expected_answer": "10logâ",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert power 23 dBm to watts.",
+        "expected_answer": "Pwatts = 10^(PdBm/10)/1000 = 10^2.3/1000=0.2 watts",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert power of 5 dBm to watts.",
+        "expected_answer": "Pwatts=10^(PdBm/10)/1000\nPwatts=10^(5/10)/1000 = 000316 watts or 3.16 mW",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert received power of -30 dBm to watts.",
+        "expected_answer": "Pwatts=10^(PdBm/10)/1000 = 10^-3/1000=10^-6W",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Convert transmitter power of 50 mW to dBm.",
+        "expected_answer": "Pdm=10log(50)=16.99 = 17 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Find free space path loss at 10 km and 3 GHz frequency.",
+        "expected_answer": "FSPL (dB) =20 log(d)+20 log(f)+32.44.\n FSPL (dB) =20 log(10)+20 log(3000)+32.44 = 20+69.54+32.4=122 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Find link budget ifPtx=18dBm, Gtx=12dB, L=110dB,Grx=15dB,L others=3dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx, where Prx = received power, Ptx = transmit power, Gtx and Grx are antenna gains, and Ltx, Lfs, Lp, Lrx are losses.\nPrx=18+12+110+15-3=-68",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Find received power if Ptx=10dBm,Gtx=8dB, path loss 90 dB,Grx=12dB, cable losses 4 dB.",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx \nPrx = 10+8-90+12-4=-64 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to add antenna gains when both transmitter and receiver antennas have 15 dBi gain?",
+        "expected_answer": "Total antenna gain = 15 + 15 = 30 dB.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate free space path loss (FSPL)?",
+        "expected_answer": "FSPL (dB) =20 log(d)+20 log(f)+32.44, where d is distance in km and f is frequency in MHz or GHz depending on formula version.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate FSPL at 5 km for 2 GHz frequency?",
+        "expected_answer": "FSPL (dB) =20 log(d)+20 log(f)+32.44. FSPL (dB) =20 log(5)+20 log(2000)+32.44 = 112.44.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate link budget if Ptx=20 dBm, Gtx=10 dB, path loss L=100 dB, Grx=14 dB, other losses = 4 dB?",
+        "expected_answer": "The basic link budget is: Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx, where Prx = received power, Ptx = transmit power, Gtx and Grx are antenna gains, and Ltx, Lfs, Lp, Lrx are losses.\nPrx = 20 + 10 - 100 + 14-4 = -60 dBM",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate margin if minimum receiver sensitivity is -75 dBm andPrx is -60 dBm?",
+        "expected_answer": "Margin =Prx - sensitivity \nMargin = -60 - (-75) = 15 dB.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate power in watts from dBm?",
+        "expected_answer": "Pwatts=10^(PdBm/10)/1000. For example, 10 dBm = 0.01 watts.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate received power with transmitter power 25 dBm, gains 18 dB, and losses 90 dB?",
+        "expected_answer": "The basic link budget is: Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx, where Prx = received power, Ptx = transmit power, Gtx and Grx are antenna gains, and Ltx, Lfs, Lp, Lrx are losses.\nPrx=25+18-90=-47 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate required transmitter power if receiver sensitivity is -90 dBm and total losses are 150 dB and antenna gains sum to 40 dB?",
+        "expected_answer": "Ptx = Prx - Gtx - Grx + Ltotal => Ptx = -90 -40 +150 =20dBm.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to calculate transmit power if receiver sensitivity is -80 dBm, total gains 35 dB, total losses 120 dB?",
+        "expected_answer": "Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx \nPtx=-80-35+120=5 dBm",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to compute received power at the receiver?",
+        "expected_answer": "Prx = Ptx + Gtx + Grx - Ltotal, where Ltotal includes all losses like path loss, cable loss, etc.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to convert power from dBm to watts?",
+        "expected_answer": "Pwatts = 10^(PdBm/10)/1000. For example, for 30 PdBm,P=1watt.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to convert wavelength λ in meters from frequency f in Hz?",
+        "expected_answer": "λ=  c/f, where c=speed of light 3*10^8 m/s",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to estimate the receiver sensitivity margin with knownPrx and Sensitivity?",
+        "expected_answer": "Margin =Prx - sensitivity (both in dBm). Positive margin means good signal quality.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to find antenna gain from directivity 15 and efficiency 0.7?",
+        "expected_answer": "Gain=Directivity*Efficiency = 15*0.7=10.5",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to find maximum distance given FSPL and frequency?",
+        "expected_answer": "d=(λ/4π)*10^(Lfs/20)",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to find power loss due to cable attenuation of 0.5 dB per meter over 3 meters?",
+        "expected_answer": "Cable loss  L = 0.5 * 3 = 1.5 dB.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "How to find the link margin from received power?",
+        "expected_answer": "Link marginLM = Prx-Pmin, where Pmin is minimum receiver sensitivity needed for good reception.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "Transmitter power conversion for 0.5 W to dBm.",
+        "expected_answer": "PdBm=10log(500)=26.99",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What formula represents total losses in link budget?",
+        "expected_answer": "Total loss : Ltotal = Ltx + Lfs + Lprop + Lrx, sum of all loss components in dB.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is link margin if received power is -70 dBm and minimum sensitivity is -85 dBm?",
+        "expected_answer": "Margin =Prx - sensitivity \nLM=-70-(-85)=15 dB",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is the basic link budget equation?",
+        "expected_answer": "The basic link budget is: Prx = Ptx + Gtx - Ltx- Lfs - Lp + Grx - Lrx, where Prx = received power, Ptx = transmit power, Gtx and Grx are antenna gains, and Ltx, Lfs, Lp, Lrx are losses.",
+        "Topic": "Link Budget"
+    },
+    {
+        "question": "What is transmitter power in dBm if output power is 1 W?",
+        "expected_answer": "Ptx (dBm) = 10 log(Pwatts x 1000) = 10 log (1000) = 30 dBm",
+        "Topic": "Link Budget"
+    }
+]

@@ -44,8 +44,8 @@ except ImportError as e:
 
 # Import local LitGPT utilities
 try:
-    from merge_lora import merge_lora
-    from convert_lit_checkpoint import convert_lit_checkpoint
+    from utils.merge_lora import merge_lora
+    from utils.convert_lit_checkpoint import convert_lit_checkpoint
     LITGPT_AVAILABLE = True
 except ImportError as e:
     LITGPT_AVAILABLE = False
