@@ -209,24 +209,35 @@ dataset['train'].to_json("datasets/my_dataset.json")
 
 ```yaml
 # Base model directory (before fine-tuning)
-base_model_dir: /path/to/base/model
+base_model_dir: checkpoints/meta-llama/Meta-Llama-3.1-8B-Instruct
+
+# Checkpoints directory
+checkpoints_dir: out/finetune/meta-llama/Meta-Llama-3.1-8B-Instruct
 
 # Experiment tracking
 experiment_name: satcom_llm_benchmark
+output_dir: ./benchmark_results
 
 # Checkpoint selection strategy
 checkpoints:
-  selection: specific  # Options: all, specific, pattern
+  selection: specific  # Options: all, specific, latest
   specific_list:
     - base_model      # Evaluate base model
     - step-000200     # Intermediate checkpoints
     - step-000400
     - final           # Final checkpoint
 
-# OpenAI API for GPT-based evaluation
+# OpenAI API for GPT-based evaluation (default)
 openai_api:
   api_key: "YOUR_OPENAI_API_KEY"
   model: "gpt-4o-mini"  # or "gpt-4o", "gpt-3.5-turbo"
+  max_workers: 5
+
+# Alternative: DeepSeek API (cost-effective)
+deepseek_api:
+  enabled: false      # Set to true to use DeepSeek instead of OpenAI
+  api_key: "YOUR_DEEPSEEK_API_KEY"
+  model: "deepseek-chat"  # or "deepseek-reasoner"
   max_workers: 5
 
 # vLLM inference configuration
@@ -319,13 +330,32 @@ checkpoints:
     - final
 ```
 
+#### GPT Evaluation: OpenAI vs DeepSeek
+
+The benchmark suite supports two API providers for evaluating open-ended question answers:
+
+**OpenAI GPT (Recommended)**
+- **Models**: `gpt-4o`, `gpt-4o-mini`, `gpt-3.5-turbo`
+- **Pros**: High quality evaluations, well-tested, reliable
+- **Cons**: Higher cost per evaluation
+- **Best for**: Production benchmarks, publication-quality results
+
+**DeepSeek API (Cost-Effective Alternative)**
+- **Models**: `deepseek-chat`, `deepseek-reasoner`
+- **Pros**: Significantly lower cost (~90% cheaper), good quality
+- **Cons**: Slightly lower evaluation quality, newer service
+- **Best for**: Development, iteration, large-scale benchmarks
+
+To use DeepSeek, set `enabled: true` in the `deepseek_api` section of your config file.
+
 #### Evaluation Types
 
 | Type | Description | Required Fields |
 |------|-------------|-----------------|
 | `mcqa_basic` | Simple multiple-choice with exact match | question, options, expected_answer |
 | `mcqa_advanced` | MCQA with flexible answer parsing | question, options, expected_answer |
-| `open_qa_gpt` | Open QA with GPT-based evaluation | question, expected_answer, gpt_eval_config |
+| `open_qa_gpt` | Open QA with GPT-based evaluation | question, expected_answer |
+| `gpt_rating` | Open QA with GPT rating (1-10 scale) | question, expected_answer |
 
 #### Sampling Configuration
 
@@ -365,10 +395,12 @@ nano my_benchmark_config.yaml
 ```
 
 **Key settings to update:**
-- `base_model_dir`: Path to your base model
-- `checkpoints_dir`: Path to your training checkpoints (if not using specific_list)
-- `openai_api.api_key`: Your OpenAI API key
+- `base_model_dir`: Path to your base model (e.g., `checkpoints/meta-llama/Meta-Llama-3.1-8B-Instruct`)
+- `checkpoints_dir`: Path to your training checkpoints
+- `openai_api.api_key`: Your OpenAI API key (or set `OPENAI_API_KEY` env var)
+- **Alternative**: Set `deepseek_api.enabled: true` and `deepseek_api.api_key` for cost-effective evaluation
 - Dataset paths in `benchmarks` section
+- `output_dir`: Where to save results (default: `./benchmark_results`)
 
 ### 3. Run Benchmark
 

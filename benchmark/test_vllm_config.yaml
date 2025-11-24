@@ -1,27 +1,71 @@
-base_model_dir: /teamspace/studios/this_studio/llm-training/checkpoints/meta-llama/Meta-Llama-3.1-8B-Instruct
+# ============================================================================
+# vLLM Benchmark Configuration File
+# ============================================================================
+# This configuration file defines the settings for benchmarking LLM checkpoints
+# using vLLM for efficient inference and GPT-based evaluation.
 
-# OpenAI API configuration for GPT-based evaluation
-openai_api:
-  api_key: "OPENAI_API_KEY"  # Set your OpenAI API key here or use OPENAI_API_KEY environment variable
-  model: "gpt-4o"  # or "gpt-4o", "gpt-3.5-turbo"
-  max_workers: 10  # Concurrent API requests (keep low to respect rate limits)
+# ============================================================================
+# Model and Checkpoint Paths
+# ============================================================================
+
+# Path to the base model directory (before fine-tuning)
+# This should point to the LitGPT checkpoint directory
+base_model_dir: checkpoints/meta-llama/Meta-Llama-3.1-8B-Instruct
+
+# Path to the directory containing training checkpoints
+# Checkpoints should be in format: step-XXXXXX/ or final/
+checkpoints_dir: out/finetune/meta-llama/Meta-Llama-3.1-8B-Instruct
+
+# ============================================================================
+# Checkpoint Selection Strategy
+# ============================================================================
 
 checkpoints:
+  # Selection modes: 
+  #   - 'all': Evaluate all checkpoints in checkpoints_dir
+  #   - 'specific': Evaluate only checkpoints listed in specific_list
+  #   - 'latest': Evaluate only the most recent checkpoint
   selection: specific
+  
+  # List of specific checkpoints to evaluate (only used if selection: specific)
+  # Use 'base_model' to include the base model in evaluation
   specific_list:
-    - base_model
-    - step-000075
-    - step-000150
-    - step-000200
-    - step-000250
-    - step-000325
-    - final
+    - base_model      # Baseline (optional)
+    - step-000200     # Intermediate checkpoints
+    - step-000400
+    - final           # Final trained model
+
+# ============================================================================
+# API Configuration for GPT-Based Evaluation
+# ============================================================================
+# Choose ONE evaluation backend: OpenAI GPT (default) or DeepSeek API
+
+# Option 1: OpenAI API (default, recommended)
+openai_api:
+  api_key: YOUR_OPENAI_API_KEY  # Or set OPENAI_API_KEY environment variable
+  model: "gpt-4o-mini"           # Options: "gpt-4o", "gpt-4o-mini", "gpt-3.5-turbo"
+  max_workers: 5                 # Concurrent API requests (3-10 recommended)
+
+# Option 2: DeepSeek API (alternative, cost-effective)
+# Set enabled: true to use DeepSeek instead of OpenAI
+deepseek_api:
+  enabled: false                 # Set to true to use DeepSeek
+  api_key: YOUR_DEEPSEEK_API_KEY # Or set DEEPSEEK_API_KEY environment variable
+  model: "deepseek-chat"         # Options: "deepseek-chat", "deepseek-reasoner"
+  max_workers: 5                 # Concurrent API requests
+
+# ============================================================================
+# Benchmark Datasets Configuration
+# ============================================================================
+# Define evaluation benchmarks with their respective configurations
 
 benchmarks:
-# Multiple Choice Questions Dataset
-- dataset_path: ./datasets/sapien_mcqa_new.json
-  evaluation_type: mcqa_advanced 
-  name: sapien_mcqa_new
+# ----------------------------------------------------------------------------
+# Benchmark 1: SAPIEN MCQA General
+# ----------------------------------------------------------------------------
+- dataset_path: ./datasets/sapien_mcqa.json
+  evaluation_type: mcqa_advanced
+  name: sapien_mcqa_general
   num_samples: 2000
   system_prompt: |
     You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
@@ -32,7 +76,7 @@ benchmarks:
     Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
 
   prompt_template: |   
-    You are a satellite communication expert. Please answer the following multiple choice question.
+    You are a satellite communication expert. Please read carefully the following multiple choice question and relative options.
     
     Question: {question}
     
@@ -41,7 +85,8 @@ benchmarks:
     option 2) {option_2}
     option 3) {option_3}
     option 4) {option_4}
-    
+    option 5) {option_5}
+
     Answer with the correct answer (option 1, option 2, option 3 or option 4) without additional explanation:
     
   sampling_config:
@@ -49,14 +94,14 @@ benchmarks:
     temperature: 0.1
     top_p: 0.9
     stop_tokens:
-    - '
+    - '\n\n\nQuestion:'
 
-
-      Question:'
-
-- dataset_path: ./datasets/sapien_mcqa.json
-  evaluation_type: mcqa_advanced 
-  name: sapien_mcqa_transformed
+# ----------------------------------------------------------------------------
+# Benchmark 2: SAPIEN MCQA Problems
+# ----------------------------------------------------------------------------
+- dataset_path: ./datasets/sapien_mcqa_problems.json
+  evaluation_type: mcqa_advanced
+  name: sapien_mcqa_problems
   num_samples: 2000
   system_prompt: |
     You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
@@ -65,8 +110,9 @@ benchmarks:
     Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
     Base your answers on verified engineering and scientific principles.
     Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
-  prompt_template: |
-    You are a satellite communication expert. Please answer the following multiple choice question.
+
+  prompt_template: |   
+    You are a satellite communication expert. Please read carefully the following multiple choice question and relative options.
     
     Question: {question}
     
@@ -75,7 +121,8 @@ benchmarks:
     option 2) {option_2}
     option 3) {option_3}
     option 4) {option_4}
-    
+    option 5) {option_5}
+
     Answer with the correct answer (option 1, option 2, option 3 or option 4) without additional explanation:
     
   sampling_config:
@@ -83,11 +130,69 @@ benchmarks:
     temperature: 0.1
     top_p: 0.9
     stop_tokens:
-    - '
+    - '\n\n\nQuestion:'
 
+# ----------------------------------------------------------------------------
+# Benchmark 3: SAPIEN Open QA General (GPT-evaluated)
+# ----------------------------------------------------------------------------
+- dataset_path: ./datasets/sapien_open_qas.json
+  evaluation_type: gpt_rating
+  name: sapien_open_qa_general
+  num_samples: 1500
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
+    Do not overcomplicate your answers.
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following question with technical accuracy.
+    
+    Question: {question}
+      
+    Provide a clear, detailed answer:
+    
+  sampling_config:
+    max_tokens: 2048
+    temperature: 0.2
+    top_p: 0.9
+    stop_tokens:
+    - '\n\n\nQuestion:'
 
-      Question:'
+# ----------------------------------------------------------------------------
+# Benchmark 4: SAPIEN Open Problems (GPT-evaluated)
+# ----------------------------------------------------------------------------
+- dataset_path: ./datasets/sapien_open_problems.json
+  evaluation_type: gpt_rating
+  name: sapien_open_qas_problems
+  num_samples: 500
+  system_prompt: |
+    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
+    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
+    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
+    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
+    Base your answers on verified engineering and scientific principles.
+    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
+    Do not overcomplicate your answers.
+  prompt_template: |
+    You are a satellite communication expert. Please answer the following question with technical accuracy.
+    
+    Question: {question}
+      
+    Provide a clear, detailed answer:
+    
+  sampling_config:
+    max_tokens: 2048
+    temperature: 0.2
+    top_p: 0.9
+    stop_tokens:
+    - '\n\n\nQuestion:'
 
+# ----------------------------------------------------------------------------
+# Benchmark 5: EVE MCQA
+# ----------------------------------------------------------------------------
 - dataset_path: ./datasets/eve_mcqa_transformed.json
   evaluation_type: mcqa_advanced
   name: eve_mcqa
@@ -100,7 +205,7 @@ benchmarks:
     Base your answers on verified engineering and scientific principles.
     Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
   prompt_template: |
-    You are a satellite communication expert. Please answer the following multiple choice question.
+    You are a satellite communication expert. Please read carefully the following multiple choice question and relative options.
     
     Question: {question}
     
@@ -117,16 +222,15 @@ benchmarks:
     temperature: 0.1
     top_p: 0.9
     stop_tokens:
-    - '
+    - '\n\n\nQuestion:'
 
-
-      Question:'
-
-
+# ----------------------------------------------------------------------------
+# Benchmark 6: TeleQnA MCQA
+# ----------------------------------------------------------------------------
 - dataset_path: ./datasets/teleqna_mcqa.json
   evaluation_type: mcqa_advanced
   name: mcqa_teleqna
-  num_samples: 5000
+  num_samples: 10000
   system_prompt: |
     You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
     You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
@@ -136,7 +240,7 @@ benchmarks:
     Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
   prompt_template: |
     You are a satellite communication expert. Let's test your abilities in a similar domain.
-    Please answer the following multiple choice question.
+    Please read carefully the following multiple choice question and relative options.
     
     Question: {question}
     
@@ -151,95 +255,65 @@ benchmarks:
     
   sampling_config:
     max_tokens: 50
-    stop_tokens:
-    - '
-
-
-      Question:'
     temperature: 0.2
     top_p: 0.9
-
-# Add more datasets here
-- dataset_path: ./datasets/sapien_qa_with_context_delivery.json
-  evaluation_type: gpt_rating
-  name: sapien_open_qas
-  num_samples: 500
-  system_prompt: |
-    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
-    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
-    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
-    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
-    Base your answers on verified engineering and scientific principles.
-    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
-  prompt_template: |
-    You are a satellite communication expert. Please answer the following question with technical accuracy.
-    
-    Question: {question}
-      
-    Provide a clear, detailed answer:
-    
-  sampling_config:
-    max_tokens: 2048
     stop_tokens:
-    - '
-
-
-      Question:'
-    temperature: 0.2
-    top_p: 0.9
-
-
-- dataset_path: ./datasets/satcom_problems.json
-  evaluation_type: gpt_rating
-  name: satcom_problems
-  num_samples: 400
-  system_prompt: |
-    You are SatcomLLM, an advanced AI model developed jointly by Pi School (Rome, Italy) and the European Space Agency (ESA).
-    You are a satellite communications and orbital systems expert, capable of addressing topics such as link budgets, propagation, modulation, antennas, orbits, and AI applications in space systems.
-    While your primary expertise lies in space engineering, you are also able to answer any type of question across scientific, technical, and general domains with the same clarity and rigor.
-    Always follow the user's request carefully, ensuring your answers are relevant, complete, and aligned with their intent.
-    Base your answers on verified engineering and scientific principles.
-    Maintain a professional, educational tone suitable for engineers, researchers, and advanced students.
-  prompt_template: |
-    You are a satellite communication expert. Solve the following problem:
-    
-    Question: {question}
-    
-  sampling_config:
-    max_tokens: 2048
-    stop_tokens:
-    - '
-
-
-      Question:'
-    temperature: 0.2
-    top_p: 0.9
+    - '\n\n\nQuestion:'
 
 
 
+# ============================================================================
+# Experiment Configuration
+# ============================================================================
 
-checkpoints_dir: /teamspace/studios/this_studio/out/finetune-2/llama-8b-dataset12-cot
-cleanup:
-  delete_hf_checkpoints: true
-  delete_merged_litgpt: true
-experiment_name: vllm_test_run
+experiment_name: satcom_llm_benchmark
+output_dir: ./benchmark_results
+
+# ============================================================================
+# Logging Configuration
+# ============================================================================
+
 logging:
-  level: INFO
-  log_file: ./benchmark-2/vllm_benchmark_llama-8b-dataset12-cot.log
+  level: INFO                    # Options: DEBUG, INFO, WARNING, ERROR
   save_logs: true
-output_dir: ./benchmark-2
+  log_file: ./benchmark_results/benchmark.log
+
+# ============================================================================
+# Results Configuration
+# ============================================================================
+
 results:
-  save_detailed_scores: true
-  save_individual_results: true
-  save_summary_results: true
+  save_summary_results: true     # Save summary CSV and JSON
+  save_detailed_scores: true     # Save per-sample scores
+  save_individual_results: true  # Save per-checkpoint results
+
+# ============================================================================
+# Cleanup Configuration
+# ============================================================================
+# Automatically delete temporary files after benchmarking
+
+cleanup:
+  delete_merged_litgpt: true     # Delete merged LitGPT checkpoints
+  delete_hf_checkpoints: true    # Delete HuggingFace converted checkpoints
+
+# ============================================================================
+# vLLM Inference Configuration
+# ============================================================================
+
 vllm_config:
-  dtype: auto
-  gpu_memory_utilization: 0.8
-  max_model_len: 2048
-  tensor_parallel_size: 1
-  trust_remote_code: true
+  # Precision and memory settings
+  dtype: auto                    # Options: auto, bfloat16, float16, float32
+  gpu_memory_utilization: 0.85   # GPU memory to use (0.0-1.0, default: 0.9)
+  max_model_len: 4096            # Maximum sequence length
+  
+  # Multi-GPU settings
+  tensor_parallel_size: 1        # Number of GPUs for tensor parallelism
+  
+  # Other settings
+  trust_remote_code: true        # Allow custom model code
+  batch_size: 50                 # Inference batch size
+  
+  # API server settings (if using server mode)
   port: 8000
-  num_workers: 2        # Number of concurrent request threads (increase if server is stable)
-  batch_size: 10        # Process requests in batches to avoid overwhelming server
-  batch_delay: 3        # Seconds to wait between batches (reduce if server is stable)
-  request_timeout: 20   # Timeout in seconds for each API request (default: 30)
+  num_workers: 2
+  request_timeout: 30
