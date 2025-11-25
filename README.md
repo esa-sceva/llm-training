@@ -381,6 +381,6 @@ This project uses [LitGPT](https://github.com/Lightning-AI/litgpt) which is lice
 
 ---
 
-**Powered by [LitGPT](https://github.com/Lightning-AI/litgpt)**
+**Powered using [LitGPT](https://github.com/Lightning-AI/litgpt)**
 
 For detailed tutorials and examples, explore the [`tutorials/` folder](https://github.com/Lightning-AI/litgpt/tree/main/tutorials) in the LitGPT repository.
