@@ -253,8 +253,8 @@ python benchmark_vllm_server_v1.py --config test_vllm_config.yaml
 - Multiple-choice and open-ended question support
 
 **Available Datasets:**
-- `sapien_mcqa` - Multiple-choice questions (3.8K samples)
-- `sapien_open_qas` - Open-ended questions (2.5K samples)
+- `sapien_mcqa` - Multiple-choice questions, splitted into reasoning and general QAs (1K samples)
+- `sapien_open_qas` - Open-ended questions, splitted into reasoning and general QAs (1K samples)
 - [ESA-SCEVA datasets on HuggingFace](https://huggingface.co/esa-sceva) - Official SatCom datasets
 
 See the [**Benchmark README**](benchmark/README.md) for detailed instructions and configuration options.
