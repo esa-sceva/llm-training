@@ -1,0 +1,41 @@
+model_a:
+  name: "merged-output"
+  file: "responses/merged-output-1.csv"  # CSV with model A outputs
+
+model_b:
+  name: "meta-llama/Llama-3.1-8B-Instruct"
+  file: "responses/samples_satcom-qa_llama8b.csv"  # CSV with model B outputs
+
+judges:
+  - name: qwen3-235b
+    model: qwen/qwen3-235b-a22b-2507
+    api_key: OPENROUTER_API_KEY
+    base_url: https://openrouter.ai/api/v1/
+  - name: gpt-4.1-mini
+    model: openai/gpt-4.1-mini
+    api_key: OPENROUTER_API_KEY
+    base_url: https://openrouter.ai/api/v1/
+  - name: mistral-large-2512
+    model: mistralai/mistral-large-2512
+    api_key: OPENROUTER_API_KEY
+    base_url: https://openrouter.ai/api/v1/
+  - name: deepseek-v3.2
+    model: deepseek/deepseek-v3.2
+    api_key: OPENROUTER_API_KEY
+    base_url: https://openrouter.ai/api/v1/
+
+
+evaluation:
+  max_workers: 10
+  rate_limit_delay: 0.1
+  random_seed: 42
+  # limit: 50  # uncomment to test on subset
+
+output:
+  dir: "evaluation/win_rate-base"
+  save_visualizations: true
+  save_metrics_table: true
+
+wandb:
+  project: eval-win-rate
+  entity: SatcomLLM

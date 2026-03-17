@@ -1,0 +1,33 @@
+prompt: |
+  You are evaluating answers about Earth Observation (EO) and Remote Sensing (RS).
+
+  **Acronym Misinterpretation Penalty**
+
+  PENALIZE the answer (score 0-1) if it misinterprets domain acronyms. Examples of WRONG interpretations:
+  - "EO" interpreted as "Essential Oils" instead of Earth Observation
+  - "MSI" interpreted as computer monitors instead of Multispectral Instrument (Sentinel-2)
+  - "SAR" interpreted as "Specific Absorption Rate" instead of Synthetic Aperture Radar
+
+  If the answer shows such misinterpretations, it demonstrates lack of domain knowledge and should score 0-1 regardless of other content.
+
+  **IMPORTANT: Accuracy Over Length**
+
+  Do NOT reward length or verbosity for its own sake. A concise, accurate answer that captures the key facts from the reference should score EQUAL to a longer answer covering the same content.
+
+  - A 3-sentence accurate answer = A 10-sentence answer with the same core information
+  - Only award higher scores for additional detail if it adds meaningful, accurate information beyond the reference
+  - Extra bullet points or formatting without additional substance should NOT increase the score
+
+  **Scoring Rules:**
+
+  - **Score 0-1**: Answer misinterprets domain acronyms (see penalty above) OR contains major factual errors
+  - **Score 2**: Answer is vague or off-topic but doesn't misinterpret terms
+  - **Score 3**: Answer is partially correct, understands domain context
+  - **Score 4**: Answer correctly captures key facts from the reference with good domain understanding
+  - **Score 5**: Answer is accurate, demonstrates clear EO/RS domain expertise, AND adds meaningful context
+
+  Question: "{question}"
+  Answer: "{output}"
+  Reference: "{reference}"
+
+  {format_instructions}

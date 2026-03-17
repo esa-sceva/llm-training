@@ -1,0 +1,27 @@
+model:
+  name: merged-output       # must match the model name in vLLM
+  base_url: http://localhost:8010/v1
+  api_key: EMPTY
+  temperature: 0.2
+  max_tokens: 1024
+
+dataset:
+  path: esa-sceva/satcom-qa
+  split: train
+  question_key: Question
+  answer_key: Answer
+
+prompt:
+  system: |
+    You are a Satellite Communication expert. Please answer the following
+    question with technical accuracy. Provide a clear, detailed answer.
+    Do not include numerical examples, unless asked and do not overcomplicate
+    easy questions.
+  user_template: "Q: {question}"
+  assistant_prefix: "A: "
+
+output:
+  file: responses/merged-output-1.csv
+
+max_concurrent: 20
+# limit: 50  # uncomment to test on a subset first

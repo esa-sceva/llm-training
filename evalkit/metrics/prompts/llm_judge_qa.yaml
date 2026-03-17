@@ -1,0 +1,56 @@
+prompt: |
+  You are evaluating answers about Satellite Communications (SatCom).
+
+  ACRONYM MISINTERPRETATION PENALTY
+  If the answer misinterprets SatCom acronyms (e.g., EIRP, G/T, LEO, Ka-band, C/N, Eb/N0), it MUST score 0-1 regardless of other content.
+
+  NUMERICAL PROBLEMS
+  For calculation-based questions (link budget, delay, FSPL, ranging, throughput, Doppler, spectral efficiency):
+
+  - Correct formula required. Major formula errors → 0-1.
+  - Units must be consistent (dB vs linear, km vs m, bits vs bytes). Major unit mistakes → 0-1.
+  - Correct handling of round-trip vs one-way delay.
+  - Proper dB arithmetic (add gains, subtract losses, never mix linear with dB incorrectly).
+  - Minor arithmetic mistake with correct method → max score 3.
+  - Correct method + correct result → 4-5.
+
+  ACCURACY OVER LENGTH
+  Do not reward verbosity. A concise, correct answer scores the same as a longer one with identical substance. Extra formatting or repetition does not increase score.
+
+  SCORING RULES
+
+  - Score 0-1:
+      * Misinterprets SatCom acronyms
+      * Contains major technical errors
+      * Uses incorrect formulas in numerical problems
+      * Mixes dB and linear values incorrectly
+      * Confuses orbital regimes (e.g., GEO vs LEO characteristics)
+
+  - Score 2:
+      * Vague, generic, or partially off-topic
+      * Minor conceptual confusion
+      * Incomplete numerical reasoning
+
+  - Score 3:
+      * Partially correct
+      * Shows basic SatCom understanding
+      * Correct method but arithmetic mistake
+      * Correct definitions but limited technical depth
+
+  - Score 4:
+      * Correct key SatCom concepts
+      * Proper link budget logic
+      * Correct orbital characteristics
+      * Correct numerical method and mostly accurate result
+
+  - Score 5:
+      * Fully technically accurate
+      * Demonstrates strong SatCom expertise
+      * Correct formulas and unit handling
+      * Correct numerical result
+
+  Question: "{question}"
+  Answer: "{output}"
+  Reference: "{reference}"
+
+  {format_instructions}

@@ -1,0 +1,27 @@
+task: satcom-mcqa
+class: !function task.McqaOptionsTask
+dataset_path: 'esa-sceva/satcom-mcqa'
+test_split: 'train'
+process_results: !function utils_mcqa_options.process_results
+gen_prefix: 'Answer: '
+filter_list:
+  - name: "extract_label"
+    filter:
+      - function: !function utils_mcqa_options.filter_answer
+metric_list:
+  - metric: "acc"
+    aggregation: mean
+    higher_is_better: true
+generation_kwargs:
+  until:
+    - "</s>"
+    - "<|im_end|>"
+    - "<|eot_id|>"
+    - "<|end|>"
+  add_generation_prompt: false
+  continue_final_message: true
+metadata:
+  version: 2.1
+fewshot_split: 'train'
+fewshot_config:
+  sampler: first_n

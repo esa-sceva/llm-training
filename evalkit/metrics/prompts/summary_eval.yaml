@@ -1,0 +1,10 @@
+prompt: |
+  You will be given a generated Summary and a Reference Summary about a scientific article on Earth Observation. Judge whether the Summary is correct by comparing it to the Reference Summary.
+  
+  Summary: 
+  {prediction}
+  
+  Reference Summary:
+  {reference}
+  
+  {format_instructions}

@@ -1,0 +1,8 @@
+prompt: |
+  You will be given a Question and a Provided Answer. Judge whether the Provided Answer is correct by comparing it to the Reference Answer. Differently formatted dates, people with missing middle names, and alternative spellings should all be considered the same.
+  
+  Question: "{question}"
+  Provided Answer: "{output}"
+  Reference Answer: "{reference}"
+
+  {format_instructions}

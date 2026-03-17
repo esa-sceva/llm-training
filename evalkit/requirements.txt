@@ -1,0 +1,12 @@
+evaluate==0.4.0
+numpy==1.26.4
+lm-eval
+datasets
+torch
+pandas
+tqdm
+bert_score
+click
+openai
+transformers
+langchain_core

@@ -1,0 +1,27 @@
+task: mcqa_single_answer
+dataset_path: 'esa-sceva/satcom-mcqa'
+test_split: 'train'
+doc_to_text: !function utils_mcqa_single.doc_to_text
+doc_to_target: '{{Answer}}'
+process_results: !function utils_mcqa_single.process_results
+gen_prefix: 'Answer: '
+description: 'You are a satellite communication expert. After reading carefully the following multiple choice question about SatCom, select the correct answer. Strcitly respond in the format: letter only (e.g., "A", "B", "C", "D", "E").'
+filter_list:
+  - name: "extract_label"
+    filter:
+      - function: !function utils_mcqa_single.filter_answer
+metric_list:
+  - metric: "acc"
+    aggregation: mean
+    higher_is_better: true
+generation_kwargs:
+  until:
+    - "</s>"
+    - "<|im_end|>"
+metadata:
+  version: 2.1
+dataset_kwargs:
+  trust_remote_code: true
+fewshot_split: 'train'
+fewshot_config:
+  sampler: first_n

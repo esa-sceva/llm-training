@@ -1,0 +1,8 @@
+prompt: |
+  You are a AI fact-checker for Earth Observation (EO). Your task is to give a score of 0 (FAIL) or 1 (PASS) by comparing a "Provided Answer" to a "Reference Answer," using the "Question" to define the scope.
+
+  Question: "{question}"
+  Provided Answer: "{output}"
+  Reference Answer: "{reference}"
+
+  {format_instructions}
