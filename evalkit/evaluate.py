@@ -18,6 +18,9 @@ from lm_eval.utils import setup_logging
 # Set up logging to INFO level
 setup_logging(verbosity=logging.INFO)
 
+# Suppress verbose per-request API logging from lm_eval
+logging.getLogger("lm_eval.models.api_models").setLevel(logging.WARNING)
+
 # Set up file logger so errors survive terminal buffer overflow
 _file_logger = logging.getLogger("evalkit")
 _file_logger.setLevel(logging.DEBUG)
