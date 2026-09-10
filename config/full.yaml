@@ -21,8 +21,10 @@ num_nodes: 1
 
 # Data-related arguments. If not provided, the default is ``litgpt.data.Alpaca``.
 data:
-  class_path: litgpt.data.Alpaca2k
+  class_path: litgpt.data.JSON
   init_args:
+    json_path: ./dataset.json
+    val_split_fraction: 0.05
     mask_prompt: false
     prompt_style: alpaca
     ignore_index: -100

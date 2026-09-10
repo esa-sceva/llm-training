@@ -26,11 +26,11 @@ wandb:
 
 train:
 	litgpt finetune_lora $(MODEL_NAME) \
+		--config $(CONFIG_PATH) \
 		--data JSON \
 		--data.json_path $(JSON_PATH) \
 		--data.val_split_fraction $(VAL_SPLIT) \
-		--out_dir $(OUT_DIR) \
-		--config $(CONFIG_PATH) \
+		--out_dir $(OUT_DIR)
 	
 evaluate:
 	litgpt evaluate $(OUT_DIR) \
